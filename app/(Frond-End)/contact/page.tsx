@@ -1,6 +1,4 @@
-import ContactForm from "@/components/AllForm/ContactForm";
-import ContactFaq from "@/components/contact/ContactFaq";
-import ContactInfo from "@/components/contact/ContactInfo";
+
 import Image from "next/image";
 
 function ContactPage() {
@@ -20,23 +18,6 @@ function ContactPage() {
             Contact us
           </h2>
         </div>
-      </div>
-
-      <div className=" bg-bgColor py-10 lg:py-20">
-        <div className="  md:grid grid-cols-12 container ">
-          <div className=" col-span-1"></div>
-          <div className=" col-span-4">
-            <ContactInfo />
-          </div>
-          <div className=" col-span-6">
-            <ContactForm />
-          </div>
-          <div className=" col-span-1"></div>
-        </div>
-      </div>
-
-      <div className="px-4 xl:px-0">
-        <ContactFaq/>
       </div>
     </div>
   );
