@@ -22,10 +22,10 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="bg-headerColorColor py-4 px-4">
+    <header className="bg-headerColorColor py-4 ">
       <div className="container mx-auto flex justify-between items-center">
         {/* Left: Logo */}
-        <div className="text-headerColor text-3xl font-semibold tracking-wide">
+        <div className="text-headerColor text-2xl lg:text-3xl font-semibold tracking-wide">
           LOGO
         </div>
 
@@ -80,7 +80,7 @@ export default function Navbar() {
 
       {/* Mobile Menu Content */}
       <div className={cn(
-        "xl:hidden fixed top-0 right-0 h-full w-80 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50",
+        "xl:hidden fixed max-w-[80%] md:max-w-[60%] lg:max-w-[40%] top-0 right-0 h-full w-80 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50",
         menuOpen ? "translate-x-0" : "translate-x-full"
       )}>
         {/* Close button */}
@@ -151,7 +151,7 @@ export default function Navbar() {
       {/* Overlay */}
       {menuOpen && (
         <div 
-          className="md:hidden fixed inset-0 bg-black/50 bg-opacity-50 z-40"
+          className="xl:hidden fixed inset-0  bg-black/50 bg-opacity-50 z-40"
           onClick={() => setMenuOpen(false)}
         />
       )}
