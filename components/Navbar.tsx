@@ -59,11 +59,9 @@ export default function Navbar() {
               </ul>
             
           </div>
-         
-         
           <Link
             href="/registration"
-            className="bg-primaryColor text-blackColor font-medium cursor-pointer  text-base px-4 py-2 rounded-[8px]"
+            className="bg-primaryColor text-blackColor font-medium cursor-pointer  text-base px-5 py-3 rounded-[8px]"
           >
             Enquire now
           </Link>

@@ -23,7 +23,7 @@ export default function Footer() {
 <div className=" container grid grid-cols-1 md:grid-cols-12 gap-10">
         {/* Column 1: Logo & Newsletter */}
         <div className=" md:col-span-6 lg:col-span-4">
-          <div className=" w-[328px]">
+          <div className=" md:w-[328px]">
             <h2 className="text-5xl font-bold mb-8">LOGO</h2>
             <p className="text-base leading-[150%] mb-6">
              Explore profiles of reliable transfer maids in Singapore, experienced in childcare, cooking, and household chores, 
@@ -77,7 +77,7 @@ export default function Footer() {
               <IoMailOutline className="text-white" />
               <Link
                 href="mailto:hello@travelinfo.com"
-                className="hover:text-primaryColor"
+                className="hover:text-primaryColor break-all "
               >
                 admin@transfermaidsingapore.com
               </Link>
