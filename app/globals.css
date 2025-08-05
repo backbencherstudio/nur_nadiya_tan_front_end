@@ -24,6 +24,7 @@
   --color-ratingColor: #ffc52e;
   --color-footerColor: #091819;
   --color-bgColor: var(--bgColor);
+  --color-borderColor: #D2D2D5;
   --color-descriptionColor: var(--descriptionColor);
   /* ======== */
   --radius-sm: calc(var(--radius) - 4px);
