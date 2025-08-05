@@ -1,6 +1,7 @@
 "use client"
 import heroImage from "@/public/home/bannerImage.png"
 import Image from "next/image"
+import Link from "next/link"
 import { useState } from "react"
 import RegistrationForm from "../allForm/RegistrationForm"
 import ButtonReuseable from "../reusable/CustomButton"
@@ -30,7 +31,10 @@ function Hero() {
                 <h2 className="text-2xl md:text-xl lg:text-[32px] text-headerColor font-semibold">Looking for a transfer maid for your  <span className="text-redColor">Home?</span> </h2>
                 <p className="text-base  font-medium md:text-base lg:text-lg text-descriptionColor mt-6 md:mt-3 lg:mt-6">View available maids now</p>
                 <div className="lg:mt-10 mt-6 md:mt-3">
-                <ButtonReuseable title="Hire a transfer maid" className="!text-headerColor !font-medium"/>
+                  <Link href="/employ-signup">
+                   <ButtonReuseable title="Hire a transfer maid" className="!text-headerColor !font-medium"/>
+                  </Link>
+               
                 </div>
             </div> 
            </div>
