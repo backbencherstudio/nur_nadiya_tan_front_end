@@ -1,12 +1,13 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+import whatsappIcon from "@/public/icon/whatsapp.png";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { BsGlobe2 } from "react-icons/bs";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
-
-import { cn } from "@/lib/utils";
 
 const menuItems = [
   { en: "Home",  slug: "/" },
@@ -61,9 +62,9 @@ export default function Navbar() {
           </div>
           <Link
             href="/registration"
-            className="bg-primaryColor text-blackColor font-medium cursor-pointer  text-base px-5 py-3 rounded-[8px]"
+            className="bg-primaryColor text-blackColor flex items-center gap-2 font-medium cursor-pointer  text-base px-5 py-3 rounded-[8px]"
           >
-            Enquire now
+           <Image src={whatsappIcon} alt="whatsappIcon" width={20} height={20} /> Enquire now
           </Link>
         </div>
 
@@ -138,10 +139,10 @@ export default function Navbar() {
               {/* Enquire Button */}
               <Link
                 href="/registration"
-                className="bg-primaryColor text-blackColor font-medium cursor-pointer text-base px-4 py-2 rounded-[8px] block sm:inline-block text-center w-full sm:w-auto"
+                className="bg-primaryColor flex items-center gap-2 text-blackColor font-medium cursor-pointer text-base px-4 py-2 rounded-[8px]  sm:inline-block text-center w-full sm:w-auto"
                 onClick={() => setMenuOpen(false)}
               >
-                Enquire now
+              <Image src={whatsappIcon} alt="whatsappIcon" width={20} height={20} /> Enquire now
               </Link>
             </div>
           </div>
