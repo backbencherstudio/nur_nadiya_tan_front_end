@@ -39,7 +39,7 @@ function PaymentOption() {
       {paymentOptions.map((option) => (
         <div
           key={option.id}
-          className={`flex w-full flex-col p-6 md:p-8 lg:p-10 rounded-2xl shadow-lg ${option.backgroundColor} ${option.textColor} w-64`}
+          className={`flex w-full  flex-col p-6 md:p-8 lg:p-10 rounded-2xl shadow-lg ${option.backgroundColor} ${option.textColor} w-64`}
         >
           <div className="mb-4">
             <div className="text-3xl pb-5 lg:pb-6">
