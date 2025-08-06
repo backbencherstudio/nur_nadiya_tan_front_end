@@ -3,6 +3,7 @@
 import { maidProfiles } from "@/demoData/maidProfiles";
 import Image from "next/image";
 import ButtonReuseable from "../reusable/CustomButton";
+import SectionHeader from "../reusable/SectionHeader";
 
 function JobList() {
  
@@ -10,14 +11,7 @@ function JobList() {
     <section className="my-14 lg:my-[100px]">
       <div className="container">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-2xl  lg:text-[32px] xl:text-5xl leading-[120%] text-blackColor font-semibold mb-3">
-           Sample transfer maids in Singapore
-          </h2>
-          <p className="text-base text-descriptionColor max-w-3xl mx-auto">
-           Explore profiles of reliable transfer maids in Singapore, experienced in childcare, cooking, and household chores, ready for immediate employment
-          </p>
-        </div>
+       <SectionHeader title="Sample transfer maids in Singapore" description="Explore profiles of reliable transfer maids in Singapore, experienced in childcare, cooking, and household chores, ready for immediate employment" />
 
         {/* Maid Cards */}
         <div className="lg:space-y-10 space-y-5">
