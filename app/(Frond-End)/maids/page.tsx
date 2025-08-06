@@ -1,4 +1,5 @@
 import Testimonials from "@/components/maids/Testimonials"
+import VideoSection from "@/components/maids/VideoSection"
 import CommonHero from "@/components/reusable/CommonHero"
 import SectionHeader from "@/components/reusable/SectionHeader"
 
@@ -12,6 +13,7 @@ function page() {
 
         <div>
           <Testimonials/>
+          <VideoSection/>
         </div>
       </div>
       </section>
