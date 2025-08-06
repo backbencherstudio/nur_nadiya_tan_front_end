@@ -1,3 +1,4 @@
+import MaidSteps from "@/components/maids/MaidSteps"
 import Testimonials from "@/components/maids/Testimonials"
 import VideoSection from "@/components/maids/VideoSection"
 import CommonHero from "@/components/reusable/CommonHero"
@@ -5,7 +6,7 @@ import SectionHeader from "@/components/reusable/SectionHeader"
 
 function page() {
   return (
-<div>
+<div className="">
       <CommonHero pageName="Maids" />
     <section className="my-14 lg:my-[100px]">
       <div className="container">
@@ -14,8 +15,10 @@ function page() {
         <div>
           <Testimonials/>
           <VideoSection/>
+         
         </div>
       </div>
+       <MaidSteps/>
       </section>
 </div>
   )

@@ -48,7 +48,7 @@ export default function Testimonials() {
 
   return (
     <section className="container">
-      <div className=" mb-20">
+      <div className=" mb-10 lg:mb-[120px]">
        
         <div className="relative grid grid-cols-12">
           <div className="col-span-1 flex justify-center w-full">
