@@ -47,7 +47,7 @@ function MaidSteps() {
                     <SectionHeader title="What We Can Help You With" description="Your trusted agency with 30 years of experience – we support you every step of the way" />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6   rounded-xl">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6   rounded-xl">
                     {supportSteps.map((step) => (
                         <div
                         style={{ boxShadow: "0px 0px 10px 0px #dddddd" }}

@@ -1,3 +1,4 @@
+import MaidpreferPage from "@/components/maids/MaidpreferPage"
 import MaidSteps from "@/components/maids/MaidSteps"
 import Testimonials from "@/components/maids/Testimonials"
 import VideoSection from "@/components/maids/VideoSection"
@@ -19,6 +20,7 @@ function page() {
         </div>
       </div>
        <MaidSteps/>
+       <MaidpreferPage/>
       </section>
 </div>
   )
