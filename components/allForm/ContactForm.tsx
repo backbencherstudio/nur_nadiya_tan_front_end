@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 export default function ContactForm() {
   // Use useForm hook to handle form validation and submission
   const { register, handleSubmit, formState: { errors } } = useForm();
-
   // Handle form submission
   const onSubmit = (data) => {
     console.log(data);
