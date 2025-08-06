@@ -119,8 +119,8 @@ export default function Testimonials() {
       </div>
       <style jsx global>{` 
         .hero-bullet {
-          width: 20px !important;
-          height: 8px !important;
+          width: 10px !important;
+          height: 4px !important;
           transition: all 0.3s ease;
           margin: 0px 5px;
           display: inline-block;
@@ -128,10 +128,10 @@ export default function Testimonials() {
         
           // padding:10px;
         }
-
         .hero-bullet-active {
+        width: 20px !important;
           position: relative;
-          // transform: scale(1.1);
+         
           }
          
       `}</style>
