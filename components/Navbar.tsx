@@ -23,7 +23,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="bg-headerColorColor py-4 ">
+    <header className="sticky top-0 left-0 w-full bg-whiteColor z-50 shadow py-4 ">
       <div className="container mx-auto flex justify-between items-center">
         {/* Left: Logo */}
         <div className="text-headerColor text-2xl lg:text-3xl font-semibold tracking-wide">
