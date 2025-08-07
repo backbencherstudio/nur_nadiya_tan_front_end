@@ -70,12 +70,12 @@ function CustomersSay() {
             {/* Navigation Buttons */}
             <div className="flex justify-between items-center absolute top-1/2 -translate-y-1/2 z-10 w-full ">
               <button onClick={goPrev}>
-                <div className="flex items-center group justify-center cursor-pointer lg:-ml-16 lg:w-12 lg:h-8 w-8 h-6 sm:w-10 sm:h-8  -ml-3 rounded-sm sm:rounded-md border border-primaryColor hover:bg-primaryColor/80 shadow-lg transition-all">
+                <div className="flex items-center group justify-center cursor-pointer 2xl:-ml-16 lg:w-12 lg:h-8 w-8 h-6 sm:w-10 sm:h-8  -ml-3 rounded-sm sm:rounded-md border border-primaryColor hover:bg-primaryColor/80 shadow-lg transition-all">
                   <FaLongArrowAltLeft className="text-primaryColor group-hover:text-whiteColor w-5 h-5" />
                 </div>
               </button>
               <button onClick={goNext}>
-                <div     className="flex items-center group justify-center  cursor-pointer relative -right-3 lg:-right-16 lg:w-12 lg:h-8 w-8 h-6 sm:w-10 sm:h-8 rounded-sm sm:rounded-md border-primaryColor border hover:bg-primaryColor/80 shadow-lg transition-all">
+                <div     className="flex items-center group justify-center  cursor-pointer relative -right-3 2xl:-right-16 lg:w-12 lg:h-8 w-8 h-6 sm:w-10 sm:h-8 rounded-sm sm:rounded-md border-primaryColor border hover:bg-primaryColor/80 shadow-lg transition-all">
                   <FaLongArrowAltRight className="text-primaryColor group-hover:text-whiteColor w-5 h-5" />
                 </div>
               </button>

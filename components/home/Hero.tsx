@@ -20,7 +20,7 @@ function Hero() {
                 <h2 className="text-2xl md:text-xl lg:text-[32px] text-headerColor font-semibold">Looking to Transfer to a New Employer in <span className="text-redColor">Singapore?</span> </h2>
                 <p className="text-base font-medium md:text-base lg:text-lg text-descriptionColor mt-6 md:mt-3 lg:mt-6">Let us help you find the right match, fast and easy.</p>
                 <div className="lg:mt-10 mt-6 md:mt-3">
-                <ButtonReuseable onClick={()=>setOpen(true)} title="Register Now" className="!text-headerColor !font-medium"/>
+                <ButtonReuseable onClick={()=>setOpen(true)} title="Find new employer" className="!text-headerColor !font-medium"/>
                 </div>
             </div> 
             <div className=" px-9 md:px-4 lg:px-7 xl:px-9 pt-[60px] md:pt-[55px] lg:pt-[70px] rounded-t-full bg-primaryColor">
