@@ -76,7 +76,7 @@ export default function WatchVideo({ src, poster, title }: VideoPlayerProps) {
   const controlsTimeout = useRef<NodeJS.Timeout | null>(null)
   return (
     <div className=" ">
-      <div className="relative w-full max-w-6xl mx-auto">
+      <div className="relative w-full  mx-auto">
         <div className="relative w-full aspect-video lg:h-[600px] overflow-hidden rounded-lg shadow-lg bg-black group">
           <video
             ref={videoRef}

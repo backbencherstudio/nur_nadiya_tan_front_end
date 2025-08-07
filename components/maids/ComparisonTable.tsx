@@ -1,6 +1,5 @@
 import { FaCheckCircle } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
-import SectionHeader from "../reusable/SectionHeader";
 
 function ComparisonTable() {
   const comparisonData = [
@@ -37,16 +36,11 @@ function ComparisonTable() {
   ];
 
   return (
-    <div className="py-14 lg:py-[120px] bg-yellow-50">
+    <div className="">
       <section className="container">
-        <div>
-          <SectionHeader 
-            title="Transfer Maid vs New Maid Comparison" 
-            description="See why transfer maids are often the better choice for employers" 
-          />
-        </div>
-        <div className="mt-12 overflow-x-auto">
-          <table className="min-w-[1000px] w-full border border-[#F6F6D9] rounded-xl overflow-hidden bg-white shadow-lg table-fixed">
+       
+        <div className="mt-12 border rounded-[10px] overflow-x-auto">
+          <table className="min-w-[1000px] w-full border  rounded-xl overflow-hidden bg-white shadow-lg table-fixed">
             <colgroup>
               <col className="w-1/3" />
               <col className="w-1/3" />
