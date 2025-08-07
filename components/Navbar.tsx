@@ -11,9 +11,9 @@ import { HiOutlineMenu, HiX } from "react-icons/hi";
 
 const menuItems = [
   { en: "Home",  slug: "/" },
-  { en: "Apartment", slug: "/apartments" },
-  { en: "Hotel",  slug: "/hotels" },
-  { en: "Tours",  slug: "/tours" },
+  { en: "Pricing", slug: "/pricing" },
+  { en: "Employers",  slug: "/employers" },
+  { en: "Maids",  slug: "/maids" },
   { en: "Contact Us",  slug: "/contact" },
 ];
 
