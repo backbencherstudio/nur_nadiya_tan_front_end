@@ -26,7 +26,7 @@ export default function Navbar() {
     <header className="sticky top-0 left-0 w-full bg-blackColor z-50 shadow py-3 ">
       <div className="container mx-auto flex justify-between items-center">
         <div className="text-headerColor text-2xl lg:text-3xl font-semibold tracking-wide">
-          <Image src={mainLogo} width={80} height={150} alt="logo" />
+          <Image src={mainLogo} width={80} height={150} alt="logo" className="w-14 md:w-[60p lg:w-20" />
         </div>
 
         {/* Desktop Menu */}
@@ -71,7 +71,7 @@ export default function Navbar() {
         <div className="xl:hidden">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="text-headerColor text-2xl"
+            className="text-whiteColor text-2xl"
           >
             {menuOpen ? <HiX /> : <HiOutlineMenu />}
           </button>
@@ -86,7 +86,7 @@ export default function Navbar() {
         {/* Close button */}
         <div className="flex justify-between items-center p-4">
           <div className="text-headerColor text-xl font-semibold tracking-wide">
-            <Image src={mainLogo} width={60} height={70} alt="logo" />
+            <Image src={mainLogo} width={60} height={70} alt="logo " className="w-12 md:w-[60px]" />
           </div>
           <button
             onClick={() => setMenuOpen(false)}
