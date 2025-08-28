@@ -12,7 +12,7 @@ function MaidpreferPage() {
       description: "Zero placement fees - Maids keep 100% of their salary with new employers",
     },
     {
-      id: "02", 
+      id: "02",
       icon: m2,
       title: "Boarding House Available",
       description: "Safe boarding facilities available during job transitions - No homeless periods!",
@@ -26,24 +26,23 @@ function MaidpreferPage() {
   ];
 
   return (
-    <div className="py-14 lg:py-[120px] ">
+    <div className="pb-5 lg:pb-[40px] ">
       <section className="container">
         <div>
-          <SectionHeader 
-            title="Why Maids Prefer Us" 
-            description="No hidden fees, safe accommodation, and faster job placements — we prioritize your comfort and future." 
+          <SectionHeader
+            title="Why Maids Prefer Us"
+            description="No hidden fees, safe accommodation, and faster job placements — we prioritize your comfort and future."
           />
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 rounded-xl">
           {featureCards.map((card) => (
             <div
-              style={{ boxShadow: "0px 0px 2px 0px #dddddd" }}
+
               key={card.id}
-              className="bg-[#F8FAFB] rounded-lg p-6 "
+              className="bg-[#F8FAFB] hover:shadow-xl transition-all  shadow rounded-lg p-6 "
             >
               <div className="w-[40px] h-[40px] md:w-[56px] md:h-[56px]  bg-primaryColor/10 rounded-md mb-6 flex items-center justify-center">
-               <Image src={card.icon} alt={card.title} width={32} height={32} className="w-[30px] h-[30px]" />
+                <Image src={card.icon} alt={card.title} width={32} height={32} className="w-[30px] h-[30px]" />
               </div>
               <h4 className="text-lg   font-semibold text-headerColor mb-3">
                 {card.title}

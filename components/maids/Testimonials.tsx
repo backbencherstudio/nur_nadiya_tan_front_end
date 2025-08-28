@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import { FaLongArrowAltLeft, FaLongArrowAltRight } from "react-icons/fa";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import SectionHeader from "../reusable/SectionHeader";
 
 export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(1);
@@ -47,74 +48,76 @@ export default function Testimonials() {
   ];
 
   return (
-    <section className="container">
-      <div className=" mb-10 lg:mb-[120px]">
-       
-        <div className="relative grid grid-cols-12">
-          <div className="col-span-1 flex justify-center w-full">
-         <button onClick={goPrev} >
-                 <div className=" z-10 flex items-center group justify-center cursor-pointer w-10 h-8 rounded-lg bg-white/20 border border-primaryColor hover:bg-primaryColor shadow shadow-stone-300 transition-all backdrop-blur-[5px]">
+    <section className="bg-secondaryColor">
+      <div className="container">
+        <div className=" py-14 lg:py-[100px] mb-10 lg:mb-[120px]">
+          <SectionHeader title="Success Stories from Other Maids" description="This section features real-life testimonials from foreign domestic workers (maids) who have successfully changed employers (transferred) with the help of a recruitment agency." />
+          <div className="relative grid grid-cols-12">
+            <div className="col-span-1 flex justify-center w-full">
+              <button onClick={goPrev} >
+                <div className=" z-10 flex items-center group justify-center cursor-pointer w-10 h-8 rounded-lg bg-white/20 border border-primaryColor hover:bg-primaryColor shadow shadow-stone-300 transition-all backdrop-blur-[5px]">
                   <FaLongArrowAltLeft className="text-primaryColor group-hover:text-whiteColor" />
                 </div>
               </button>
-          </div>
-              <div className="col-span-10">
-                <div >
-            <Swiper
-              slidesPerView={1}
-              spaceBetween={30}
-              loop={true}
-              speed={1000}
-              autoplay={{
-                
-                delay: 300000,
-                disableOnInteraction: false,
-              }}
-             
-              modules={[Navigation, Autoplay, Pagination]}
-              onSwiper={(swiper) => (swiperRef.current = swiper)}
-              onSlideChange={(swiper) => setCurrentIndex(swiper.realIndex + 1)}
-              className="w-full"
-               pagination={{
-          clickable: true,
-          bulletClass: 'hero-bullet',
-          bulletActiveClass: 'hero-bullet-active',
-        }}
-            >
-              {testimonials.map((testimonial, index) => (
-                <SwiperSlide key={testimonial.id}>
-                  <div className="w-full md:p-6 p-4  rounded-lg space-y-4">
-                    <div className="flex flex-col md:flex-row items-center md:gap-6 lg:gap-10">
-                      <Image
-                        src={testimonial.imageUrl}
-                        alt={testimonial.name}
-                        width={550}
-                        height={150}
-                        className="rounded-md lg:max-w-[30%] md:max-w-[18%] object-cover"
-                      />
-                      <div>
-                        <p className="text-lg mt-4 md:mt-0 md:text-2xl text-descriptionColor lg:pr-28 leading-[160%]">
-                          {testimonial.testimonial}
-                        </p>
-                        <div className="md:text-lg text-base flex items-center gap-3 font-medium mt-5">
-                          <div className="w-5 h-0.5 bg-headerColor" />
-                          {testimonial.name}
+            </div>
+            <div className="col-span-10">
+              <div >
+                <Swiper
+                  slidesPerView={1}
+                  spaceBetween={30}
+                  loop={true}
+                  speed={1000}
+                  autoplay={{
+
+                    delay: 300000,
+                    disableOnInteraction: false,
+                  }}
+
+                  modules={[Navigation, Autoplay, Pagination]}
+                  onSwiper={(swiper) => (swiperRef.current = swiper)}
+                  onSlideChange={(swiper) => setCurrentIndex(swiper.realIndex + 1)}
+                  className="w-full"
+                  pagination={{
+                    clickable: true,
+                    bulletClass: 'hero-bullet',
+                    bulletActiveClass: 'hero-bullet-active',
+                  }}
+                >
+                  {testimonials.map((testimonial, index) => (
+                    <SwiperSlide key={testimonial.id}>
+                      <div className="w-full md:p-6 p-4  rounded-lg space-y-4">
+                        <div className="flex flex-col md:flex-row items-center md:gap-6 lg:gap-10">
+                          <Image
+                            src={testimonial.imageUrl}
+                            alt={testimonial.name}
+                            width={550}
+                            height={150}
+                            className="rounded-md lg:max-w-[30%] md:max-w-[18%] object-cover"
+                          />
+                          <div>
+                            <p className="text-lg mt-4 md:mt-0 md:text-2xl text-descriptionColor lg:pr-28 leading-[160%]">
+                              {testimonial.testimonial}
+                            </p>
+                            <div className="md:text-lg text-base flex items-center gap-3 font-medium mt-5">
+                              <div className="w-5 h-0.5 bg-headerColor" />
+                              {testimonial.name}
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-                </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
               </div>
-              <div className="col-span-1 flex justify-center w-full">
+            </div>
+            <div className="col-span-1 flex justify-center w-full">
               <button onClick={goNext}>
                 <div className=" z-10 flex items-center group justify-center cursor-pointer w-10 h-8 rounded-lg bg-white/20 border border-primaryColor hover:bg-primaryColor shadow shadow-stone-300 transition-all backdrop-blur-[5px]">
                   <FaLongArrowAltRight className="text-primaryColor group-hover:text-whiteColor" />
                 </div>
-          </button>
-              </div>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <style jsx global>{` 
