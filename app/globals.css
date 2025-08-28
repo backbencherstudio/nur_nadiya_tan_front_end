@@ -16,7 +16,7 @@
   --color-ratingColor: var(--ratingColor);
   --color-headerColor: var(--headerColor);
   --color-grayColor1: var(--grayColor1);
-  --color-redColor: #EB3D4D;
+  --color-redColor: #eb3d4d;
   --color-greenColor: #83bf6e;
   --color-checkBoxColor: #17c13c;
   --color-orengeColor: #ff6a55;
@@ -24,7 +24,7 @@
   --color-ratingColor: #ffc52e;
   --color-footerColor: #091819;
   --color-bgColor: var(--bgColor);
-  --color-borderColor: #D2D2D5;
+  --color-borderColor: #d2d2d5;
   --color-descriptionColor: var(--descriptionColor);
   /* ======== */
   --radius-sm: calc(var(--radius) - 4px);
@@ -65,12 +65,12 @@
 }
 
 :root {
-  --primaryColor: #45CCD2;
-  --secondaryColor: #d6ae29;
+  --primaryColor: #45ccd2;
+  --secondaryColor: #ffffcc;
   --blackColor: #070707;
   --whiteColor: #fff;
   --ratingColor: #ffc52e;
-  --headerColor: #1D1F2C;
+  --headerColor: #1d1f2c;
   --grayColor1: #777980;
   --bgColor: rgba(243, 243, 244, 0.5);
   --descriptionColor: #4a4c56;
@@ -176,14 +176,14 @@ input:checked ~ .checkmark {
 
   border-radius: 50%;
 }
-.swiper-pagination-bullets{
+.swiper-pagination-bullets {
   display: flex !important;
   justify-content: center !important;
 }
 .hero-bullet {
-      background-color: var(--grayColor1) !important;
-      border-radius: 4px;
-    }
-    .hero-bullet-active {
-      background-color: #45CCD2 !important;
-    }
+  background-color: var(--grayColor1) !important;
+  border-radius: 4px;
+}
+.hero-bullet-active {
+  background-color: #45ccd2 !important;
+}

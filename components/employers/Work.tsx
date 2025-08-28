@@ -61,7 +61,6 @@ function Work() {
                         description="We've designed our process to be as straightforward as possible. Here's how you can find your ideal helper with us"
                     />
                 </div>
-
                 <div className="relative mt-16">
                     {/* Vertical dashed line */}
                     <div className="relative md:left-1/2 left-0 transform  md:-translate-x-1/2 h-[883px] w-[1px] border-l-2 border-dashed border-teal-400">

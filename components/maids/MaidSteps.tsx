@@ -10,9 +10,9 @@ function MaidSteps() {
         },
         {
             id: "02",
-            title: "Flexible Transfer Timing",
+            title: "No Placement Fee",
             description:
-                "Ready now or in a few weeks? We help plan your transfer.",
+                "No hidden charges. We do not charge any placement fees, so you can transfer to your new employer without worry.",
         },
         {
             id: "03",
@@ -22,47 +22,68 @@ function MaidSteps() {
         },
         {
             id: "04",
-            title: "Support for MOM Paperwork",
+            title: "Flexible Transfer Timing",
             description:
-                "We help you with all transfer documents, including work permit, contract, etc.",
+                "Ready now or in a few weeks? We help plan your transfer.",
         },
         {
             id: "05",
+            title: "Support for MOM Paperwork",
+            description:
+                "We help you with all transfer & employment documents, including work permit and contract.",
+        },
+        {
+            id: "06",
             title: "Boarding & Lodging Support",
             description:
                 "Stay in a safe boarding house while waiting for your new employer. No need to return home.",
         },
         {
-            id: "06",
+            id: "07",
             title: "Salary Negotiation Support",
             description:
-                "We guide you to ask for fair salary based on your skills and experience.",
+                "We guide you to ask for a fair salary based on your skills and experience.",
+        },
+        {
+            id: "08",
+            title: "Pre-Departure & Onboarding Guidance",
+            description:
+                "Orientation on house rules, duties, safety, and employer expectations so you can start confidently.",
+        },
+        {
+            id: "09",
+            title: "Language Support",
+            description:
+                "We speak English, Mandarin, Burmese, Indonesian, and Tagalog—so you feel safe and understood.",
         },
     ];
 
+
     return (
-        <div className="py-14 lg:py-[120px] bg-yellow-50">
+        <div className="py-14 lg:py-[120px] ">
             <section className="container">
                 <div>
                     <SectionHeader title="What We Can Help You With" description="Your trusted agency with 30 years of experience – we support you every step of the way" />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6   rounded-xl">
+                <div className="grid grid-cols-1 md:grid-cols-2 h-full lg:grid-cols-3 gap-6   rounded-xl">
                     {supportSteps.map((step) => (
-                        <div
-                        style={{ boxShadow: "0px 0px 10px 0px #dddddd" }}
-                            key={step.id}
-                            className="bg-white rounded-lg  p-6 "
-                        >
-                            <div className="text-primaryColor opacity-20 font-bold text-3xl md:text-5xl lg:text-[56px] mb-6">
-                                {step.id}
+                        <div key={step.id} className="group h-full w-full">
+                            <div
+                                style={{ boxShadow: "0px 0px 10px 0px #dddddd" }}
+
+                                className="bg-white transition-all group-hover:cursor-pointer hob duration-200 group-hover:shadow-xl  rounded-lg h-full p-6  group-hover:bg-primaryColor"
+                            >
+                                <div className="text-primaryColor transition-all duration-200 opacity-20 font-bold text-3xl md:text-5xl group-hover:text-whiteColor lg:text-[56px] mb-6">
+                                    {step.id}
+                                </div>
+                                <h4 className="text-lg md:text-xl group-hover:text-whiteColor transition-all duration-200 lg:text-2xl font-semibold text-headerColor  mb-3">
+                                    {step.title}
+                                </h4>
+                                <p className="text-base sm:text-base group-hover:text-whiteColor transition-all duration-200 text-descriptionColor leading-[160%]">
+                                    {step.description}
+                                </p>
                             </div>
-                            <h4 className="text-lg md:text-xl lg:text-2xl font-semibold text-headerColor  mb-3">
-                                {step.title}
-                            </h4>
-                            <p className="text-base sm:text-base text-descriptionColor leading-[160%]">
-                                {step.description}
-                            </p>
                         </div>
                     ))}
                 </div>
