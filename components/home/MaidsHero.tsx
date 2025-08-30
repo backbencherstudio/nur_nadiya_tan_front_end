@@ -17,7 +17,7 @@ export default function MaidsHero() {
             <div className="container">
                 <div className="relative grid grid-cols-1 md:grid-cols-2 items-center overflow-hidden rounded-2xl bg-[#ECFAFB] shadow-sm ">
                     {/* Left content */}
-                    <div className="px-6 md:px-10 py-8 md:py-10">
+                    <div className="md:px-6 px-4 lg:px-10 py-8 lg:py-10">
                         <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-headerColor leading-tight">
                             Maids come to us for new jobs
                         </h2>

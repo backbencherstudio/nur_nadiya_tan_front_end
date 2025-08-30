@@ -12,7 +12,7 @@ const InfoBanner = () => {
                 {items.map((text, idx) => (
                     <div
                         key={idx}
-                        className="bg-secondaryColor px-5 py-3 rounded-xl shadow-sm text-base font-medium text-headerColor whitespace-nowrap"
+                        className="bg-secondaryColor px-5 py-3 rounded-xl shadow-sm text-sm md:text-base font-medium text-headerColor whitespace-nowrap"
                     >
                         {text}
                     </div>
