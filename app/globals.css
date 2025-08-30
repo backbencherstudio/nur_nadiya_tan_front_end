@@ -9,6 +9,7 @@
   margin: 0 auto;
 }
 @theme inline {
+  --breakpoint-3xl: 106rem;
   --color-primaryColor: var(--primaryColor);
   --color-secondaryColor: var(--secondaryColor);
   --color-blackColor: var(--blackColor);
