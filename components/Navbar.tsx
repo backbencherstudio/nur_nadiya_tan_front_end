@@ -49,7 +49,6 @@ export default function Navbar() {
         <div className="hidden xl:flex items-center gap-6">
           <div className="flex items-center gap-5">
             <BsGlobe2 />
-
             <ul className="flex text-descriptionColor  font-medium">
               {language.map((item, index) => (
                 <li key={index} className=" px-2  border-r-2 last-of-type:border-r-0 border-r-borderColor   transition">
@@ -61,18 +60,15 @@ export default function Navbar() {
           </div>
           <Link
             href="/registration"
-            className="bg-secondaryColor text-blackColor flex items-center gap-2 font-medium cursor-pointer  text-base px-5 py-3 rounded-[12px]"
-          >
+            className="bg-secondaryColor text-blackColor flex items-center gap-2 font-medium cursor-pointer  text-base px-5 py-3 rounded-[12px]">
             <Image src={whatsappIcon} alt="whatsappIcon" width={20} height={20} /> Chat Now
           </Link>
         </div>
-
         {/* Mobile Menu Toggle */}
         <div className="xl:hidden">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="text-whiteColor text-2xl"
-          >
+            className="text-whiteColor text-2xl">
             {menuOpen ? <HiX /> : <HiOutlineMenu />}
           </button>
         </div>
@@ -138,7 +134,7 @@ export default function Navbar() {
               {/* Enquire Button */}
               <Link
                 href="/registration"
-                className="bg-secondaryColor flex items-center gap-2 text-blackColor font-medium cursor-pointer text-base px-4 py-2 rounded-[8px]  sm:inline-block text-center w-full sm:w-auto"
+                className="bg-secondaryColor flex items-center gap-2 text-blackColor font-medium cursor-pointer text-base px-4 py-2 justify-center rounded-[8px] text-center w-full sm:w-auto"
                 onClick={() => setMenuOpen(false)}
               >
                 <Image src={whatsappIcon} alt="whatsappIcon" width={20} height={20} />Chat Now

@@ -8,8 +8,7 @@ function Banner() {
     return (
         <div>
             <div
-                className="h-full w-full"
-            >
+                className="h-full w-full">
                 <div className="grid grid-cols-1  md:grid-cols-2   items-center">
                     <div className="md:py-[96px] py-18 pl-10  xl:pl-[80px]  2xl:pl-[140px] h-full" style={{ backgroundImage: "url('/home/Hero-right.jpg')", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}>
                         <h5 className="font-semibold text-xl md:text-2xl lg:text-3xl xl:text-[40px] text-primaryColor mb-4">For Maid </h5>
