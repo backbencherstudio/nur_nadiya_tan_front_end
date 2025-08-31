@@ -11,7 +11,7 @@ function JobList() {
     <section className="my-14 lg:my-[100px]">
       <div className="container">
         {/* Header */}
-        <SectionHeader title="Sample transfer maids in Singapore" description="Explore profiles of reliable transfer maids in Singapore, experienced in childcare, cooking, and household chores, ready for immediate employment" />
+        <SectionHeader title="Transfer maids in Singapore" description="Explore profiles of reliable transfer maids in Singapore, experienced in childcare, cooking, and household chores, ready for immediate employment" />
         {/* Maid Cards */}
         <div className="lg:space-y-10 space-y-5">
           {maidProfiles.map((maid) => (

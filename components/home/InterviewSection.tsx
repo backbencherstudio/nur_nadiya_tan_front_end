@@ -26,11 +26,11 @@ function InterviewSection() {
             country: "India / Sri Lanka",
             skills: "experienced in vegetarian cooking, elderly care"
         },
-        {
-            id: 5,
-            country: "Cambodia",
-            skills: "polite and gentle, mostly general housekeeping"
-        }
+        // {
+        //     id: 5,
+        //     country: "Cambodia",
+        //     skills: "polite and gentle, mostly general housekeeping"
+        // }
     ];
     return (
         <section className='my-14 lg:my-[120px]'>
@@ -55,10 +55,10 @@ function InterviewSection() {
                                 {countryData.map((item) => (
                                     <div key={item.id} className="">
                                         <div className="flex items-start gap-2">
-                                          <Image src={locationIcon} alt="locationIcon" width={14} height={14} />
+                                            <Image src={locationIcon} alt="locationIcon" width={14} height={14} />
                                             <div>
                                                 <p className="text-descriptionColor text-sm xl:text-base leading-relaxed">
-                                                 <span className="text-headerColor font-semibold">{item.country} -</span>   {item.skills}
+                                                    <span className="text-headerColor font-semibold">{item.country} -</span>   {item.skills}
                                                 </p>
                                             </div>
                                         </div>
@@ -67,7 +67,7 @@ function InterviewSection() {
                             </div>
                         </div>
                         <div className="mt-6">
-                            <ButtonReuseable title="Interview a maid" className="!text-headerColor !font-medium" icon={<Image src={whatsappIcon} alt="whatsappIcon" width={20} height={20} />}/>
+                            <ButtonReuseable title="Interview a maid" className="!text-headerColor !font-medium" icon={<Image src={whatsappIcon} alt="whatsappIcon" width={20} height={20} />} />
                         </div>
                     </div>
                 </div>
