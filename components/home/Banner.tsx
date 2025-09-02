@@ -21,7 +21,7 @@ function Banner() {
                         <h5 className="md:font-semibold font-medium text-lg md:text-2xl lg:text-3xl xl:text-[40px] text-primaryColor  md:mb-4">
                             For Maid{" "}
                         </h5>
-                        <h2 className="text-[28px] md:text-4xl lg:text-5xl xl:text-[60px] 2xl:text-[64px] text-headerColor font-bold leading-[120%]">
+                        <h2 className="text-[28px] md:text-[32px] lg:text-5xl xl:text-[60px] 2xl:text-[64px] text-headerColor font-bold leading-[120%]">
                             {" "}
                             <span className="text-redColor">No placement fee!</span> Transfer
                             to new employer here{" "}
@@ -33,13 +33,13 @@ function Banner() {
                             <ButtonReuseable
                                 onClick={() => setOpen(true)}
                                 title="Find new employer"
-                                className="!text-headerColor py-3.5 !text-base !w-full !font-medium"
+                                className="!text-headerColor py-3.5 !text-base !w-full !font-medium md:!w-auto"
                             />
                         </div>
                     </div>
 
                     <div
-                        className="2xl:py-[96px] text-center md:py-14 lg:py-18 py-10 pl-10 xl:pl-[40px]   3xl:pl-[120px] pr-10 lg:pr-14 xl:pr-[100px] 3xl:pr-[227px] h-full"
+                        className="2xl:py-[96px] text-center md:text-left md:py-14 lg:py-18 py-10 pl-10 xl:pl-[40px]   3xl:pl-[120px] pr-10 lg:pr-14 xl:pr-[100px] 3xl:pr-[227px] h-full"
                         style={{
                             backgroundImage: "url('/home/Hero-left.jpg')",
                             backgroundSize: "cover",
@@ -50,7 +50,7 @@ function Banner() {
                         <h5 className="md:font-semibold font-medium text-lg md:text-2xl lg:text-3xl xl:text-[40px text-whiteColor mb-2 md:mb-4">
                             For Employer
                         </h5>
-                        <h2 className="text-[28px] leading-[120%] md:text-4xl lg:text-5xl xl:text-[60px] 2xl:text-[64px] text-headerColor font-bold ">
+                        <h2 className="text-[28px] leading-[120%] md:text-[32px] lg:text-5xl xl:text-[60px] 2xl:text-[64px] text-headerColor font-bold ">
                             Looking for a transfer maid for your{" "}
                             <span className="text-redColor">Home?</span>{" "}
                         </h2>
@@ -61,7 +61,7 @@ function Banner() {
                             <Link href="/employ-signup">
                                 <ButtonReuseable
                                     title="Hire a transfer maid"
-                                    className="!text-headerColor !bg-[#FBDE6E] py-3.5 !text-base !w-full !font-medium"
+                                    className="!text-headerColor !bg-[#FBDE6E] py-3.5 !text-base !w-full md:!w-auto !font-medium"
                                 />
                             </Link>
                         </div>
