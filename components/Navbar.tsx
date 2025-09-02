@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { BsGlobe2 } from "react-icons/bs";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
+import LanguageSwitcher from "./home/LanguageSwitcher";
 const menuItems = [
   { en: "Home", slug: "/" },
   { en: "Pricing", slug: "/pricing" },
@@ -65,7 +66,8 @@ export default function Navbar() {
           </Link>
         </div>
         {/* Mobile Menu Toggle */}
-        <div className="xl:hidden">
+        <div className="xl:hidden flex items-center gap-3">
+          <LanguageSwitcher />
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="text-whiteColor text-2xl">
@@ -94,7 +96,7 @@ export default function Navbar() {
 
         {/* Menu Content */}
         <div className="px-4 space-y-4">
-          <div className="lg:hidden">
+          <div className="lg:hidden space-y-4">
             {menuItems.map((item) => (
               <Link
                 key={item.slug}
@@ -113,7 +115,7 @@ export default function Navbar() {
           <div className=" py-4 border-t lg:border-t-0 border-gray-200">
             <div className="flex flex-col xl:flex-row xl:items-center sm:justify-between gap-4">
               {/* Language Section */}
-              <div className="text-headerColor text-base  gap-2">
+              {/* <div className="text-headerColor text-base  gap-2">
                 <div className=" gap-3">
                   <div className="flex pb-4 font-semibold items-center gap-2 border-b border-gray-50">
                     <BsGlobe2 />
@@ -129,7 +131,7 @@ export default function Navbar() {
                     ))}
                   </ul>
                 </div>
-              </div>
+              </div> */}
 
               {/* Enquire Button */}
               <Link
