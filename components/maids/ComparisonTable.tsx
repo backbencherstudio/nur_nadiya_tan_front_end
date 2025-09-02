@@ -38,9 +38,9 @@ function ComparisonTable() {
   return (
     <div className="">
       <section className="container">
-       
+
         <div className="mt-12 border rounded-[10px] overflow-x-auto">
-          <table className="min-w-[1000px] w-full border  rounded-xl overflow-hidden bg-white shadow-lg table-fixed">
+          <table className="min-w-[750px] w-full border  rounded-xl overflow-hidden bg-white shadow-lg table-fixed">
             <colgroup>
               <col className="w-1/3" />
               <col className="w-1/3" />
@@ -48,9 +48,9 @@ function ComparisonTable() {
             </colgroup>
             <thead>
               <tr className="bg-[#FEFEC6]">
-                <th className="py-4 px-6 text-lg font-semibold text-headerColor text-left border-b border-[#F6F6D9]">Feature</th>
-                <th className="py-4 px-6 text-lg font-semibold text-headerColor text-left  border-b border-l border-[#F6F6D9]">Transfer Maid</th>
-                <th className="py-4 px-6 text-lg font-semibold text-headerColor text-left border-b border-l border-[#F6F6D9]">New maid From Overseas</th>
+                <th className="md:py-4 py-3 px-3 md:px-6 text-base md:text-lg font-semibold text-headerColor text-left  border-b border-[#F6F6D9]">Feature</th>
+                <th className="md:py-4 py-3 px-3 md:px-6 text-base md:text-lg font-semibold text-headerColor text-left  border-b border-l border-[#F6F6D9]">Transfer Maid</th>
+                <th className="md:py-4 py-3 px-3 md:px-6 text-base md:text-lg font-semibold text-headerColor text-left border-b border-l border-[#F6F6D9]">New maid From Overseas</th>
               </tr>
             </thead>
             <tbody>
@@ -59,7 +59,7 @@ function ComparisonTable() {
                   key={row.id}
                   className={`${index % 2 === 0 ? 'bg-white' : 'bg-[#F8FAFB]'} ${index === comparisonData.length - 1 ? 'last:rounded-b-xl' : ''}`}
                 >
-                  <td className="py-4 px-6 text-base font-medium text-headerColor align-middle border-b border-[#F6F6D9] w-1/3 text-left">{row.feature}</td>
+                  <td className="md:py-4 py-2 px-3 md:px-6 text-base font-medium text-headerColor align-middle border-b border-[#F6F6D9] w-1/3 text-left">{row.feature}</td>
                   <td className="py-4 px-6 align-middle border-b border-l border-[#F6F6D9] w-1/3 text-left">
                     <div className="flex items-center gap-2 justify-start w-full">
                       {row.transferMaid.status ? (
