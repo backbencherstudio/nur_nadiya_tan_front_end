@@ -1,7 +1,5 @@
 'use client';
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useLanguage } from './LanguageProvider';
 
@@ -35,12 +33,12 @@ type Language = {
 
 const languages: Language[] = [
     { code: "en", name: "English", flag: "https://flagcdn.com/w20/gb.png" },
-    { code: "id", name: "Indonesia", flag: "https://flagcdn.com/w20/id.png" },
+    { code: "id", name: "Bahasa Indonesia", flag: "https://flagcdn.com/w20/id.png" },
     { code: "my", name: "Burmese", flag: "https://flagcdn.com/w20/mm.png" },
     { code: "zh-CN", name: "Mandarin", flag: "https://flagcdn.com/w20/cn.png" },
 ];
 
-const LanguageSwitcher = ({ variant = 'default', className = '', onLanguageChange }: LanguageSwitcherProps) => {
+const LanguageSwitcherLG = ({ variant = 'default', className = '', onLanguageChange }: LanguageSwitcherProps) => {
     const [selectedLang, setSelectedLang] = useState("en");
     const { setSelectedLang: setContextLang } = useLanguage();
 
@@ -81,25 +79,17 @@ const LanguageSwitcher = ({ variant = 'default', className = '', onLanguageChang
     return (
         <div className={`flex items-center ${className}`}>
             <div className="!bg-blackColor">
-                <Select value={selectedLang} onValueChange={handleChange}>
-                    <SelectTrigger className="w-full !px-2 !h-8 lg:!h-10 lg:!px-3 ">
-                        <SelectValue className="" placeholder="Select Language" />
-                    </SelectTrigger>
-                    <SelectContent className="!bg-blackColor">
-                        {languages.map((lang) => (
-                            <SelectItem key={lang.code} value={lang.code} className="hover:!bg-yellow-400 !px-2 !h-8  ">
-                                <div className="flex items-center gap-2 !text-whiteColor">
-                                    <Image src={lang.flag} alt={lang.name} width={20} height={20} className="rounded-xs" />
-                                    {lang.name}
-                                </div>
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
+
+                {languages.map((lang) => (
+                    <button key={lang?.code} onClick={() => handleChange(lang?.code)} className=" px-2  border-r-2 last-of-type:border-r-0 border-r-borderColor   transition">
+                        <div className={`${lang?.code === selectedLang ? "border-b-primaryColor" : "border-b-transparent hover:border-b-primaryColor"} text-base border-b-2 cursor-pointer text-whiteColor`}>{lang?.name}</div>
+                    </button>
+                ))}
+
             </div>
             <div id="google_translate_element" className="hidden" />
         </div>
     );
 };
 
-export default LanguageSwitcher;
+export default LanguageSwitcherLG;
