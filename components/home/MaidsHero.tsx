@@ -11,14 +11,13 @@ export default function MaidsHero() {
         "Boarding house available",
         "Work happy!",
     ]
-
     return (
         <section className="">
             <div className="container">
                 <div className="relative grid grid-cols-1 md:grid-cols-2 items-center overflow-hidden rounded-2xl bg-[#ECFAFB] shadow-sm ">
                     {/* Left content */}
                     <div className="md:px-6 px-4 lg:px-10 py-8 lg:py-10">
-                        <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-headerColor leading-tight">
+                        <h2 className="text-2xl md:text-2xl lg:text-5xl font-bold text-headerColor leading-tight">
                             Maids come to us for new jobs
                         </h2>
                         <ul className="mt-5 space-y-3 text-slate-700">
@@ -35,7 +34,7 @@ export default function MaidsHero() {
                                             <path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
                                         </svg>
                                     </span>
-                                    <span className="text-base md:text-lg">{b}</span>
+                                    <span className="text-base lg:text-lg">{b}</span>
                                 </li>
                             ))}
                         </ul>

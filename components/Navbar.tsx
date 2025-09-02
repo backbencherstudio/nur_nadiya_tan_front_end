@@ -6,9 +6,12 @@ import whatsappIcon from "@/public/icon/whatsapp.png";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsGlobe2 } from "react-icons/bs";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
+import LanguageSwitcherLG from "./home/LanguageLG";
+import { useLanguage } from "./home/LanguageProvider";
+import LanguageSwitcher from "./home/LanguageSwitcher";
 const menuItems = [
   { en: "Home", slug: "/" },
   { en: "Pricing", slug: "/pricing" },
@@ -19,14 +22,34 @@ const menuItems = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [language, setLanguage] = useState<any | []>(["English", "Bahasa indonesia", "Burmese", "Mandarin"]);
+  const [language, setLanguage] = useState<any | []>([
+    { code: "en", name: "English", flag: "https://flagcdn.com/w20/gb.png" },
+    { code: "id", name: "Bahasa indonesia", flag: "https://flagcdn.com/w20/id.png" },
+    { code: "my", name: "Burmese", flag: "https://flagcdn.com/w20/mm.png" },
+    { code: "zh-CN", name: "Mandarin", flag: "https://flagcdn.com/w20/cn.png" },
+  ]);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [selectedLang, setSelectedLang] = useState("en");
+  const { setSelectedLang: setContextLang } = useLanguage();
 
+  // Load language from localStorage on component mount
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem('selectedLanguage');
+    if (savedLanguage) {
+      setSelectedLang(savedLanguage);
+
+    }
+  }, [selectedLang]);
+  const handleLang = (value) => {
+    setContextLang(value)
+    setSelectedLang(value)
+    localStorage.setItem('selectedLanguage', value);
+  }
   return (
-    <header className="sticky top-0 left-0 w-full bg-blackColor z-50 shadow py-3 ">
-      <div className="container mx-auto flex justify-between items-center">
+    <header className="sticky top-0 left-0 w-full bg-blackColor z-50 shadow py-3 px-3 ">
+      <div className="max-w-[1400px] mx-auto flex justify-between items-center">
         <div className="text-headerColor text-2xl lg:text-3xl font-semibold tracking-wide">
-          <Image src={mainLogo} width={80} height={150} alt="logo" className="w-14 md:w-[60p lg:w-20" />
+          <Link href="/"><Image src={mainLogo} width={80} height={150} alt="logo" className="w-14 md:w-[60p lg:w-20" /></Link>
         </div>
 
         {/* Desktop Menu */}
@@ -46,17 +69,10 @@ export default function Navbar() {
         </nav>
 
         {/* Right: Language, Auth Buttons */}
-        <div className="hidden xl:flex items-center gap-6">
-          <div className="flex items-center gap-5">
-            <BsGlobe2 />
-            <ul className="flex text-descriptionColor  font-medium">
-              {language.map((item, index) => (
-                <li key={index} className=" px-2  border-r-2 last-of-type:border-r-0 border-r-borderColor   transition">
-                  <button className="text-base border-b-2 border-transparent cursor-pointer hover:border-primaryColor text-whiteColor">{item}</button>
-                </li>
-              ))}
-            </ul>
-
+        <div className="hidden 2xl:flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <BsGlobe2 className="text-whiteColor" />
+            <LanguageSwitcherLG />
           </div>
           <Link
             href="/registration"
@@ -65,12 +81,25 @@ export default function Navbar() {
           </Link>
         </div>
         {/* Mobile Menu Toggle */}
-        <div className="xl:hidden">
+        <div className="2xl:hidden flex items-center gap-3">
+          <LanguageSwitcher />
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="text-whiteColor text-2xl">
+            className="text-whiteColor text-2xl lg:hidden">
             {menuOpen ? <HiX /> : <HiOutlineMenu />}
           </button>
+          <div className=" hidden lg:block py-4 border-t lg:border-t-0 border-gray-200">
+            <div className="flex flex-col xl:flex-row xl:items-center sm:justify-between gap-4">
+              {/* Enquire Button */}
+              <Link
+                href="/registration"
+                className="bg-secondaryColor flex items-center gap-2 text-blackColor font-medium cursor-pointer  text-base px-4 py-2 justify-center rounded-[8px] text-center w-full sm:w-auto"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Image src={whatsappIcon} alt="whatsappIcon" width={20} height={20} /> <span className="whitespace-nowrap">Chat Now</span>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -94,7 +123,7 @@ export default function Navbar() {
 
         {/* Menu Content */}
         <div className="px-4 space-y-4">
-          <div className="lg:hidden">
+          <div className="lg:hidden space-y-4">
             {menuItems.map((item) => (
               <Link
                 key={item.slug}
@@ -112,32 +141,13 @@ export default function Navbar() {
           {/* Mobile Language & Enquire Section */}
           <div className=" py-4 border-t lg:border-t-0 border-gray-200">
             <div className="flex flex-col xl:flex-row xl:items-center sm:justify-between gap-4">
-              {/* Language Section */}
-              <div className="text-headerColor text-base  gap-2">
-                <div className=" gap-3">
-                  <div className="flex pb-4 font-semibold items-center gap-2 border-b border-gray-50">
-                    <BsGlobe2 />
-                    Language
-                  </div>
-                  <ul className=" space-y-2 text-descriptionColor font-medium text-sm lg:text-base mt-4">
-                    {language.map((item, index) => (
-                      <li key={index} className=" col-span-1  transition">
-                        <button className="text-sm sm:text-base border-b-2 border-transparent cursor-pointer hover:border-primaryColor whitespace-nowrap">
-                          {item}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
               {/* Enquire Button */}
               <Link
                 href="/registration"
-                className="bg-secondaryColor flex items-center gap-2 text-blackColor font-medium cursor-pointer text-base px-4 py-2 justify-center rounded-[8px] text-center w-full sm:w-auto"
+                className="bg-secondaryColor flex items-center gap-2 text-blackColor font-medium cursor-pointer  text-base px-4 py-2 justify-center rounded-[8px] text-center w-full sm:w-auto"
                 onClick={() => setMenuOpen(false)}
               >
-                <Image src={whatsappIcon} alt="whatsappIcon" width={20} height={20} />Chat Now
+                <Image src={whatsappIcon} alt="whatsappIcon" width={20} height={20} /> <span className="whitespace-nowrap">Chat Now</span>
               </Link>
             </div>
           </div>
@@ -145,12 +155,14 @@ export default function Navbar() {
       </div>
 
       {/* Overlay */}
-      {menuOpen && (
-        <div
-          className="xl:hidden fixed inset-0  bg-black/50 bg-opacity-50 z-40"
-          onClick={() => setMenuOpen(false)}
-        />
-      )}
-    </header>
+      {
+        menuOpen && (
+          <div
+            className="2xl:hidden fixed inset-0  bg-black/50 bg-opacity-50 z-40"
+            onClick={() => setMenuOpen(false)}
+          />
+        )
+      }
+    </header >
   );
 }
