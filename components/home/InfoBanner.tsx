@@ -8,7 +8,7 @@ const InfoBanner = () => {
     const smItem = [
         "Boarding House available, Reserve today",
         "No Placement Fees for Maids!",
-        "4 Months instalment payment ",
+        "4 Months instalment payment for Employer",
     ];
 
     return (
