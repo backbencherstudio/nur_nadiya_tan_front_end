@@ -8,17 +8,24 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
+import { CalendarIcon, X } from "lucide-react"
 import Image from "next/image"
 import * as React from "react"
 import { Controller, useForm } from "react-hook-form"
 import ButtonReuseable from "../reusable/CustomButton"
+
+// Define types for the form options
+interface SelectOption {
+    value: string;
+    label: string;
+}
 
 export default function TransferMaidForm({ open, setOpen }: any) {
     const [dob, setDob] = React.useState<Date | undefined>()
     const [transferDate, setTransferDate] = React.useState<Date | undefined>()
     const [hasEmployer, setHasEmployer] = React.useState<string>("")
     const [imagePreview, setImagePreview] = React.useState<string | null>(null)
+    const [selectedLanguages, setSelectedLanguages] = React.useState<string[]>([])
     const imageRef = React.useRef<HTMLInputElement>(null)
     const {
         register,
@@ -26,6 +33,19 @@ export default function TransferMaidForm({ open, setOpen }: any) {
         control,
         formState: { errors },
     } = useForm()
+
+    const languageOptions: SelectOption[] = [
+        { value: "english", label: "English" },
+        { value: "hindi", label: "Hindi" },
+        { value: "tamil", label: "Tamil" },
+        { value: "Bahasa_Indonesia", label: "Bahasa Inggeris" },
+        { value: "Bahasa_Melayu", label: "Mandarin" },
+        { value: "malay", label: "Malay" },
+        { value: "bahasa_melayu", label: "Bahasa Melayu" },
+        { value: "mandarin", label: "英文" },
+        { value: "burmese", label: "Burmese" },
+        { value: "tagalog", label: "Tagalog" },
+    ];
 
     const onSubmit = (data: any) => {
         const formData = {
@@ -48,6 +68,21 @@ export default function TransferMaidForm({ open, setOpen }: any) {
         }
     }
 
+    const getLanguageLabel = (value: string) => {
+        const option = languageOptions.find(opt => opt.value === value)
+        return option?.label || value
+    }
+
+    const handleLanguageAdd = (value: string) => {
+        if (!selectedLanguages.includes(value)) {
+            setSelectedLanguages([...selectedLanguages, value])
+        }
+    }
+
+    const handleLanguageRemove = (value: string) => {
+        setSelectedLanguages(selectedLanguages.filter(item => item !== value))
+    }
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="md:!max-w-[710px] max-w-[90%] max-h-[90%] overflow-y-auto p-4 sm:p-7">
@@ -62,7 +97,7 @@ export default function TransferMaidForm({ open, setOpen }: any) {
                                         <Image src={imagePreview || "/empty-user.png"} alt="Uploaded Preview" width={100} height={100} className=" w-12 h-12 md:w-14 md:h-14 rounded-full object-cover" />
                                 </div>
                                 <div>
-                                    <button onClick={() => imageRef.current?.click()} className="text-base font-semibold text-primaryColor cursor-pointer">Upload Photo</button>
+                                    <button onClick={() => imageRef.current?.click()} className="text-base font-semibold text-primaryColor cursor-pointer">Upload Photo(half body)</button>
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -93,8 +128,8 @@ export default function TransferMaidForm({ open, setOpen }: any) {
                                         {dob ? format(dob, "PPP") : "Select Birthday date"}
                                     </Button>
                                 </PopoverTrigger>
-                                <PopoverContent className="w-auto p-0">
-                                    <Calendar className="!h-10 lg:!h-12" mode="single" selected={dob} onSelect={setDob} captionLayout="dropdown" />
+                                <PopoverContent className="w-auto p-0 ">
+                                    <Calendar className=" " mode="single" selected={dob} onSelect={setDob} captionLayout="dropdown" />
                                 </PopoverContent>
                             </Popover>
                         </div>
@@ -118,7 +153,7 @@ export default function TransferMaidForm({ open, setOpen }: any) {
                         </div>
 
                         <div className="col-span-2 sm:col-span-1 ">
-                            <label className="text-sm md:text-base block mb-1.5">W/P/N Number</label>
+                            <label className="text-sm md:text-base block mb-1.5">WPN Number</label>
                             <Input placeholder="Enter your W/P/N number" {...register("wpnNumber")} className="!h-10 lg:!h-12"/>
                         </div>
 
@@ -138,6 +173,7 @@ export default function TransferMaidForm({ open, setOpen }: any) {
                                             <SelectValue placeholder="Select nationality" />
                                         </SelectTrigger>
                                         <SelectContent>
+                                            <SelectItem value="india">India</SelectItem>
                                             <SelectItem value="indonesian">Indonesian</SelectItem>
                                             <SelectItem value="filipino">Filipino</SelectItem>
                                             <SelectItem value="myanmar">Myanmar</SelectItem>
@@ -149,22 +185,36 @@ export default function TransferMaidForm({ open, setOpen }: any) {
 
                         <div className="col-span-2 sm:col-span-1 ">
                             <label className="text-sm md:text-base block mb-1.5">Languages Spoken</label>
-                            <Controller
-                                name="languages"
-                                control={control}
-                                render={({ field }) => (
-                                    <Select onValueChange={field.onChange} value={field.value}>
-                                        <SelectTrigger className="!h-10 lg:!h-12 w-full">
-                                            <SelectValue placeholder="Select languages" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="English">English</SelectItem>
-                                            <SelectItem value="Mandarin">Mandarin</SelectItem>
-                                            <SelectItem value="Cantonese">Cantonese</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                )}
-                            />
+                           <Select onValueChange={handleLanguageAdd}>
+                            <SelectTrigger className="w-full !h-10 md:!h-12">
+                                <SelectValue placeholder="Select Languages" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {languageOptions.map((option) => (
+                                    <SelectItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        
+                        {/* Selected Languages */}
+                        {selectedLanguages.length > 0 && (
+                            <div className="mt-3 flex flex-wrap gap-2">
+                                {selectedLanguages.map((value) => (
+                                    <div key={value} className="flex items-center gap-2 bg-blackColor/10 text-headerColor pl-3 pr-1.5 py-1 rounded-full text-sm">
+                                        <span>{getLanguageLabel(value)}</span>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleLanguageRemove(value)}
+                                            className=" cursor-pointer bg-redColor/20 text-redColor rounded-full p-1"
+                                        >
+                                            <X size={14} />
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                            
                         </div>
 
@@ -177,7 +227,7 @@ export default function TransferMaidForm({ open, setOpen }: any) {
                             <p className="text-sm font-medium block mb-1.5">Do you have a current employer?</p>
                             <RadioGroup value={hasEmployer} onValueChange={setHasEmployer} className="flex gap-6">
                                 <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="yes" id="yes" />
+                                    <RadioGroupItem   value="yes" id="yes" />
                                     <label htmlFor="yes" className="text-sm font-medium cursor-pointer">
                                         Yes
                                     </label>
