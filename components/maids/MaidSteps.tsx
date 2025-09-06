@@ -30,7 +30,7 @@ function MaidSteps() {
             id: "05",
             title: "Support for MOM Paperwork",
             description:
-                "We help you with all transfer & employment documents, including work permit and contract.",
+                "We help you with all transfer documents. Includes work permit, contract, etc.",
         },
         {
             id: "06",
@@ -42,7 +42,7 @@ function MaidSteps() {
             id: "07",
             title: "Salary Negotiation Support",
             description:
-                "We guide you to ask for a fair salary based on your skills and experience.",
+                "We guide you to ask for fair salary based on your skills and experience.",
         },
         {
             id: "08",
@@ -63,7 +63,7 @@ function MaidSteps() {
         <div className="py-14 lg:py-[120px] ">
             <section className="container">
                 <div>
-                    <SectionHeader title="What We Can Help You With" description="Your trusted agency with 30 years of experience – we support you every step of the way" />
+                    <SectionHeader title="What We Can Help You With" description=" We support you every step of the way" />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 h-full lg:grid-cols-3 gap-6   rounded-xl">

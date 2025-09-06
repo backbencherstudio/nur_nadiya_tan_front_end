@@ -37,7 +37,7 @@ function InterviewSection() {
             <div className=' container '>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-5 xl:gap-7'>
                     <div >
-                        <Image src={interviewImage} alt='InterviewImage' width={700} height={700} className='w-full bg-[#E9E9E9] h-auto lg:h-full object-cover rounded-2xl' />
+                        <Image src={interviewImage} alt='InterviewImage' width={700} height={700} className='w-full bg-yellow-100 h-auto lg:h-full object-cover rounded-2xl' />
                     </div>
                     <div>
                         <h2 className='text-2xl  lg:text-[32px] xl:text-5xl leading-[120%] text-blackColor font-semibold'>
