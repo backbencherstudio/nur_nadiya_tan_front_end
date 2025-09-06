@@ -1,4 +1,4 @@
-
+import Marquee from "react-fast-marquee";
 const InfoBanner = () => {
     const items = [
         "Boarding House available, Reserve today",
@@ -23,16 +23,18 @@ const InfoBanner = () => {
                     </div>
                 ))}
             </div>
-            <div className="flex xl:hidden gap-4 justify-center px-4 min-w-max mx-auto">
-                {smItem.map((text, idx) => (
-                    <div
-                        key={idx}
-                        className="bg-secondaryColor px-5 py-3 rounded-xl shadow-sm text-sm md:text-base font-medium text-headerColor whitespace-nowrap"
-                    >
-                        {text}
-                    </div>
-                ))}
-            </div>
+            <Marquee>
+                <div className="flex xl:hidden gap-6 justify-center px-4">
+                    {smItem.map((text, idx) => (
+                        <div
+                            key={idx}
+                            className="bg-secondaryColor px-5 py-3 rounded-xl shadow-sm text-sm md:text-base font-medium text-headerColor whitespace-nowrap"
+                        >
+                            {text}
+                        </div>
+                    ))}
+                </div>
+            </Marquee>
         </div>
     );
 };
