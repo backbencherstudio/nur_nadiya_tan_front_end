@@ -11,7 +11,7 @@ function Work() {
         {
             id: 1,
             title: "Submit Form",
-            description: "Start by filling out our simple online inquiry form.",
+            description: "Start by filling out our simple online inquiry form or whatsapp us.",
             icon: formIcon,
             position: "left"
         },
@@ -64,30 +64,30 @@ function Work() {
                 <div className="relative mt-16">
                     {/* Vertical dashed line */}
                     <div className="relative md:left-1/2 left-0 transform  md:-translate-x-1/2 h-[883px] w-[1px] border-l-2 border-dashed border-teal-400">
-                     {
-                         steps.map((step, index) => (
-                             <div 
-                                 key={step.id}
-                                 className={`relative ${index % 2 !== 0 ? `left-[0px] ` : `left-0 md:-left-[200px] lg:-left-[250px]`} h-[1px] w-[150px] md:w-[200px] lg:w-[250px] border-b-2 border-dashed border-teal-400`}
-                                 style={{ top: `${175 * index}px` }}
-                             >
-                                 <div className={`absolute ${index % 2 !== 0 ? `-right-[36px]` : `-right-[36px] md:-left-[250px] lg:-left-[300px]`}  -top-[16px]`} >
-                                     <div className="flex flex-col justify-center items-center mb-3">
-                                         <div className="border rounded-lg p-[2px] w-9 h-9 mx-auto border-primaryColor">
-                                             <div className="bg-primaryColor w-full h-full rounded-md flex items-center justify-center mr-3">
-                                                 <Image src={step.icon} alt={step.title} width={18} height={18} />
-                                             </div>
-                                         </div>
-                                         <div className="absolute left-1/2 transform -translate-x-1/2 text-center top-11 w-[250px] md:w-[300px]">
-                                             <h3 className="text-lg lg:text-2xl font-semibold text-headerColor">{step.title}</h3>
-                                             <p className="text-gray-600 text-sm md:text-base leading-[160%] mt-1">{step.description}</p>
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
-                         ))
-                     }
-                       
+                        {
+                            steps.map((step, index) => (
+                                <div
+                                    key={step.id}
+                                    className={`relative ${index % 2 !== 0 ? `left-[0px] ` : `left-0 md:-left-[200px] lg:-left-[250px]`} h-[1px] w-[150px] md:w-[200px] lg:w-[250px] border-b-2 border-dashed border-teal-400`}
+                                    style={{ top: `${175 * index}px` }}
+                                >
+                                    <div className={`absolute ${index % 2 !== 0 ? `-right-[36px]` : `-right-[36px] md:-left-[250px] lg:-left-[300px]`}  -top-[16px]`} >
+                                        <div className="flex flex-col justify-center items-center mb-3">
+                                            <div className="border rounded-lg p-[2px] w-9 h-9 mx-auto border-primaryColor">
+                                                <div className="bg-primaryColor w-full h-full rounded-md flex items-center justify-center mr-3">
+                                                    <Image src={step.icon} alt={step.title} width={18} height={18} />
+                                                </div>
+                                            </div>
+                                            <div className="absolute left-1/2 transform -translate-x-1/2 text-center top-11 w-[250px] md:w-[300px]">
+                                                <h3 className="text-lg lg:text-2xl font-semibold text-headerColor">{step.title}</h3>
+                                                <p className="text-gray-600 text-sm md:text-base leading-[160%] mt-1">{step.description}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        }
+
                     </div>
                 </div>
             </section>

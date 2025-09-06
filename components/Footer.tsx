@@ -26,7 +26,7 @@ export default function Footer() {
           <div className=" md:col-span-6 lg:col-span-4">
             <div className=" md:w-[328px]">
               <div className=" mb-8">
-                <Image src={logo} alt="logo" width={150} height={150} />
+                <Image src={logo} alt="logo" width={100} height={100} className="w-12 md:w-[80px]" />
               </div>
               <p className="text-base leading-[150%] mb-6">
                 Explore profiles of reliable transfer maids in Singapore, experienced in childcare, cooking, and household chores,

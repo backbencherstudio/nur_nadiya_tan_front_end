@@ -35,21 +35,21 @@ function JobList() {
                     <strong className="text-headerColor">Skills:</strong> {maid.skills}
                   </p>
                   <p>
-                    <strong className="text-headerColor">Languages:</strong> {maid.languages.english}, {maid.languages.native}
+                    <strong className="text-headerColor">Languages:</strong>  {maid.languages.native}
                     {maid.languages.additional && `, ${maid.languages.additional}`}
                   </p>
                   {maid?.softskills && <p>
                     <strong className="text-headerColor">Soft Skills:</strong> {maid?.softskills}
                   </p>}
-                  {maid?.Bahasa_Indonesia && <p>
+                  {/* {maid?.Bahasa_Indonesia && <p>
                     <strong className="text-headerColor">Bahasa Indonesia:</strong> {maid?.Bahasa_Indonesia}
-                  </p>}
+                  </p>} */}
                   {maid?.Commitment && <p>
                     <strong className="text-headerColor">Commitment:</strong> {maid?.Commitment}
                   </p>}
-                  <p>
+                {maid.availability && <p>
                     <strong className="text-headerColor">Available:</strong> {maid.availability}
-                  </p>
+                  </p>}
                 </div>
               </div>
 

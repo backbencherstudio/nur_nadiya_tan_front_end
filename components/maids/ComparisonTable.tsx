@@ -23,7 +23,7 @@ function ComparisonTable() {
     },
     {
       id: "04",
-      feature: "Experience with SG Lite",
+      feature: " Familiar with Singapore culture and navigations",
       transferMaid: { status: true, text: "" },
       newMaid: { status: false, text: "No" },
     },
