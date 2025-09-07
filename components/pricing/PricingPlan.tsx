@@ -8,7 +8,7 @@ export default function PricingPlan() {
         {
             id: 1,
             title: "Boarding House",
-            price: "20",
+            price: "25",
             paymentInfo: "Includes 3 meals a day — breakfast, lunch, and dinner.",
             features: [
                 { id: 1, feature: "Charging Point ", is_default: true },
