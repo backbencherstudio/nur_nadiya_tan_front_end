@@ -38,6 +38,8 @@ const languages: Language[] = [
     { code: "id", name: "Indonesia", flag: "https://flagcdn.com/w20/id.png" },
     { code: "my", name: "Burmese", flag: "https://flagcdn.com/w20/mm.png" },
     { code: "zh-CN", name: "Mandarin", flag: "https://flagcdn.com/w20/cn.png" },
+    { code: "hi", name: "Hindi", flag: "https://flagcdn.com/w20/in.png" },
+    { code: "ta", name: "Tamil", flag: "https://flagcdn.com/w20/in.png" },
 ];
 
 const LanguageSwitcher = ({ variant = 'default', className = '', onLanguageChange }: LanguageSwitcherProps) => {
@@ -69,7 +71,7 @@ const LanguageSwitcher = ({ variant = 'default', className = '', onLanguageChang
                 }
                 new window.google.translate.TranslateElement({
                     pageLanguage: 'en',
-                    includedLanguages: 'en,id,my,zh-CN',
+                    includedLanguages: 'en,id,my,zh-CN,hi,ta',
                     autoDisplay: false
                 });
             }
