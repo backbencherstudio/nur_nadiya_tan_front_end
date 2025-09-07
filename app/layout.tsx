@@ -25,7 +25,7 @@ export default function RootLayout({
             function googleTranslateElementInit() {
               new google.translate.TranslateElement({
                 pageLanguage: 'en',
-                includedLanguages: 'en,id,my,zh-CN',
+                includedLanguages: 'en,id,my,zh-CN,hi,ta',
                 autoDisplay: false
               }, 'google_translate_element');
             }

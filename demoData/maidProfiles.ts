@@ -48,17 +48,14 @@ export const maidProfiles = [
   {
     id: 4,
     name: "Siti",
-    nationality: "India",
+    nationality: "Punitha",
     age: 40,
     image: j4,
     yearsInSingapore: 10,
-    preferredCare: "cooking & housekeeping",
-    Commitment: "Wants a long-term employe",
-    skills: "very experienced in cooking & housekeeping",
+    preferredCare: "Cooking, Baby care, Child care",
+    skills: "Baking, post partum care, childcare",
     languages: {
-      native: "Basic, Bahasa Indonesian",
-      additional: "Mandarin",
+      native: "Hindi, English",
     },
-    availability: "Transfer notice given by current employer",
   },
 ];
