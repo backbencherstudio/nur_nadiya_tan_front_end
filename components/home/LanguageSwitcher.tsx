@@ -59,7 +59,6 @@ const LanguageSwitcher = ({ variant = 'default', className = '', onLanguageChang
         localStorage.setItem('selectedLanguage', value);
         setContextLang(value);
         onLanguageChange?.(value);
-
         // Initialize Google Translate
         const waitForGoogleTranslate = setInterval(() => {
             if (typeof window.google !== 'undefined' && window.google.translate) {
@@ -76,7 +75,6 @@ const LanguageSwitcher = ({ variant = 'default', className = '', onLanguageChang
                 });
             }
         }, 100);
-
         setTimeout(() => clearInterval(waitForGoogleTranslate), 5000);
     };
 
