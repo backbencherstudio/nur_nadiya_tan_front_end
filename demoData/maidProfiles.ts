@@ -47,8 +47,8 @@ export const maidProfiles = [
   },
   {
     id: 4,
-
-    nationality: "Punitha",
+    name: "Punitha",
+    nationality: "Indian",
     age: 40,
     image: j4,
     yearsInSingapore: 10,
