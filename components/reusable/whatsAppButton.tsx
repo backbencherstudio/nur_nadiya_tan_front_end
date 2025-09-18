@@ -14,7 +14,7 @@ function WhatsAppButton() {
     <div className="fixed bottom-6 right-3 z-50">
       {/* Chat Popover */}
       {isOpen && (
-        <div className="absolute bottom-10 right-0 mb-4 w-80 bg-white rounded-lg shadow-2xl border border-gray-200 overflow-hidden">
+        <div className="absolute bottom-10 md:bottom-13 right-0 mb-4 w-80 bg-white rounded-lg shadow-2xl border border-gray-200 overflow-hidden">
           {/* Header */}
           <div className="bg-green-500 px-4 py-2.5 flex items-center justify-between">
             <span className="text-white text-sm font-medium">
