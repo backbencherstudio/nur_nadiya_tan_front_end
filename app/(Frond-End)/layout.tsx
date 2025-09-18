@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import WhatsAppButton from "@/components/reusable/whatsAppButton";
 
 import 'react-datepicker/dist/react-datepicker.css';
 import 'swiper/css';
@@ -12,6 +13,7 @@ export default function FrontEndLayout({
     return (
         <div>
             <Navbar/>
+            <WhatsAppButton/>
                     {children}
             <Footer/>
         </div>

@@ -2,7 +2,6 @@ import CustomersSay from '@/components/employers/CustomersSay'
 
 import Work from '@/components/employers/Work'
 import ComparisonTable from '@/components/maids/ComparisonTable'
-import PriceDiscuse from '@/components/pricing/PriceDiscuse'
 import CommonHero from '@/components/reusable/CommonHero'
 import SectionHeader from '@/components/reusable/SectionHeader'
 
@@ -23,11 +22,7 @@ function page() {
           <div>
             <CustomersSay />
           </div>
-          <div className="container">
-            <div className='py-10 md:py-14 lg:py-29   '>
-              <PriceDiscuse />
-            </div>
-          </div>
+         
         </section>
       </div>
     </div>
