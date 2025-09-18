@@ -4,6 +4,7 @@ function BiodataManagement() {
   return (
     <div>
       Biodata Management Page
+     <div></div>
     </div>
   )
 }
