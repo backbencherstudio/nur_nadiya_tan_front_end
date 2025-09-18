@@ -1,13 +1,13 @@
 "use client";
 
+import mainLogo from "@/public/icon/mainlogo.png";
 import { X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
-import { BiCar } from "react-icons/bi";
-import { LuNotebookPen } from "react-icons/lu";
-import { MdOutlineAccessTime, MdOutlineEventAvailable } from "react-icons/md";
+import { FaPlus } from "react-icons/fa";
+import { MdOutlineEventAvailable } from "react-icons/md";
 import { RiHome6Line } from "react-icons/ri";
 interface NavItem {
   icon: any;
@@ -27,24 +27,14 @@ const navItems: NavItem[] = [
     href: "/dashboard",
   },
   {
-    icon: <BiCar />,
-    label: "Services",
-    href: "/dashboard/services",
+    icon: <FaPlus />,
+    label: "Add Enquiry",
+    href: "/dashboard/add-enquiry",
   },
   {
     icon: <MdOutlineEventAvailable />,
-    label: "Manage bookings",
-    href: "/dashboard/bookings",
-  },
-  {
-    icon: <MdOutlineAccessTime />,
-    label: "Schedule Calendar",
-    href: "/dashboard/schedule-calendar",
-  },
-  {
-    icon: <LuNotebookPen />,
-    label: "Blog",
-    href: "/dashboard/blogs",
+    label: "Biodata Management",
+    href: "/dashboard/biodata-management",
   },
 ];
 
@@ -81,10 +71,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           }
           flex flex-col
           min-h-[calc(100vh-100px)] 
-          bg-white 
+          bg-[#060A2F] 
          
           shadow-[0px_-0.3px_5.5px_0px_rgba(0,0,0,0.02)]
-          lg:rounded-[12px] 
+        
           p-5 w-full overflow-y-auto
         `}
       >
@@ -101,9 +91,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             className="text-white flex justify-center pb-5 text-xl lg:text-3xl font-semibold tracking-wide"
           >
             <Image
-              src="/logo/Logo.png"
+              src={mainLogo}
               alt="main logo "
-              width={138}
+              width={118}
               height={29}
             />
           </Link>
@@ -117,9 +107,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                   href={item.href}
                   onClick={onClose}
                   className={`
-        flex items-center justify-between group gap-3 px-3 py-2.5 lg:py-3 rounded-lg  hover:bg-primaryColor/10
+        flex items-center justify-between group gap-3 px-3 py-2.5 lg:py-3 rounded-lg hover:text-whiteColor  hover:bg-primaryColor
         transition-colors duration-200
-        ${active ? "bg-primaryColor/10" : ""}
+        ${active ? "bg-primaryColor" : ""}
       `}
                 >
                   <div className="flex gap-2 items-center">
@@ -128,8 +118,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             w-[30px] h-[30px] flex justify-center items-center flex-shrink-0 rounded-full
             text-xl font-medium
             ${active
-                          ? "text-primaryColor"
-                          : "text-descriptionColor group-hover:text-primaryColor"
+                          ? "text-whiteColor"
+                          : "text-whiteColor group-hover:text-whiteColor"
                         }
           `}
                     >
@@ -139,8 +129,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                       className={`
             text-base font-medium 
             ${active
-                          ? "text-primaryColor"
-                          : "text-descriptionColor group-hover:text-primaryColor"
+                          ? "text-whiteColor"
+                          : "text-whiteColor group-hover:text-whiteColor"
                         }
           `}
                     >

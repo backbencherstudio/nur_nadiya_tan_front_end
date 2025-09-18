@@ -1,10 +1,10 @@
 "use client";
 
-import { UserService } from "@/service/user/user.service";
+import mainLogo from "@/public/icon/mainlogo.png";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
 import Loader from "../reusable/Loader";
@@ -75,9 +75,9 @@ const Header: React.FC<HeaderProps> = ({
               className="text-white text-xl lg:text-3xl font-semibold tracking-wide"
             >
               <Image
-                src="/logo/Logo.png"
+                src={mainLogo}
                 alt="main logo "
-                width={100}
+                width={80}
                 height={29}
               />
             </Link>
@@ -206,7 +206,7 @@ const Header: React.FC<HeaderProps> = ({
               >
                 <div className=" w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden">
                   <Image
-                    src={ "/image/profile.jpg"}
+                    src={ "/profile.png"}
                     alt="Admin Avatar"
                     width={40}
                     height={40}
@@ -215,8 +215,9 @@ const Header: React.FC<HeaderProps> = ({
                 </div>
                 <div className="whitespace-nowrap">
                   <h4 className="sm:text-sm text-[13px] font-medium text-blackColor">
-                    {profile && profile?.name}
+                    Jonathan
                   </h4>
+                  <p className="text-descriptionColor">demo@gmail.com</p>
                 </div>
                 <button className=" cursor-pointer">
                   <IoIosArrowDown size={16} className="text-grayColor1" />
