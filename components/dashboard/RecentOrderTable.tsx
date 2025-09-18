@@ -1,11 +1,22 @@
 "use client";
-import Link from "next/link";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useState } from "react";
+import { FiPlus, FiSearch } from "react-icons/fi";
 import DynamicTableTwo from "../common/DynamicTableTwo";
 
 function RecentOrderTable({ recentOrder }: any) {
   const [recentOrders, setRecentOrders] = useState<any>(recentOrder);
   const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedType, setSelectedType] = useState("All Type");
+  const [selectedStatus, setSelectedStatus] = useState("All Status");
 
   // Demo data matching the table structure from the image
   const demoData = [
@@ -198,27 +209,80 @@ function RecentOrderTable({ recentOrder }: any) {
   ];
   return (
     <section>
-      <div className="border p-5 rounded-md">
-        <div className=" flex justify-between items-center pb-4">
-          <h4 className="text-xl lg:text-2xl font-medium text-headerColor ">
-            Our Recent Orders
-          </h4>
-          <div>
-            <Link
-              href="/dashboard/recent-order"
-              className="cursor-pointer text-headerColor border rounded-md text-sm flex items-center gap-2 px-[14px] py-2"
-            >
-              {" "}
-              View All
-            </Link>
+      <div className="bg-white shadow p-5 rounded-md">
+        {/* Header Section */}
+        <div className="mb-6">
+          {/* Title and Add Button Row */}
+          <div className="flex justify-between items-center mb-4">
+            <h4 className="text-2xl font-bold text-gray-800">
+              All Enquiries
+            </h4>
+            <button className="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+              <FiPlus className="w-4 h-4" />
+              Add Enquiry
+            </button>
+          </div>
+          
+          {/* Search and Filter Row */}
+          <div className="flex items-center gap-4">
+            {/* Search Bar */}
+            <div className="flex-1 relative">
+              <div className="absolute top-1/2 -translate-y-1/2 left-0 pl-3 flex items-center pointer-events-none">
+                <FiSearch className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                placeholder="Search enquiry"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+              />
+            </div>
+            
+            {/* Filter Dropdowns */}
+            <div className="flex items-center gap-3">
+              {/* Type Filter */}
+              <Select value={selectedType} onValueChange={setSelectedType}>
+                <SelectTrigger className="w-[140px] !h-12 bg-white border-gray-300 rounded-lg px-4 py-2 text-gray-700 focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                  <SelectValue placeholder="All Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="All Type">All Type</SelectItem>
+                  <SelectItem value="Maid">Maid</SelectItem>
+                  <SelectItem value="Employer">Employer</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              {/* Status Filter */}
+              <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+                <SelectTrigger className="w-[140px] !h-12 bg-white border-gray-300 rounded-lg px-4 py-2 text-gray-700 focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                  <SelectValue placeholder="All Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="All Status">All Status</SelectItem>
+                  <SelectItem value="Contacted">Contacted</SelectItem>
+                  <SelectItem value="Uncontacted">Uncontacted</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              {/* Export Button */}
+              <button className="bg-[#C5EFF1] hover:bg-teal-200 text-teal-700 px-6 py-3 cursor-pointer rounded-lg transition-colors">
+                Export
+              </button>
+            </div>
           </div>
         </div>
         <DynamicTableTwo
           columns={columns}
           data={demoData}
           currentPage={currentPage}
-          itemsPerPage={10}
+          itemsPerPage={itemsPerPage}
           onPageChange={(page) => setCurrentPage(page)}
+          onItemsPerPageChange={(newItemsPerPage) => {
+            console.log('Changing itemsPerPage from', itemsPerPage, 'to', newItemsPerPage);
+            setItemsPerPage(newItemsPerPage);
+          }}
+          totalpage={5}
         />
       </div>
     </section>

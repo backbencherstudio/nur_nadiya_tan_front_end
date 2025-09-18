@@ -1,5 +1,4 @@
 
-import { UserService } from '@/service/user/user.service'
 import { cookies } from 'next/headers'
 import Link from 'next/link'
 import RecentOrderTable from './RecentOrderTable'
@@ -24,7 +23,7 @@ async function DashboardPage() {
         <StatCards />
 
        
-        <div>
+        <div className='mt-10'>
           <RecentOrderTable  />
         </div>
       </div>
