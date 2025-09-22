@@ -10,6 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import { BsFileEarmarkPdf } from "react-icons/bs";
 import { FiPlus, FiSearch } from "react-icons/fi";
@@ -226,12 +227,13 @@ function Biodatapage() {
                             Biodata List
                         </h4>
                         <div className="flex items-center gap-3">
+                            <Link href="/dashboard/biodata-management/biodata-step-one">
                             <ButtonReuseable
                                 title="Add Biodata"
                                 icon={<FiPlus className="w-4 h-4" />}
                                 className="bg-primaryColor hover:bg-primaryColor/90"
                             />
-
+                            </Link>
                         </div>
                     </div>
 
