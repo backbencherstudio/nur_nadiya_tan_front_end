@@ -1,10 +1,10 @@
 "use client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
 import { FiChevronLeft, FiChevronRight, FiPlus } from "react-icons/fi";
 import ButtonReuseable from "../reusable/CustomButton";
-import Link from "next/link";
 
 export default function BiodataFormStepTwo() {
     const { register, handleSubmit, control, formState: { errors } } = useForm({

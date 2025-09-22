@@ -1,9 +1,9 @@
-import React from 'react'
+import BiodataStepThreeForm from '@/components/allForm/BiodataStepThreeForm'
 
 function page() {
   return (
     <div>
-      
+      <BiodataStepThreeForm />
     </div>
   )
 }
