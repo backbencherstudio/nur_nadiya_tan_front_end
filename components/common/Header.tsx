@@ -56,7 +56,7 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <nav className=" text-blackColor border-b border-borderColor  py-3">
-      <div className=" container px-5   relative flex justify-between mb-1 z-50">
+      <div className="  px-8   relative flex justify-between mb-1 z-50">
         {/* Mobile menu button */}
         <div>
           <div className=" lg:hidden flex items-center">
@@ -71,7 +71,7 @@ const Header: React.FC<HeaderProps> = ({
               )}
             </button>
             <Link
-              href={"/"}
+              href={"/dashboard"}
               className="text-white text-xl lg:text-3xl font-semibold tracking-wide"
             >
               <Image

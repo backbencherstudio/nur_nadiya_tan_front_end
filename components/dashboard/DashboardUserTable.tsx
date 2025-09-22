@@ -8,9 +8,11 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import { FiPlus, FiSearch } from "react-icons/fi";
+import { GrEdit } from "react-icons/gr";
 import DynamicTableTwo from "../common/DynamicTableTwo";
+import ButtonReuseable from "../reusable/CustomButton";
 
-function RecentOrderTable({ recentOrder }: any) {
+function DashboardUserTable({ recentOrder }: any) {
   const [recentOrders, setRecentOrders] = useState<any>(recentOrder);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
@@ -183,13 +185,13 @@ function RecentOrderTable({ recentOrder }: any) {
       accessor: "status",
       width: "120px",
       formatter: (value: string) => (
-        <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+        <div className={`px-3 py-2 rounded-md text-xs w-[60%] text-center font-semibold ${
           value === "Contacted" 
-            ? "bg-green-100 text-green-800" 
-            : "bg-red-100 text-red-800"
+            ? "bg-greenColor/15 text-greenColor" 
+            : "bg-redColor/15 text-redColor"
         }`}>
           {value}
-        </span>
+        </div>
       ),
     },
     {
@@ -198,10 +200,8 @@ function RecentOrderTable({ recentOrder }: any) {
       width: "80px",
       formatter: (_: any, record: any) => {
         return (
-          <button className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-            </svg>
+          <button className="w-8 h-8 cursor-pointer bg-primaryColor text-white rounded-md flex items-center justify-center  transition-colors">
+            <GrEdit size={17} />
           </button>
         );
       },
@@ -217,10 +217,7 @@ function RecentOrderTable({ recentOrder }: any) {
             <h4 className="text-2xl font-bold text-gray-800">
               All Enquiries
             </h4>
-            <button className="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-              <FiPlus className="w-4 h-4" />
-              Add Enquiry
-            </button>
+           <ButtonReuseable title="Add Enquiry" icon={<FiPlus className="w-4 h-4" />} />
           </div>
           
           {/* Search and Filter Row */}
@@ -289,4 +286,4 @@ function RecentOrderTable({ recentOrder }: any) {
   );
 }
 
-export default RecentOrderTable;
+export default DashboardUserTable;
