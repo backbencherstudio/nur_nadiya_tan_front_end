@@ -1,4 +1,5 @@
 "use client";
+import { TbLogout2 } from "react-icons/tb";
 
 import mainLogo from "@/public/icon/mainlogo.png";
 import { X } from "lucide-react";
@@ -148,18 +149,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           <button
 
             onClick={handleLogout}
-            className="flex items-center cursor-pointer gap-3 px-3 py-3  transition-colors duration-200 "
+            className="flex items-center bg-primaryColor/10 cursor-pointer gap-3 px-3 py-3 hover:bg-primaryColor w-full rounded-lg transition-colors duration-200 "
           >
             <div className="w-[30px] h-[30px] flex justify-center items-center flex-shrink-0 ">
-              <Image
-                src="/icon/logout.svg"
-                alt="Log out"
-                width={20}
-                height={20}
-              />
+              <TbLogout2 className="text-whiteColor"/>
             </div>
-            <span className="text-base font-normal text-[#111111]">
-              Log out account
+            <span className="text-base font-normal text-whiteColor">
+              Log Out Account
             </span>
           </button>
         </div>
