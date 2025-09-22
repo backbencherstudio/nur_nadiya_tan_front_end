@@ -1,4 +1,5 @@
 "use client";
+import { TbLogout2 } from "react-icons/tb";
 
 import mainLogo from "@/public/icon/mainlogo.png";
 import { X } from "lucide-react";
@@ -80,7 +81,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       >
         <div className="flex justify-end lg:hidden cursor-pointer">
           <button onClick={onClose}>
-            <X />
+            <X className="text-whiteColor" />
           </button>
         </div>
 
@@ -88,13 +89,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         <div className="my-4 ">
           <Link
             href={"/dashboard"}
-            className="text-white flex justify-center pb-5 text-xl lg:text-3xl font-semibold tracking-wide"
+            className="text-white flex justify-start lg:justify-center pb-5 text-xl lg:text-3xl font-semibold tracking-wide"
           >
             <Image
               src={mainLogo}
               alt="main logo "
               width={118}
               height={29}
+              className="w-20 md:w-[100px]"
             />
           </Link>
           <div className=" space-y-2">
@@ -148,18 +150,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           <button
 
             onClick={handleLogout}
-            className="flex items-center cursor-pointer gap-3 px-3 py-3  transition-colors duration-200 "
+            className="flex items-center bg-primaryColor/10 cursor-pointer gap-3 px-3 py-3 hover:bg-primaryColor w-full rounded-lg transition-colors duration-200 "
           >
             <div className="w-[30px] h-[30px] flex justify-center items-center flex-shrink-0 ">
-              <Image
-                src="/icon/logout.svg"
-                alt="Log out"
-                width={20}
-                height={20}
-              />
+              <TbLogout2 className="text-whiteColor"/>
             </div>
-            <span className="text-base font-normal text-[#111111]">
-              Log out account
+            <span className="text-base font-normal text-whiteColor">
+              Log Out Account
             </span>
           </button>
         </div>

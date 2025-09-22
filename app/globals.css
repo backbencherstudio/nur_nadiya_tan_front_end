@@ -17,12 +17,13 @@
   --color-ratingColor: var(--ratingColor);
   --color-headerColor: var(--headerColor);
   --color-grayColor1: var(--grayColor1);
-  --color-redColor: #eb3d4d;
-  --color-greenColor: #83bf6e;
+  --color-redColor: #EB3D4D;
+  --color-greenColor: #0CAF60;
   --color-checkBoxColor: #17c13c;
   --color-orengeColor: #ff6a55;
   --color-blueColor: #0068ef;
-  --color-ratingColor: #ffc52e;
+
+  --color-ratingColor: #F9C80E;
   --color-footerColor: #091819;
   --color-bgColor: var(--bgColor);
   --color-borderColor: #d2d2d5;
