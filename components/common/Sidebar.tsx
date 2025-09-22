@@ -81,7 +81,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       >
         <div className="flex justify-end lg:hidden cursor-pointer">
           <button onClick={onClose}>
-            <X />
+            <X className="text-whiteColor" />
           </button>
         </div>
 
@@ -89,13 +89,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         <div className="my-4 ">
           <Link
             href={"/dashboard"}
-            className="text-white flex justify-center pb-5 text-xl lg:text-3xl font-semibold tracking-wide"
+            className="text-white flex justify-start lg:justify-center pb-5 text-xl lg:text-3xl font-semibold tracking-wide"
           >
             <Image
               src={mainLogo}
               alt="main logo "
               width={118}
               height={29}
+              className="w-20 md:w-[100px]"
             />
           </Link>
           <div className=" space-y-2">

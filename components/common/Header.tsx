@@ -1,6 +1,5 @@
 "use client";
 
-import mainLogo from "@/public/icon/mainlogo.png";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -56,7 +55,7 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <nav className=" text-blackColor border-b border-borderColor  py-3">
-      <div className="  px-8   relative flex justify-between mb-1 z-50">
+      <div className=" px-3  md:px-8   relative flex justify-between mb-1 z-50">
         {/* Mobile menu button */}
         <div>
           <div className=" lg:hidden flex items-center">
@@ -70,7 +69,7 @@ const Header: React.FC<HeaderProps> = ({
                 <Menu className="text-blackColor" />
               )}
             </button>
-            <Link
+            {/* <Link
               href={"/dashboard"}
               className="text-white text-xl lg:text-3xl font-semibold tracking-wide"
             >
@@ -80,7 +79,7 @@ const Header: React.FC<HeaderProps> = ({
                 width={80}
                 height={29}
               />
-            </Link>
+            </Link> */}
           </div>
         </div>
 
@@ -177,21 +176,7 @@ const Header: React.FC<HeaderProps> = ({
               )}
             </PopoverContent>
           </Popover>
-          {/* <button
-            className=" cursor-pointer relative flex justify-center items-center lg:p-3 p-2 rounded-full  "
-            style={{
-              boxShadow: "2px 2px 7px 2px rgba(0, 0, 0, 0.08)", // uniform shadow all sides
-            }}
-          >
-            {/* <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-redColor "></span> */}
-          {/* <Image
-              src="/icon/message.svg"
-              alt="notification"
-              width={18}
-              height={18}
-              className="w-[15px] md:w-[18px] md:h-[18px] h-[15px]"
-            />
-          </button> */}
+         
           <div className="  relative sm:ml-0">
             <Link
               href="/dashboard/my-profile"
@@ -217,7 +202,7 @@ const Header: React.FC<HeaderProps> = ({
                   <h4 className="sm:text-sm text-[13px] font-medium text-blackColor">
                     Jonathan
                   </h4>
-                  <p className="text-descriptionColor">demo@gmail.com</p>
+                  <p className="text-descriptionColor md:text-base text-sm">demo@gmail.com</p>
                 </div>
                 <button className=" cursor-pointer">
                   <IoIosArrowDown size={16} className="text-grayColor1" />
