@@ -43,7 +43,7 @@ export default function BiodataFormStepTwo() {
                 <ButtonReuseable
                     title="Add New Biodata"
                     icon={<FiPlus className="w-4 h-4" />}
-                    className="bg-teal-500 hover:bg-teal-600"
+                    className=""
                 />
             </div>
             <div className="w-full border rounded-xl p-3 md:p-6">
@@ -361,7 +361,7 @@ export default function BiodataFormStepTwo() {
                                     type="button"
                                     title="Back"
                                     icon={<FiChevronLeft className="w-4 h-4" />}
-                                    className="bg-gray-500 hover:bg-gray-600 px-8"
+                                    className="!bg-whiteColor !border border-primaryColor !text-primaryColor !px-5"
 
                                 />
                             </Link>
@@ -369,9 +369,8 @@ export default function BiodataFormStepTwo() {
 
                                 <ButtonReuseable
                                     type="submit"
-                                    title="Next"
-                                    icon={<FiChevronRight className="w-4 h-4" />}
-                                    className="bg-teal-500 hover:bg-teal-600 px-8"
+                                    title="Next >"
+                                    className=" !px-5"
                                 />
                             </Link>
                         </div>
