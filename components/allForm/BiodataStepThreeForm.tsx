@@ -2,9 +2,11 @@
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
 import { FiChevronLeft, FiChevronRight, FiPlus } from "react-icons/fi";
 import ButtonReuseable from "../reusable/CustomButton";
+import { useRouter } from "next/navigation";
 
 export default function BiodataStepThreeForm() {
   const { register, handleSubmit, control, formState: { errors } } = useForm({
@@ -28,9 +30,10 @@ export default function BiodataStepThreeForm() {
       assessment4: ""
     }
   });
-
+const router = useRouter();
   const onSubmit = (data: any) => {
     console.log("Biodata Step Three Submitted:", data);
+    router.push("/dashboard/biodata-management/biodata-step-four");
     // Handle next step logic here
   };
 
@@ -47,14 +50,14 @@ export default function BiodataStepThreeForm() {
         <ButtonReuseable 
           title="Add New Biodata" 
           icon={<FiPlus className="w-4 h-4" />}
-          className="bg-teal-500 hover:bg-teal-600"
+          className="bg-primaryColor"
         />
       </div>
 
       {/* Areas of Work Form */}
       <div className="mb-6">
         <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="md:p-6 border p-3 pt-6 md:pt-0 bg-whiteColor rounded-xl">
+        <div className="md:p-6 border p-3 pt-6  bg-whiteColor rounded-xl">
           {/* Any other remarks Section */}
           <div className="relative mb-4">
             <label className="text-sm absolute -top-3 bg-white px-2 left-3 md:text-base block mb-1.5">
@@ -151,21 +154,25 @@ export default function BiodataStepThreeForm() {
           ))}
         </div>
           {/* Navigation Buttons */}
-          <div className="flex justify-between mt-10">
-            <ButtonReuseable 
-              type="button"
-              title="Back" 
-              icon={<FiChevronLeft className="w-4 h-4" />}
-              className="bg-gray-500 hover:bg-gray-600 px-8"
-              onClick={onBack}
-            />
-            <ButtonReuseable 
-              type="submit"
-              title="Next" 
-              icon={<FiChevronRight className="w-4 h-4" />}
-              className="bg-teal-500 hover:bg-teal-600 px-8"
-            />
-          </div>
+          <div className="flex justify-between mt-8">
+                            <Link href="/dashboard/biodata-management/biodata-step-one">
+                                <ButtonReuseable
+                                    type="button"
+                                    title="Back"
+                                    icon={<FiChevronLeft className="w-4 h-4" />}
+                                    className="!bg-whiteColor !border border-primaryColor !text-primaryColor !px-5"
+
+                                />
+                            </Link>
+
+                                <ButtonReuseable
+                                    type="submit"
+                                    title="Next"
+                                    icon={<FiChevronRight className="w-4 h-4" />}
+                                    className="bg-primaryColor !px-5"
+                                />
+
+                        </div>
         </form>
       </div>
     </div>

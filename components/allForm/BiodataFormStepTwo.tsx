@@ -142,7 +142,7 @@ export default function BiodataFormStepTwo() {
                                             )}
                                         />
                                     </div>
- {/* Asthma */}
+                                    {/* Asthma */}
                                     <div className="relative">
                                         <label className="text-sm absolute -top-3 bg-white px-2 left-3 md:text-base block mb-1.5">
                                             Asthma
@@ -185,7 +185,7 @@ export default function BiodataFormStepTwo() {
                                             )}
                                         />
                                     </div>
-  
+
                                     {/* Hypertension */}
                                     <div className="relative">
                                         <label className="text-sm absolute -top-3 bg-white px-2 left-3 md:text-base block mb-1.5">
@@ -207,7 +207,7 @@ export default function BiodataFormStepTwo() {
                                             )}
                                         />
                                     </div>
- {/* Tuberculosis */}
+                                    {/* Tuberculosis */}
                                     <div className="relative">
                                         <label className="text-sm absolute -top-3 bg-white px-2 left-3 md:text-base block mb-1.5">
                                             Tuberculosis
@@ -271,7 +271,7 @@ export default function BiodataFormStepTwo() {
                                         />
                                     </div>
 
-                                   
+
 
                                     {/* Operations */}
                                     <div className="relative">
@@ -357,22 +357,22 @@ export default function BiodataFormStepTwo() {
                         </div>
                         <div className="flex justify-between mt-8">
                             <Link href="/dashboard/biodata-management/biodata-step-one">
-                            <ButtonReuseable
-                                type="button"
-                                title="Back"
-                                icon={<FiChevronLeft className="w-4 h-4" />}
-                                className="bg-gray-500 hover:bg-gray-600 px-8"
-                               
-                            />
+                                <ButtonReuseable
+                                    type="button"
+                                    title="Back"
+                                    icon={<FiChevronLeft className="w-4 h-4" />}
+                                    className="bg-gray-500 hover:bg-gray-600 px-8"
+
+                                />
                             </Link>
                             <Link href="/dashboard/biodata-management/biodata-step-three">
 
-                            <ButtonReuseable
-                                type="submit"
-                                title="Next"
-                                icon={<FiChevronRight className="w-4 h-4" />}
-                                className="bg-teal-500 hover:bg-teal-600 px-8"
-                            />
+                                <ButtonReuseable
+                                    type="submit"
+                                    title="Next"
+                                    icon={<FiChevronRight className="w-4 h-4" />}
+                                    className="bg-teal-500 hover:bg-teal-600 px-8"
+                                />
                             </Link>
                         </div>
                     </form>
