@@ -50,7 +50,7 @@ const router = useRouter();
         <ButtonReuseable 
           title="Add New Biodata" 
           icon={<FiPlus className="w-4 h-4" />}
-          className="bg-primaryColor"
+          className=""
         />
       </div>
 
@@ -167,8 +167,7 @@ const router = useRouter();
 
                                 <ButtonReuseable
                                     type="submit"
-                                    title="Next"
-                                    icon={<FiChevronRight className="w-4 h-4" />}
+                                   title="Next >"
                                     className="bg-primaryColor !px-5"
                                 />
 

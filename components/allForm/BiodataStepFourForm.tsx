@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
-import { FiChevronLeft, FiChevronRight, FiPlus } from "react-icons/fi";
+import { FiChevronLeft, FiPlus } from "react-icons/fi";
 import ButtonReuseable from "../reusable/CustomButton";
 
 export default function BiodataStepFourForm() {
@@ -55,7 +55,7 @@ const router = useRouter();
         <ButtonReuseable 
           title="Add New Biodata" 
           icon={<FiPlus className="w-4 h-4" />}
-          className="bg-primaryColor"
+          className=""
         />
       </div>
 
@@ -280,7 +280,6 @@ const router = useRouter();
             <ButtonReuseable
               type="submit"
               title="Submit"
-              icon={<FiChevronRight className="w-4 h-4" />}
               className="bg-primaryColor !px-5"
             />
           </div>

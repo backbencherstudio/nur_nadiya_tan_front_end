@@ -57,7 +57,7 @@ export default function BiodataFormStepOne() {
                 <ButtonReuseable
                     title="Add New Biodata"
                     icon={<FiPlus className="w-4 h-4" />}
-                    className="bg-teal-500 hover:bg-teal-600"
+                    className=""
                 />
             </div>
             <div className="w-full border rounded-xl p-6">
