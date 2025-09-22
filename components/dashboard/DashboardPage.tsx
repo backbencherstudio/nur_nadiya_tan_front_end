@@ -3,6 +3,7 @@ import { cookies } from 'next/headers'
 import Link from 'next/link'
 import RecentOrderTable from './DashboardUserTable'
 import StatCards from './StatCards'
+import DashboardUserTable from './DashboardUserTable'
 
 async function DashboardPage() {
   const cookieStore = await cookies()
@@ -23,7 +24,7 @@ async function DashboardPage() {
         <StatCards />
 
         <div className='mt-10'>
-          <RecentOrderTable  />
+          <DashboardUserTable/>
         </div>
       </div>
     )

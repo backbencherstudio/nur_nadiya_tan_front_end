@@ -6,6 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import Link from "next/link";
 import { useState } from "react";
 import { FiPlus, FiSearch } from "react-icons/fi";
 import { GrEdit } from "react-icons/gr";
@@ -217,7 +218,9 @@ function DashboardUserTable({ recentOrder }: any) {
             <h4 className="text-2xl font-bold text-gray-800">
               All Enquiries
             </h4>
+            <Link href="/dashboard/add-enquiry">
            <ButtonReuseable title="Add Enquiry" icon={<FiPlus className="w-4 h-4" />} />
+            </Link>
           </div>
           
           {/* Search and Filter Row */}
