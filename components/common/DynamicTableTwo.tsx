@@ -74,7 +74,7 @@ const uniqueArray = [...new Set(originalArray)];
   return (
     <div>
       {/* Table Wrapper with Border & Radius */}
-      <div className="overflow-hidden rounded-t-md border border-gray-200">
+      <div className=" rounded-t-md border border-gray-200">
         <div className="overflow-x-auto">
           <table className="min-w-[1000px] w-full text-left">
             <thead className="bg-neutral-50">

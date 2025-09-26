@@ -155,7 +155,7 @@ function Biodatapage() {
             ),
         },
         {
-            label: "Experience in Singapore",
+            label: "Experience",
             accessor: "experience",
             width: "100px",
             formatter: (value: string) => (

@@ -1,13 +1,16 @@
 "use client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import Link from "next/link";
+import { BiodataStepTwo, getBiodataStep, saveBiodataStep } from "@/helper/biodataStorage.helper";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { FiChevronLeft, FiChevronRight, FiPlus } from "react-icons/fi";
+import { FiChevronLeft } from "react-icons/fi";
 import ButtonReuseable from "../reusable/CustomButton";
 
 export default function BiodataFormStepTwo() {
-    const { register, handleSubmit, control, formState: { errors } } = useForm({
+    const router = useRouter();
+    const { register, handleSubmit, control, formState: { errors }, reset } = useForm<BiodataStepTwo>({
         defaultValues: {
             allergies: "No",
             physicalDisabilities: "No",
@@ -26,25 +29,40 @@ export default function BiodataFormStepTwo() {
         }
     });
 
-    const onSubmit = (data: any) => {
+    // Load existing data on component mount
+    useEffect(() => {
+        const existingData = getBiodataStep('stepTwo');
+        if (existingData) {
+            reset(existingData);
+        }
+    }, [reset]);
+
+    const onSubmit = (data: BiodataStepTwo) => {
         console.log("Biodata Step Two Submitted:", data);
-        // Handle next step logic here
+        // Save to localStorage
+        const saved = saveBiodataStep('stepTwo', data);
+        if (saved) {
+            console.log("Data saved to localStorage successfully");
+            router.push("/dashboard/biodata-management/biodata-step-three");
+        } else {
+            console.error("Failed to save data to localStorage");
+        }
     };
 
     const onBack = () => {
         console.log("Go back to previous step");
-        // Handle back navigation here
+        router.push("/dashboard/biodata-management/biodata-step-one");
     };
 
     return (
         <section>
             <div className="flex justify-between items-center mb-8">
                 <h2 className="text-2xl font-bold text-headerColor">Biodata</h2>
-                <ButtonReuseable
+                {/* <ButtonReuseable
                     title="Add New Biodata"
                     icon={<FiPlus className="w-4 h-4" />}
                     className=""
-                />
+                /> */}
             </div>
             <div className="w-full border rounded-xl p-3 md:p-6">
                 <div className="mb-6">
@@ -356,23 +374,18 @@ export default function BiodataFormStepTwo() {
                             </div>
                         </div>
                         <div className="flex justify-between mt-8">
-                            <Link href="/dashboard/biodata-management/biodata-step-one">
-                                <ButtonReuseable
-                                    type="button"
-                                    title="Back"
-                                    icon={<FiChevronLeft className="w-4 h-4" />}
-                                    className="!bg-whiteColor !border border-primaryColor !text-primaryColor !px-5"
-
-                                />
-                            </Link>
-                            <Link href="/dashboard/biodata-management/biodata-step-three">
-
-                                <ButtonReuseable
-                                    type="submit"
-                                    title="Next >"
-                                    className=" !px-5"
-                                />
-                            </Link>
+                            <ButtonReuseable
+                                type="button"
+                                title="Back"
+                                icon={<FiChevronLeft className="w-4 h-4" />}
+                                className="!bg-whiteColor !border border-primaryColor !text-primaryColor !px-5"
+                                onClick={onBack}
+                            />
+                            <ButtonReuseable
+                                type="submit"
+                                title="Next >"
+                                className=" !px-5"
+                            />
                         </div>
                     </form>
                 </div>
