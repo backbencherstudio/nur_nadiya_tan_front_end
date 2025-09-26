@@ -82,7 +82,7 @@ const uniqueArray = [...new Set(originalArray)];
                 {columns.map((col, index) => (
                   <th
                     key={index}
-                    style={{ width: col.width || "auto" }}
+                    style={{ width: col.width  || "auto" }}
                     className="px-4 py-3 whitespace-nowrap text-sm font-medium text-[#4a4c56] border-b border-gray-100"
                   >
                     {col.label}

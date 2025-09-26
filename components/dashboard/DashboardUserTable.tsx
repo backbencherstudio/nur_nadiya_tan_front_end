@@ -31,7 +31,7 @@ function DashboardUserTable({ recentOrder }: any) {
       date: "1 Jan 2025",
       time: "09:30 AM",
       source: "WhatsApp",
-      status: "Contacted"
+      status: "Website"
     },
     {
       id: 2,
@@ -41,7 +41,7 @@ function DashboardUserTable({ recentOrder }: any) {
       date: "1 Jan 2025",
       time: "09:30 AM",
       source: "Website",
-      status: "Contacted"
+      status: "Website"
     },
     {
       id: 3,
@@ -61,7 +61,7 @@ function DashboardUserTable({ recentOrder }: any) {
       date: "1 Jan 2025",
       time: "09:30 AM",
       source: "Website",
-      status: "Contacted"
+      status: "Website"
     },
     {
       id: 5,
@@ -71,7 +71,7 @@ function DashboardUserTable({ recentOrder }: any) {
       date: "1 Jan 2025",
       time: "09:30 AM",
       source: "WhatsApp",
-      status: "Contacted"
+      status: "Website"
     },
     {
       id: 6,
@@ -91,7 +91,7 @@ function DashboardUserTable({ recentOrder }: any) {
       date: "1 Jan 2025",
       time: "09:30 AM",
       source: "WhatsApp",
-      status: "Contacted"
+      status: "Website"
     },
     {
       id: 8,
@@ -101,7 +101,7 @@ function DashboardUserTable({ recentOrder }: any) {
       date: "1 Jan 2025",
       time: "09:30 AM",
       source: "Website",
-      status: "Contacted"
+      status: "Website"
     },
     {
       id: 9,
@@ -111,7 +111,7 @@ function DashboardUserTable({ recentOrder }: any) {
       date: "1 Jan 2025",
       time: "09:30 AM",
       source: "WhatsApp",
-      status: "Uncontacted"
+      status: "Uncontacted "
     },
     {
       id: 10,
@@ -121,7 +121,7 @@ function DashboardUserTable({ recentOrder }: any) {
       date: "1 Jan 2025",
       time: "09:30 AM",
       source: "Website",
-      status: "Contacted"
+      status: "Website"
     }
   ];
 
@@ -186,11 +186,10 @@ function DashboardUserTable({ recentOrder }: any) {
       accessor: "status",
       width: "120px",
       formatter: (value: string) => (
-        <div className={`px-3 py-2 rounded-md text-xs w-[60%] text-center font-semibold ${
-          value === "Contacted" 
-            ? "bg-greenColor/15 text-greenColor" 
-            : "bg-redColor/15 text-redColor"
-        }`}>
+        <div className={`px-3 py-2 rounded-md text-xs w-full 2xl:w-[60%] text-center font-semibold ${value === "Website"
+          ? "bg-greenColor/15 text-greenColor"
+          : "bg-redColor/15 text-redColor"
+          }`}>
           {value}
         </div>
       ),
@@ -219,12 +218,12 @@ function DashboardUserTable({ recentOrder }: any) {
               All Enquiries
             </h4>
             <Link href="/dashboard/add-enquiry">
-           <ButtonReuseable title="Add Enquiry" icon={<FiPlus className="w-4 h-4" />} />
+              <ButtonReuseable title="Add Enquiry" icon={<FiPlus className="w-4 h-4" />} />
             </Link>
           </div>
-          
+
           {/* Search and Filter Row */}
-          <div className="flex items-center gap-4">
+          <div className=" md:flex items-center gap-4">
             {/* Search Bar */}
             <div className="flex-1 relative">
               <div className="absolute top-1/2 -translate-y-1/2 left-0 pl-3 flex items-center pointer-events-none">
@@ -238,9 +237,9 @@ function DashboardUserTable({ recentOrder }: any) {
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
               />
             </div>
-            
+
             {/* Filter Dropdowns */}
-            <div className="flex items-center gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 items-center gap-3  mt-4 md:mt-0">
               {/* Type Filter */}
               <Select value={selectedType} onValueChange={setSelectedType}>
                 <SelectTrigger className="w-[140px] !h-12 bg-white border-gray-300 rounded-lg px-4 py-2 text-gray-700 focus:ring-2 focus:ring-teal-500 focus:border-transparent">
@@ -252,7 +251,7 @@ function DashboardUserTable({ recentOrder }: any) {
                   <SelectItem value="Employer">Employer</SelectItem>
                 </SelectContent>
               </Select>
-              
+
               {/* Status Filter */}
               <Select value={selectedStatus} onValueChange={setSelectedStatus}>
                 <SelectTrigger className="w-[140px] !h-12 bg-white border-gray-300 rounded-lg px-4 py-2 text-gray-700 focus:ring-2 focus:ring-teal-500 focus:border-transparent">
@@ -260,11 +259,11 @@ function DashboardUserTable({ recentOrder }: any) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="All Status">All Status</SelectItem>
-                  <SelectItem value="Contacted">Contacted</SelectItem>
+                  <SelectItem value="Website">Website</SelectItem>
                   <SelectItem value="Uncontacted">Uncontacted</SelectItem>
                 </SelectContent>
               </Select>
-              
+
               {/* Export Button */}
               <button className="bg-[#C5EFF1] hover:bg-teal-200 text-teal-700 px-6 py-3 cursor-pointer rounded-lg transition-colors">
                 Export

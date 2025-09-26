@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({
   const displayedNotifications = showAllNotifications
     ? notifications
     : notifications.slice(0, 5);
- 
+
 
 
 
@@ -58,7 +58,7 @@ const Header: React.FC<HeaderProps> = ({
       <div className=" px-3  md:px-8   relative flex justify-between mb-1 z-50">
         {/* Mobile menu button */}
         <div>
-          <div className=" lg:hidden flex items-center">
+          <div className=" xl:hidden flex items-center">
             <button
               onClick={onMenuClick}
               className=" pr-2 py-2  text-[#4A4C56]"
@@ -176,7 +176,7 @@ const Header: React.FC<HeaderProps> = ({
               )}
             </PopoverContent>
           </Popover>
-         
+
           <div className="  relative sm:ml-0">
             <Link
               href="/dashboard/my-profile"
@@ -191,7 +191,7 @@ const Header: React.FC<HeaderProps> = ({
               >
                 <div className=" w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden">
                   <Image
-                    src={ "/profile.png"}
+                    src={"/profile.png"}
                     alt="Admin Avatar"
                     width={40}
                     height={40}

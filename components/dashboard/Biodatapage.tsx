@@ -126,7 +126,7 @@ function Biodatapage() {
         {
             label: "Name",
             accessor: "name",
-            width: "200px",
+            width: "120px",
             formatter: (value: string) => (
                 <div className="flex items-center gap-3">
                     <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
@@ -157,7 +157,7 @@ function Biodatapage() {
         {
             label: "Experience in Singapore",
             accessor: "experience",
-            width: "180px",
+            width: "100px",
             formatter: (value: string) => (
                 <span className="text-sm">{value}</span>
             ),

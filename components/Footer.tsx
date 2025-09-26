@@ -29,7 +29,7 @@ export default function Footer() {
                 <Image src={logo} alt="logo" width={100} height={100} className="w-12 md:w-[80px]" />
               </div>
               <p className="text-base leading-[150%] mb-6">
-                Explore profiles of reliable transfer maids in Singapore, experienced in childcare, cooking, and household chores,
+                Explore profiles of reliable transfer maids in Singapore, experienced in childcare, elderly care and infant care, cooking, and household chores,
               </p>
             </div>
           </div>

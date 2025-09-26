@@ -26,7 +26,7 @@ export default function AddNewInquryForm() {
   const [imagePreview, setImagePreview] = React.useState<string | null>(null)
   const [selectedLanguages, setSelectedLanguages] = React.useState<string[]>([])
   const imageRef = React.useRef<HTMLInputElement>(null)
-
+  const [enquiryType, setEnquiryType] = React.useState<"maid" | "employer">("maid")
   const { register, handleSubmit, control, formState: { errors } } = useForm()
 
   const languageOptions: SelectOption[] = [
@@ -45,6 +45,7 @@ export default function AddNewInquryForm() {
   const onSubmit = (data: any) => {
     const formData = { ...data, dob, transferDate, hasEmployer, languages: selectedLanguages }
     // Replace with API call as needed
+
     console.log("Enquiry Submitted:", formData)
   }
 
@@ -89,16 +90,27 @@ export default function AddNewInquryForm() {
             </div>
           </div>
 
-          <div className="col-span-2 relative  mt-2">
+          <div className="col-span-2 relative sm:col-span-1  mt-2">
             <label className="text-sm absolute -top-3 bg-white px-2 left-3 md:text-base block mb-1.5">Full Name(as per passport)</label>
             <Input placeholder="Enter your full name" className="w-full !h-12 lg:!h-13 !pl-4" {...register("fullName", { required: true })} />
           </div>
-
+          <div className="col-span-2 sm:col-span-1 relative mt-2">
+            <label className="text-sm absolute -top-3 bg-white px-2 left-3 md:text-base block ">Enquiry Type</label>
+            <Select onValueChange={(v) => setEnquiryType(v as "maid" | "employer")} value={enquiryType}>
+              <SelectTrigger className="w-full !h-12 md:!h-13 !pl-4">
+                <SelectValue placeholder="Select enquiry type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="maid">Maid Enquiry</SelectItem>
+                <SelectItem value="employer">Employer Enquiry</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <div className="col-span-2 relative sm:col-span-1 ">
             <label className="text-sm absolute hover:!bg-white -top-3 bg-white px-2 left-3 md:text-base block mb-1.5">Date of Birth</label>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant={"outline"} className={cn("w-full !h-12 lg:!h-13 !pl-4 justify-start text-left font-normal", !dob && "text-muted-foreground")}> 
+                <Button variant={"outline"} className={cn("w-full !h-12 lg:!h-13 !pl-4 justify-start text-left font-normal", !dob && "text-muted-foreground")}>
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {dob ? format(dob, "PPP") : "Select Birthday date"}
                 </Button>
