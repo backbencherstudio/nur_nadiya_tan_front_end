@@ -12,8 +12,9 @@ const quickLinks = [
 
 ];
 const InfoLinks = [
-  { name: "Terms & Conditions", slug: "#" },
-  { name: "Privacy Policy", slug: "#" },
+  { name: "Terms & Conditions", slug: "/terms-and-condition" },
+  { name: "Privacy Policy", slug: "/privacy-policy" },
+  { name: "Terms of Use", slug: "/terms-of-use" },
   { name: "Help", slug: "/contact" },
 
 ];
