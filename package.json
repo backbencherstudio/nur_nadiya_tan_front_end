@@ -28,6 +28,8 @@
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "gsap": "^3.12.7",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.3",
     "katex": "^0.16.21",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.536.0",

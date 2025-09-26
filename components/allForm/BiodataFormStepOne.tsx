@@ -4,22 +4,23 @@ import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { BiodataStepOne, getBiodataStep, saveBiodataStep } from "@/helper/biodataStorage.helper";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { FiPlus } from "react-icons/fi";
 import ButtonReuseable from "../reusable/CustomButton";
-import Link from "next/link";
 
 export default function BiodataFormStepOne() {
+    const router = useRouter();
     const [dob, setDob] = React.useState<Date | undefined>();
     const [imagePreview, setImagePreview] = React.useState<string | null>(null);
     const imageRef = React.useRef<HTMLInputElement>(null);
 
-    const { register, handleSubmit, control, formState: { errors } } = useForm({
+    const { register, handleSubmit, control, formState: { errors }, reset } = useForm<BiodataStepOne>({
         defaultValues: {
             fullName: "",
             placeOfBirth: "",
@@ -35,10 +36,31 @@ export default function BiodataFormStepOne() {
         }
     });
 
-    const onSubmit = (data: any) => {
-        const formData = { ...data, dob };
+    // Load existing data on component mount
+    React.useEffect(() => {
+        const existingData = getBiodataStep('stepOne');
+        if (existingData) {
+            reset(existingData);
+            if (existingData.dob) {
+                setDob(new Date(existingData.dob));
+            }
+            if (existingData.imagePreview) {
+                setImagePreview(existingData.imagePreview);
+            }
+        }
+    }, [reset]);
+
+    const onSubmit = (data: BiodataStepOne) => {
+        const formData = { ...data, dob, imagePreview };
         console.log("Biodata Step One Submitted:", formData);
-        // Handle next step logic here
+        // Save to localStorage
+        const saved = saveBiodataStep('stepOne', formData);
+        if (saved) {
+            console.log("Data saved to localStorage successfully");
+            router.push("/dashboard/biodata-management/biodata-step-two");
+        } else {
+            console.error("Failed to save data to localStorage");
+        }
     };
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,11 +76,11 @@ export default function BiodataFormStepOne() {
         <section>
             <div className="flex justify-between items-center mb-8">
                 <h2 className="text-2xl font-bold text-headerColor">Biodata</h2>
-                <ButtonReuseable
+                {/* <ButtonReuseable
                     title="Add New Biodata"
                     icon={<FiPlus className="w-4 h-4" />}
                     className=""
-                />
+                /> */}
             </div>
             <div className="w-full border rounded-xl p-6">
 
@@ -336,13 +358,11 @@ export default function BiodataFormStepOne() {
                     </div>
                     {/* Next Button */}
                     <div className="flex justify-end mt-8">
-                        <Link href="/dashboard/biodata-management/biodata-step-two">
                         <ButtonReuseable
                             type="submit"
                             title="Next >"
                             className=" !px-5"
                         />
-                        </Link>
                     </div>
                 </form>
             </div>

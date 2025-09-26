@@ -49,7 +49,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     return pathname.startsWith(href);
   };
   const handleLogout = () => {
-   
+
     router.push("/login")
 
   }
@@ -79,7 +79,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           p-5 w-full overflow-y-auto
         `}
       >
-        <div className="flex justify-end lg:hidden cursor-pointer">
+        <div className="flex justify-end xl:hidden cursor-pointer">
           <button onClick={onClose}>
             <X className="text-whiteColor" />
           </button>
@@ -153,7 +153,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             className="flex items-center bg-primaryColor/10 cursor-pointer gap-3 px-3 py-3 hover:bg-primaryColor w-full rounded-lg transition-colors duration-200 "
           >
             <div className="w-[30px] h-[30px] flex justify-center items-center flex-shrink-0 ">
-              <TbLogout2 className="text-whiteColor"/>
+              <TbLogout2 className="text-whiteColor" />
             </div>
             <span className="text-base font-normal text-whiteColor">
               Log Out Account

@@ -18,7 +18,7 @@ export default function MaidsHero() {
                     {/* Left content */}
                     <div className="md:px-6 px-4 lg:px-10 py-8 lg:py-10">
                         <h2 className="text-2xl md:text-2xl lg:text-5xl font-bold text-headerColor leading-tight">
-                            Maids come to us for new jobs
+                            Why maids choose us
                         </h2>
                         <ul className="mt-5 space-y-3 text-slate-700">
                             {bullets.map((b, i) => (

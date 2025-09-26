@@ -74,7 +74,7 @@ const uniqueArray = [...new Set(originalArray)];
   return (
     <div>
       {/* Table Wrapper with Border & Radius */}
-      <div className="overflow-hidden rounded-t-md border border-gray-200">
+      <div className=" rounded-t-md border border-gray-200">
         <div className="overflow-x-auto">
           <table className="min-w-[1000px] w-full text-left">
             <thead className="bg-neutral-50">
@@ -82,7 +82,7 @@ const uniqueArray = [...new Set(originalArray)];
                 {columns.map((col, index) => (
                   <th
                     key={index}
-                    style={{ width: col.width || "auto" }}
+                    style={{ width: col.width  || "auto" }}
                     className="px-4 py-3 whitespace-nowrap text-sm font-medium text-[#4a4c56] border-b border-gray-100"
                   >
                     {col.label}
