@@ -203,9 +203,9 @@ function Biodatapage() {
                     <button className="w-8 h-8 cursor-pointer bg-primaryColor text-white rounded-md flex items-center justify-center transition-colors">
                         <GrEdit size={17} />
                     </button>
-                    <button className="w-8 h-8 cursor-pointer bg-primaryColor/40 text-headerColor rounded-md flex items-center justify-center transition-colors">
+                    <Link href={"/dashboard/biodata-management/biodata-preview"} className="w-8 h-8 cursor-pointer bg-primaryColor/40 text-headerColor rounded-md flex items-center justify-center transition-colors">
                         <BsFileEarmarkPdf size={17} />
-                    </button>
+                    </Link>
                     <button className="w-8 h-8 cursor-pointer bg-redColor text-white rounded-md flex items-center justify-center transition-colors">
                         <RiDeleteBin6Line size={17} />
                     </button>

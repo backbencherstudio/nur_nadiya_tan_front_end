@@ -8,7 +8,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { FaPlus } from "react-icons/fa";
-import { MdOutlineEventAvailable } from "react-icons/md";
+import { LuUsers } from "react-icons/lu";
+
 import { RiHome6Line } from "react-icons/ri";
 interface NavItem {
   icon: any;
@@ -33,10 +34,15 @@ const navItems: NavItem[] = [
     href: "/dashboard/add-enquiry",
   },
   {
-    icon: <MdOutlineEventAvailable />,
+    icon: <LuUsers />,
     label: "Biodata Management",
     href: "/dashboard/biodata-management",
   },
+  // {
+  //   icon: <MdOutlinePostAdd />,
+  //   label: "Enquiry Management",
+  //   href: "/dashboard/enquiry-management",
+  // },  
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
