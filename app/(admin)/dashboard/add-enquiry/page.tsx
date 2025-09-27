@@ -1,11 +1,37 @@
+"use client"
+import AddMaidEnquiry from '@/components/allForm/AddMaidEnquiry'
 import AddNewInquryForm from '@/components/allForm/AddNewInquryForm'
+import { useState } from 'react'
 
 function AddEnquiry() {
+  const [activeForm, setActiveForm] = useState<'employer' | 'maid'>('employer')
+
   return (
     <div className='md:px-10 pb-6'>
-      <h2 className='text-2xl md:text-[32px] text-headerColor font-semibold'>Enquiry</h2>
+       <div className='flex p-2 max-w-[340px] mx-auto rounded-lg border border-primaryColor justify-between items-center'>
+        <button 
+          className={`px-4 py-2 rounded-md transition-colors ${
+            activeForm === 'employer' 
+              ? 'bg-primaryColor text-white' 
+              : 'bg-transparent text-primaryColor hover:bg-primaryColor/10'
+          }`}
+          onClick={() => setActiveForm('employer')}
+        >
+          Employer Enquiry
+        </button>
+        <button 
+          className={`px-4 py-2 rounded-md transition-colors ${
+            activeForm === 'maid' 
+              ? 'bg-primaryColor text-white' 
+              : 'bg-transparent text-primaryColor hover:bg-primaryColor/10'
+          }`}
+          onClick={() => setActiveForm('maid')}
+        >
+          Maid Enquiry
+        </button>
+       </div>
       <div className=' p-4 md:p-10 rounded-2xl w-full bg-white mt-6'>
-      <AddNewInquryForm/>
+        {activeForm === 'employer' ? <AddNewInquryForm/> : <AddMaidEnquiry/>}
       </div>
     </div>
   )

@@ -75,6 +75,7 @@ export default function AddNewInquryForm() {
 
   return (
     <div className="w-full">
+      <h2 className="text-2xl font-semibold text-headerColor mb-6 text-center">Employer Enquiry</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 sm:grid-cols-2 space-y-4 gap-4">
           <div className="col-span-2">
