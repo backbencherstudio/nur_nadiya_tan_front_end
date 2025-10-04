@@ -31,7 +31,7 @@ function AddEnquiry() {
         </button>
        </div>
       <div className=' p-4 md:p-10 rounded-2xl w-full bg-white mt-6'>
-        {activeForm === 'employer' ? <AddNewInquryForm/> : <AddMaidEnquiry/>}
+        {activeForm === 'employer' ?  <AddMaidEnquiry/> : <AddNewInquryForm/>}
       </div>
     </div>
   )
