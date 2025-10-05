@@ -31,7 +31,7 @@ function DashboardUserTable({ recentOrder }: any) {
       date: "1 Jan 2025",
       time: "09:30 AM",
       source: "WhatsApp",
-      status: "Website"
+      status: "Contacted"
     },
     {
       id: 2,
@@ -40,8 +40,8 @@ function DashboardUserTable({ recentOrder }: any) {
       contact: "(603) 555-0124",
       date: "1 Jan 2025",
       time: "09:30 AM",
-      source: "Website",
-      status: "Website"
+      source: "Contacted",
+      status: "Contacted"
     },
     {
       id: 3,
@@ -60,8 +60,8 @@ function DashboardUserTable({ recentOrder }: any) {
       contact: "(603) 555-0126",
       date: "1 Jan 2025",
       time: "09:30 AM",
-      source: "Website",
-      status: "Website"
+      source: "Contacted",
+      status: "Contacted"
     },
     {
       id: 5,
@@ -71,7 +71,7 @@ function DashboardUserTable({ recentOrder }: any) {
       date: "1 Jan 2025",
       time: "09:30 AM",
       source: "WhatsApp",
-      status: "Website"
+      status: "Contacted"
     },
     {
       id: 6,
@@ -80,7 +80,7 @@ function DashboardUserTable({ recentOrder }: any) {
       contact: "(603) 555-0128",
       date: "1 Jan 2025",
       time: "09:30 AM",
-      source: "Website",
+      source: "Contacted",
       status: "Uncontacted"
     },
     {
@@ -91,7 +91,7 @@ function DashboardUserTable({ recentOrder }: any) {
       date: "1 Jan 2025",
       time: "09:30 AM",
       source: "WhatsApp",
-      status: "Website"
+      status: "Contacted"
     },
     {
       id: 8,
@@ -100,8 +100,8 @@ function DashboardUserTable({ recentOrder }: any) {
       contact: "(603) 555-0130",
       date: "1 Jan 2025",
       time: "09:30 AM",
-      source: "Website",
-      status: "Website"
+      source: "Contacted",
+      status: "Contacted"
     },
     {
       id: 9,
@@ -120,8 +120,8 @@ function DashboardUserTable({ recentOrder }: any) {
       contact: "(603) 555-0132",
       date: "1 Jan 2025",
       time: "09:30 AM",
-      source: "Website",
-      status: "Website"
+      source: "Contacted",
+      status: "Contacted"
     }
   ];
 
@@ -186,7 +186,7 @@ function DashboardUserTable({ recentOrder }: any) {
       accessor: "status",
       width: "120px",
       formatter: (value: string) => (
-        <div className={`px-3 py-2 rounded-md text-xs w-full 2xl:w-[60%] text-center font-semibold ${value === "Website"
+        <div className={`px-3 py-2 rounded-md text-xs w-full 2xl:w-[60%] text-center font-semibold ${value === "Contacted"
           ? "bg-greenColor/15 text-greenColor"
           : "bg-redColor/15 text-redColor"
           }`}>
@@ -259,7 +259,7 @@ function DashboardUserTable({ recentOrder }: any) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="All Status">All Status</SelectItem>
-                  <SelectItem value="Website">Website</SelectItem>
+                  <SelectItem value="Contacted">Contacted</SelectItem>
                   <SelectItem value="Uncontacted">Uncontacted</SelectItem>
                 </SelectContent>
               </Select>
