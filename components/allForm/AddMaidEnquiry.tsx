@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { X } from "lucide-react"
-import Image from "next/image"
 import * as React from "react"
 import { Controller, useForm } from "react-hook-form"
 import ButtonReuseable from "../reusable/CustomButton"
@@ -137,11 +136,11 @@ const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
 
     return (
         <div className="w-full">
-            <h2 className="text-2xl font-semibold text-headerColor  mb-6 text-center">Maid Enquiry</h2>
+            <h2 className="text-2xl font-semibold text-headerColor  mb-6 text-center">Employer Enquiry</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 space-y-4 gap-4">
                     <div className="col-span-2">
-            <div className="flex gap-4">
+            {/* <div className="flex gap-4">
               <div>
                 <Image src={imagePreview || "/empty-user.png"} alt="Uploaded Preview" width={100} height={100} className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover" />
               </div>
@@ -150,7 +149,7 @@ const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
                 <input type="file" accept="image/*" onChange={handleImageUpload} hidden ref={imageRef} className="w-full border border-dashed p-6 rounded-xl hidden" />
                 <p className="text-xs text-grayColor1 mt-1">Maximum photo size: 2MB</p>
               </div>
-            </div>
+            </div> */}
           </div>
                     <div className="col-span-2 relative sm:col-span-2 mt-2">
                         <label className="text-sm absolute -top-3 bg-white px-2 left-3 md:text-base block mb-1.5">Full Name</label>

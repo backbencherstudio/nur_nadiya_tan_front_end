@@ -10,13 +10,7 @@ function Banner() {
             <div className="h-full w-full">
                 <div className="grid grid-cols-1  md:grid-cols-2   items-center">
                     <div
-                        className="2xl:py-[96px] text-center md:text-left md:py-14 lg:py-18 3xl:pr-[140px] py-10 px-10  xl:pl-[40px]   3xl:pl-[120px] h-full"
-                        style={{
-                            backgroundImage: "url('/home/Hero-right.jpg')",
-                            backgroundSize: "cover",
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                        }}
+                        className="2xl:py-[96px] bg-secondaryColor text-center md:text-left md:py-14 lg:py-18 3xl:pr-[140px] py-10 px-10  xl:pl-[40px]   3xl:pl-[120px] h-full"
                     >
                         <h5 className="md:font-semibold font-medium text-lg md:text-2xl lg:text-3xl xl:text-[40px] text-primaryColor  md:mb-4">
                             For Maid{" "}
@@ -39,13 +33,8 @@ function Banner() {
                     </div>
 
                     <div
-                        className="2xl:py-[96px] text-center md:text-left md:py-14 lg:py-18 py-10 pl-10 xl:pl-[40px]   3xl:pl-[120px] pr-10 lg:pr-14 xl:pr-[100px] 3xl:pr-[227px] h-full"
-                        style={{
-                            backgroundImage: "url('/home/Hero-left.jpg')",
-                            backgroundSize: "cover",
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                        }}
+                        className="2xl:py-[96px] bg-primaryColor text-center md:text-left md:py-14 lg:py-18 py-10 pl-10 xl:pl-[40px]   3xl:pl-[120px] pr-10 lg:pr-14 xl:pr-[100px] 3xl:pr-[227px] h-full"
+                       
                     >
                         <h5 className="md:font-semibold font-medium text-lg md:text-2xl lg:text-3xl xl:text-[40px text-whiteColor mb-2 md:mb-4">
                             For Employer

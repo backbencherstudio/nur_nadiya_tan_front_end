@@ -75,7 +75,7 @@ export default function AddNewInquryForm() {
 
   return (
     <div className="w-full">
-      <h2 className="text-2xl font-semibold text-headerColor mb-6 text-center">Employer Enquiry</h2>
+      <h2 className="text-2xl font-semibold text-headerColor mb-6 text-center">Maid Enquiry</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 sm:grid-cols-2 space-y-4 gap-4">
           <div className="col-span-2">
@@ -91,11 +91,11 @@ export default function AddNewInquryForm() {
             </div>
           </div>
 
-          <div className="col-span-2 relative sm:col-span-1  mt-2">
+          <div className="col-span-2 relative   mt-2">
             <label className="text-sm absolute -top-3 bg-white px-2 left-3 md:text-base block mb-1.5">Full Name(as per passport)</label>
             <Input placeholder="Enter your full name" className="w-full !h-12 lg:!h-13 !pl-4" {...register("fullName", { required: true })} />
           </div>
-          <div className="col-span-2 sm:col-span-1 relative mt-2">
+          {/* <div className="col-span-2 sm:col-span-1 relative mt-2">
             <label className="text-sm absolute -top-3 bg-white px-2 left-3 md:text-base block ">Enquiry Type</label>
             <Select onValueChange={(v) => setEnquiryType(v as "maid" | "employer")} value={enquiryType}>
               <SelectTrigger className="w-full !h-12 md:!h-13 !pl-4">
@@ -106,7 +106,7 @@ export default function AddNewInquryForm() {
                 <SelectItem value="employer">Employer Enquiry</SelectItem>
               </SelectContent>
             </Select>
-          </div>
+          </div> */}
           <div className="col-span-2 relative sm:col-span-1 ">
             <label className="text-sm absolute hover:!bg-white -top-3 bg-white px-2 left-3 md:text-base block mb-1.5">Date of Birth</label>
             <Popover>
