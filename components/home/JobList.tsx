@@ -50,7 +50,6 @@ function JobList() {
                   </p>} */}
                 </div>
               </div>
-
               {/* Maid Image */}
               <div className="relative overflow-hidden w-full rounded-full  h-full md:col-span-2">
                 <Image
