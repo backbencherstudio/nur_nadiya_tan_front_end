@@ -3,8 +3,10 @@ import Link from "next/link";
 import { useState } from "react";
 import RegistrationForm from "../allForm/RegistrationForm";
 import ButtonReuseable from "../reusable/CustomButton";
+import RequestForMaidForm from "../allForm/RequestForMaidForm";
 function Banner() {
     const [open, setOpen] = useState(false);
+    const [openRequest, setOpenRequest] = useState(false);
     return (
         <div>
             <div className="h-full w-full">
@@ -47,7 +49,7 @@ function Banner() {
                             View available maids now
                         </p>
                         <div className="lg:mt-10 mt-6 md:mt-3">
-                            <Link href="/employ-signup">
+                            <Link href="#" onClick={() => setOpenRequest(true)}>
                                 <ButtonReuseable
                                     title="Hire a transfer maid"
                                     className="!text-headerColor !bg-[#FBDE6E] py-3.5 !text-base !w-full md:!w-auto !font-medium"
@@ -58,6 +60,7 @@ function Banner() {
                 </div>
             </div>
             {open && <RegistrationForm open={open} setOpen={setOpen} />}
+            {openRequest && <RequestForMaidForm open={openRequest} setOpen={setOpenRequest} />}
         </div>
     );
 }

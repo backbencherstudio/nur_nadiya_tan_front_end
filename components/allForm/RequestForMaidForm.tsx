@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { X } from "lucide-react"
 import * as React from "react"
 import { Controller, useForm } from "react-hook-form"
+import { Dialog, DialogContent, DialogHeader } from "../ui/dialog"
 
 // Define types for the form options
 interface SelectOption {
@@ -13,7 +14,7 @@ interface SelectOption {
     description?: string;
 }
 
-export default function RequestForMaidForm() {
+export default function RequestForMaidForm({open,setOpen} :any) {
     const [dob, setDob] = React.useState<Date | undefined>()
     const [transferDate, setTransferDate] = React.useState<Date | undefined>()
     const [hasEmployer, setHasEmployer] = React.useState<string>("")
@@ -134,9 +135,11 @@ export default function RequestForMaidForm() {
     }
 
     return (
-        <section className=" py-14 lg:py-[60px] mx-4">
-            <div className="max-w-[992px] border mx-auto p-4 rounded-2xl sm:p-7 ">
-                <h2 className="text-2xl font-semibold text-headerColor">Request for a Maid Form</h2>
+        <Dialog open={open} onOpenChange={setOpen}>
+            <DialogContent className="md:!max-w-[710px] max-w-[90%] max-h-[90%] overflow-y-auto p-4 sm:p-7">
+                <DialogHeader>
+                    <h2 className="text-2xl font-semibold text-headerColor">Request for a Maid Form</h2>
+                </DialogHeader>
                 <form onSubmit={handleSubmit(onSubmit)} className="mt-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
@@ -256,7 +259,7 @@ export default function RequestForMaidForm() {
                         </button>
                     </div>
                 </form>
-            </div>
-        </section>
+            </DialogContent>
+        </Dialog>
     )
 }
