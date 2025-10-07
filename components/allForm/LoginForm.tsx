@@ -35,14 +35,18 @@ export default function LoginForm() {
     setIsDisable(true);
     try {
       const response = await UserService.login(data);
-      if (response.data?.success === true) {
-        const tokenNumber = response.data.authorization.token;
+      console.log(response.data);
+      console.log(response.data.tokens.accessToken);
+      
+      if (response?.data?.success === true) {
+        const tokenNumber = response?.data?.tokens?.accessToken;
+        const userType = response?.data?.data?.role;
         CookieHelper.set({
-          key: "gametoken",
+          key: "jobtoken",
           value: tokenNumber,
         });
         toast.success("Successfully login!");
-        router.push("/");
+         router.push( userType== "admin" ? "/dashboard" : "/");
         reset()
         setIsDisable(false);
       }
