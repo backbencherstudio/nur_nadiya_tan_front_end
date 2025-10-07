@@ -1,14 +1,15 @@
 
 import { cookies } from 'next/headers'
 import Link from 'next/link'
-import RecentOrderTable from './DashboardUserTable'
-import StatCards from './StatCards'
 import DashboardUserTable from './DashboardUserTable'
+import StatCards from './StatCards'
 
 async function DashboardPage() {
   const cookieStore = await cookies()
   const token = cookieStore?.get("jobtoken")?.value;
-  if (token) {
+  console.log("check",token);
+  
+  if (!token) {
     return (
       <div className="flex justify-center items-center h-screen">
         <Link href="/login" className="text-xl underline text-primaryColor text-center">Please log in to view the dashboard</Link>
@@ -18,7 +19,6 @@ async function DashboardPage() {
 
   try {
   
-
     return (
       <div className='flex flex-col justify-between h-full'>
         <StatCards />

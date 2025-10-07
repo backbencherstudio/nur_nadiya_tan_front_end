@@ -9,6 +9,8 @@ import React from "react";
 import { FaPlus } from "react-icons/fa";
 import { LuUsers } from "react-icons/lu";
 import { RiHome6Line } from "react-icons/ri";
+import { CookieHelper } from "@/helper/cookie.helper";
+
 
 interface NavItem {
   icon: any;
@@ -54,7 +56,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     return pathname.startsWith(href);
   };
   const handleLogout = () => {
-
+    CookieHelper.destroy({ key: "jobtoken" });
     router.push("/login")
 
   }

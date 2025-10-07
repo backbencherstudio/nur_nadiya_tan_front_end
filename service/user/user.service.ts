@@ -37,6 +37,19 @@ export const UserService = {
     CookieHelper.destroy({ key: "token", context });
   },
   // get user details
+  getData: async (endpoint , token ) => {
+    // const userToken = CookieHelper.get({ key: "token", context });
+    const userToken = token;
+
+    const _config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + userToken,
+      },
+    };
+
+    return await Fetch.get(`${endpoint}`, _config);
+  },
   getUserDetails: async ({ token = "", context = null }) => {
     // const userToken = CookieHelper.get({ key: "token", context });
     const userToken = token;
