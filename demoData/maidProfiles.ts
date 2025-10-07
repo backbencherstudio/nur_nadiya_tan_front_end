@@ -1,7 +1,7 @@
-import j1 from "@/public/jobImage/j1.jpg";
-import j2 from "@/public/jobImage/j2.jpg";
-import j3 from "@/public/jobImage/j3.jpg";
-import j4 from "@/public/jobImage/j4.jpg";
+import j1 from "@/public/jobImage/j1.png";
+import j2 from "@/public/jobImage/j2.png";
+import j3 from "@/public/jobImage/j3.png";
+import j4 from "@/public/jobImage/j4.png";
 
 export const maidProfiles = [
   {

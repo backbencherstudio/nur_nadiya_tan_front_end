@@ -17,10 +17,10 @@ function JobList() {
           {maidProfiles.map((maid) => (
             <div
               key={maid.id}
-              className="flex group  flex-col-reverse md:grid grid-cols-5 p-5 lg:p-6 bg-[#EDFAFB] items-center rounded-2xl  overflow-hidden hover:shadow-xl transition-all shadow-primaryColor/40"
+              className="flex group  flex-col-reverse md:grid grid-cols-10 p-5 lg:p-10 bg-[#EDFAFB] items-center rounded-2xl  overflow-hidden hover:shadow-xl transition-all shadow-primaryColor/40"
             >
               {/* Maid Info */}
-              <div className=" md:col-span-3 mt-4">
+              <div className=" md:col-span-8 mt-4">
                 <h3 className="text-lg md:text-xl lg:text-[32px] text-primaryColor font-semibold mb-3 md:mb-4 lg:mb-5">
                   {maid.name} ({maid.nationality}, {maid.age} years old)
                 </h3>
@@ -50,15 +50,14 @@ function JobList() {
                   </p>} */}
                 </div>
               </div>
-
               {/* Maid Image */}
-              <div className="relative overflow-hidden rounded-[12px]  h-full md:col-span-2">
+              <div className="relative overflow-hidden w-full rounded-full  h-full md:col-span-2">
                 <Image
                   src={maid.image}
                   alt={`${maid.name} - ${maid.nationality} maid`}
-                  width={500}
-                  height={500}
-                  className="object-cover h-full group-hover:scale-105 transition-all duration-300 rounded-[12px]"
+                  width={800}
+                  height={800}
+                  className="object-cover w-full h-full group-hover:scale-105 transition-all duration-300 rounded-full"
                 />
               </div>
             </div>

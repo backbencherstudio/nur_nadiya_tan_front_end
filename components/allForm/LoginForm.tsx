@@ -1,11 +1,22 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { CookieHelper } from "@/helper/cookie.helper";
+import mainLogo from "@/public/icon/mainlogo.png";
+import { UserService } from "@/service/user/user.service";
+import { Eye, EyeOff } from "lucide-react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-
-export default function LoginPage() {
+import { toast } from "react-toastify";
+type LoginFormInputs = {
+  email: string;
+  password: string;
+};
+export default function LoginForm() {
+  const [isDisable, setIsDisable] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -18,20 +29,41 @@ export default function LoginPage() {
     },
   });
 
-  const onSubmit = (data: any) => {
-    console.log("Submitted Data:", data);
-    reset();
+  const router = useRouter();
+
+  const onSubmit = async (data: LoginFormInputs) => {
+    setIsDisable(true);
+    try {
+      const response = await UserService.login(data);
+      if (response.data?.success === true) {
+        const tokenNumber = response.data.authorization.token;
+        CookieHelper.set({
+          key: "gametoken",
+          value: tokenNumber,
+        });
+        toast.success("Successfully login!");
+        router.push("/");
+        reset()
+        setIsDisable(false);
+      }
+    } catch (error) {
+      toast.error("Wrong Email or Password");
+      setIsDisable(false);
+    }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="w-full max-w-md p-6 space-y-6 bg-white rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold text-center text-headerColor">Login</h2>
+    <div className="flex justify-center items-center min-h-screen ">
+      <div className="w-full max-w-md p-6 space-y-6  ">
+        <div className="flex justify-center items-center">
+          <Image src={mainLogo} alt="adminLogin" width={200} height={200} className="w-14 md:w-[200px]" />
+        </div>
+        <h2 className="text-2xl font-bold text-center text-white mt-6">Admin Login</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Email Field */}
+
           <div className="space-y-2">
-            <Label className="text-[14px] font-medium text-headerColor">Email</Label>
+            <Label className="text-[14px] font-medium text-white ">Email</Label>
             <Input
               {...register("email", {
                 required: "Email is required",
@@ -41,47 +73,56 @@ export default function LoginPage() {
                 },
               })}
               placeholder="example@example.com"
-              className="rounded-md !h-[45px] text-[14px] text-grayColor"
+              className="rounded-md !h-[45px] text-[14px] text-whiteColor "
             />
             {errors.email && (
               <span className="text-sm text-red-500">{errors.email.message}</span>
             )}
           </div>
 
-          {/* Password Field */}
           <div className="space-y-2">
-            <Label className="text-[14px] font-medium text-headerColor">Password</Label>
-            <Input
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
-                },
-              })}
-              type="password"
-              placeholder="Your password"
-              className="rounded-md !h-[45px] text-[14px] text-grayColor"
-            />
+            <Label className="text-[14px] font-medium text-white ">Password</Label>
+            <div className="relative">
+              <Input
+                {...register("password", {
+                  required: "Password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must be at least 6 characters",
+                  },
+                })}
+                type={showPassword ? "text" : "password"}
+                placeholder="Your password"
+                className="rounded-md !h-[45px] text-[14px] pr-10 text-whiteColor "
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-100  hover:text-gray-300  focus:outline-none transition-colors duration-200"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
+            </div>
             {errors.password && (
               <span className="text-sm text-red-500">{errors.password.message}</span>
             )}
           </div>
-
-          {/* Submit Button */}
-          <div className="flex justify-between gap-3 mt-6">
-            <Button
-              type="button"
-              className="flex items-center gap-1 bg-grayColor1/20 text-descriptionColor px-4 py-2 lg:py-3 lg:px-6 rounded-md text-sm font-medium"
-            >
-              Cancel
-            </Button>
-            <Button
+          <div className="w-full gap-3 mt-6">
+            <button
               type="submit"
-              className="flex items-center gap-1 bg-primaryColor text-white px-4 py-2 lg:py-3 lg:px-6 rounded-md text-sm font-medium"
+              className={`w-full py-2 rounded-md transition-all duration-200 ${
+                isDisable 
+                    ? 'bg-gray-400  cursor-not-allowed text-white' 
+                  : 'bg-primaryColor hover:bg-primaryColor/90 active:bg-primaryColor/80  text-white'
+              }`}
+              disabled={isDisable}
             >
-              Login
-            </Button>
+              {isDisable ? "Sending..." : "Login"}
+            </button>
           </div>
         </form>
       </div>
