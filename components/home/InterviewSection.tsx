@@ -1,4 +1,4 @@
-import interviewImage from "@/public/home/interviewImage.jpg";
+import interviewImage from "@/public/home/interview.png";
 import locationIcon from "@/public/icon/loacation.png";
 import whatsappIcon from "@/public/icon/whatsapp.png";
 import Image from 'next/image';
