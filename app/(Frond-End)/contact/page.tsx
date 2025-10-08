@@ -9,14 +9,14 @@ function ContactPage() {
     {
       id: 1,
       icon: <IoCallOutline />,
-      link: "tel:602-774-4735",
-      text: "+602-774-4735",
+      link: "tel:65 87427269",
+      text: "+65 87427269",
       additionalClass: "",
     },
     {
       id: 2,
       icon: <GrLocation />,
-      text: "2715 Ash Dr. San Jose, South Dakota",
+      text: "810 Geylang Rd #03-145D Singapore 409286",
        additionalClass: " break-all text-descriptionColor",
     },
     {

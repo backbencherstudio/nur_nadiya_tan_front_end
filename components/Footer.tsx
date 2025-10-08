@@ -71,11 +71,11 @@ export default function Footer() {
                 <li className=" flex gap-3 items-center">
                   <IoCallOutline />
                   <Link href="tel:602-774-4735" className="hover:text-primaryColor">
-                    +602-774-4735
+                    +65 87427269
                   </Link>
                 </li>
                 <li className=" flex gap-3 items-start ">
-                  <GrLocation className="mt-1" /> 2715 Ash Dr. San Jose, South Dakot
+                  <GrLocation className="mt-1" /> 810 Geylang Rd #03-145D Singapore 409286
                 </li>
                 <li className=" flex gap-3 items-center">
                   <IoMailOutline className="text-white" />
