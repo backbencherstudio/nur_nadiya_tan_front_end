@@ -2,8 +2,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import RegistrationForm from "../allForm/RegistrationForm";
-import ButtonReuseable from "../reusable/CustomButton";
 import RequestForMaidForm from "../allForm/RequestForMaidForm";
+import ButtonReuseable from "../reusable/CustomButton";
 function Banner() {
     const [open, setOpen] = useState(false);
     const [openRequest, setOpenRequest] = useState(false);
@@ -38,7 +38,7 @@ function Banner() {
                         className="2xl:py-[96px] bg-primaryColor text-center md:text-left md:py-14 lg:py-18 py-10 pl-10 xl:pl-[40px]   3xl:pl-[120px] pr-10 lg:pr-14 xl:pr-[100px] 3xl:pr-[227px] h-full"
                        
                     >
-                        <h5 className="md:font-semibold font-medium text-lg md:text-2xl lg:text-3xl xl:text-[40px text-whiteColor mb-2 md:mb-4">
+                        <h5 className="md:font-semibold font-medium text-lg md:text-2xl lg:text-3xl xl:text-[40px] text-white  md:mb-4">
                             For Employer
                         </h5>
                         <h2 className="text-[28px] leading-[120%] md:text-[32px] lg:text-5xl xl:text-[60px] 2xl:text-[64px] text-headerColor font-bold ">
