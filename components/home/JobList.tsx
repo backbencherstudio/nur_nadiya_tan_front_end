@@ -1,17 +1,31 @@
 "use client";
-
 import { maidProfiles } from "@/demoData/maidProfiles";
+import whatsappIcon from "@/public/icon/whatsapp.png";
 import Image from "next/image";
 import ButtonReuseable from "../reusable/CustomButton";
 import SectionHeader from "../reusable/SectionHeader";
 
 function JobList() {
 
+  const handleWhatsAppClick = () => {
+    const phoneNumber = "+6587427269"; // Remove spaces and format properly
+    const whatsappUrl = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   return (
     <section className="my-14 lg:my-[100px]">
       <div className="container">
         {/* Header */}
-        <SectionHeader title="View profile of transfer maids in Singapore" description="Explore profiles of reliable transfer maids in Singapore, experienced in childcare, cooking, and household chores, ready for immediate employment" />
+        <SectionHeader title="Contact us to view available profiles of transfer maids in Singapore" description="Explore profiles of reliable transfer maids in Singapore, experienced in childcare, cooking, and household chores, ready for immediate employment" />
+        <div className="flex justify-center -mt-8 mb-10">
+        <ButtonReuseable 
+          title="Chat on WhatsApp" 
+          className="!text-headerColor !font-medium" 
+          icon={<Image src={whatsappIcon} alt="whatsappIcon" width={20} height={20} />}
+          onClick={handleWhatsAppClick}
+        />
+        </div>
         {/* Maid Cards */}
         <div className="lg:space-y-10 space-y-5">
           {maidProfiles.map((maid) => (

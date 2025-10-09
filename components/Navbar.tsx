@@ -31,7 +31,8 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState("en");
   const { setSelectedLang: setContextLang } = useLanguage();
-
+  const phoneNumber = "+6587427269";
+  const message = "Hello! I'm interested in viewing available maid profiles.";
   // Load language from localStorage on component mount
   useEffect(() => {
     const savedLanguage = localStorage.getItem('selectedLanguage');
@@ -75,7 +76,8 @@ export default function Navbar() {
             <LanguageSwitcherLG />
           </div>
           <Link
-            href="/registration"
+            href={`https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}`}
+            target="_blank"
             className="bg-secondaryColor text-blackColor flex items-center gap-2 font-medium cursor-pointer  text-base px-5 py-3 rounded-[12px]">
             <Image src={whatsappIcon} alt="whatsappIcon" width={20} height={20} /> Chat Now
           </Link>
@@ -92,7 +94,8 @@ export default function Navbar() {
             <div className="flex flex-col xl:flex-row xl:items-center sm:justify-between gap-4">
               {/* Enquire Button */}
               <Link
-                href="/registration"
+                href={`https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}`}
+                target="_blank"
                 className="bg-secondaryColor flex items-center gap-2 text-blackColor font-medium cursor-pointer  text-base px-4 py-2 justify-center rounded-[8px] text-center w-full sm:w-auto"
                 onClick={() => setMenuOpen(false)}
               >
@@ -143,7 +146,8 @@ export default function Navbar() {
             <div className="flex flex-col xl:flex-row xl:items-center sm:justify-between gap-4">
               {/* Enquire Button */}
               <Link
-                href="/registration"
+                href={`https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}`}
+                target="_blank"
                 className="bg-secondaryColor flex items-center gap-2 text-blackColor font-medium cursor-pointer  text-base px-4 py-2 justify-center rounded-[8px] text-center w-full sm:w-auto"
                 onClick={() => setMenuOpen(false)}
               >

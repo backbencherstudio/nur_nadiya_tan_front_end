@@ -1,11 +1,12 @@
 "use client";
+import Link from 'next/link';
 import { useState } from 'react';
 import { BsWhatsapp } from 'react-icons/bs';
 import { IoSend } from 'react-icons/io5';
 
 function WhatsAppButton() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const phoneNumber = "+6587427269";
   const toggleChat = () => {
     setIsOpen(!isOpen);
   };
@@ -47,10 +48,10 @@ function WhatsAppButton() {
           
           {/* Action Button */}
           <div className="p-4 pt-0">
-            <button className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors">
+            <Link href={`https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}`} target='_blank' className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors">
               <span>Open chat</span>
               <IoSend />
-            </button>
+            </Link>
           </div>
         </div>
       )}
