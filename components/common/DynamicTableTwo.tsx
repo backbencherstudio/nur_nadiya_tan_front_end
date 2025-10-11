@@ -3,6 +3,7 @@
 import Image from "next/image";
 import React from "react";
 import { MdArrowBackIosNew, MdArrowForwardIos } from "react-icons/md";
+import Loader from "../reusable/Loader";
 
 interface ColumnConfig {
   label: React.ReactNode;
@@ -23,6 +24,7 @@ interface DynamicTableProps {
   totalpage: number;
   totalItems?: number;
   onItemsPerPageChange?: (n: number) => void;
+  loading?: boolean;
 }
 
 export default function DynamicTableTwo({
@@ -31,6 +33,7 @@ export default function DynamicTableTwo({
   currentPage,
   itemsPerPage,
   onPageChange,
+  loading,
   onView,
   totalpage,
   onDelete,
@@ -39,13 +42,9 @@ export default function DynamicTableTwo({
   onItemsPerPageChange,
 }: DynamicTableProps) {
   const totalPages = totalpage;
-  const paginatedData = data.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
 
   const effectiveTotalItems = typeof totalItems === "number" ? totalItems : data.length;
-  const startIndex = paginatedData.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0;
+  const startIndex = data?.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0;
   const endIndex = Math.min(currentPage * itemsPerPage, effectiveTotalItems);
 
   const getPagination = () => {
@@ -69,35 +68,41 @@ export default function DynamicTableTwo({
     // Reset to page 1 on page-size change
     onPageChange(1);
   };
-const originalArray = [ itemsPerPage,10, 25, 50, 100];
+const originalArray = [1,5, 10, 25, 50, 100];
 const uniqueArray = [...new Set(originalArray)];
   return (
     <div>
       {/* Table Wrapper with Border & Radius */}
-      <div className=" rounded-t-md border border-gray-200">
-        <div className="overflow-x-auto">
+      <div className="rounded-t-md border border-gray-200">
+        <div className="h-[400px] overflow-auto">
           <table className="min-w-[1000px] w-full text-left">
-            <thead className="bg-neutral-50">
+            <thead className="bg-neutral-50 sticky top-0 z-10">
               <tr>
                 {columns.map((col, index) => (
                   <th
                     key={index}
                     style={{ width: col.width  || "auto" }}
-                    className="px-4 py-3 whitespace-nowrap text-sm font-medium text-[#4a4c56] border-b border-gray-100"
+                    className="px-4 py-3 whitespace-nowrap text-sm font-medium text-[#4a4c56] border-b border-gray-100 bg-neutral-50"
                   >
                     {col.label}
                   </th>
                 ))}
                 {(onView || onDelete) && (
-                  <th className="px-4 py-3 text-sm font-medium text-[#4a4c56] border-b border-gray-100">
+                  <th className="px-4 py-3 text-sm font-medium text-[#4a4c56] border-b border-gray-100 bg-neutral-50">
                     Action
                   </th>
                 )}
               </tr>
             </thead>
             <tbody>
-              {paginatedData.length > 0 ? (
-                paginatedData.map((row, i) => (
+              {loading ? (
+                <tr>
+                  <td colSpan={columns.length + (onView || onDelete ? 1 : 0)} className="px-4 py-10 text-center text-[#4a4c56] text-sm">
+                    <Loader />
+                  </td>
+                </tr>
+              ) : data.length > 0 ? (
+                data.map((row, i) => (
                   <tr key={i} className="border-t border-gray-100">
                     {columns.map((col, idx) => (
                       <td
@@ -150,7 +155,7 @@ const uniqueArray = [...new Set(originalArray)];
       </div>
 
       {/* Pagination + Right-side summary / page-size */}
-      {totalPages > 1 && (
+      {totalPages > 0 && (
         <div className="flex items-center justify-between mt-6 gap-2">
           <div className="flex items-center gap-2">
             <button

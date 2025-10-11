@@ -6,8 +6,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useToken } from "@/hooks/useToken";
+import { UserService } from "@/service/user/user.service";
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiPlus, FiSearch } from "react-icons/fi";
 import { GrEdit } from "react-icons/gr";
 import DynamicTableTwo from "../common/DynamicTableTwo";
@@ -16,114 +19,60 @@ import ButtonReuseable from "../reusable/CustomButton";
 function DashboardUserTable({ recentOrder }: any) {
   const [recentOrders, setRecentOrders] = useState<any>(recentOrder);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [selectedType, setSelectedType] = useState("All Type");
   const [selectedStatus, setSelectedStatus] = useState("All Status");
+  const {token} = useToken();
 
-  // Demo data matching the table structure from the image
-  const demoData = [
-    {
-      id: 1,
-      name: "Courtney Henry",
-      type: "Maid",
-      contact: "(603) 555-0123",
-      date: "1 Jan 2025",
-      time: "09:30 AM",
-      source: "WhatsApp",
-      status: "Contacted"
-    },
-    {
-      id: 2,
-      name: "Wade Warren",
-      type: "Employer",
-      contact: "(603) 555-0124",
-      date: "1 Jan 2025",
-      time: "09:30 AM",
-      source: "Contacted",
-      status: "Contacted"
-    },
-    {
-      id: 3,
-      name: "Dianne Russell",
-      type: "Maid",
-      contact: "(603) 555-0125",
-      date: "1 Jan 2025",
-      time: "09:30 AM",
-      source: "WhatsApp",
-      status: "Uncontacted"
-    },
-    {
-      id: 4,
-      name: "Guy Hawkins",
-      type: "Employer",
-      contact: "(603) 555-0126",
-      date: "1 Jan 2025",
-      time: "09:30 AM",
-      source: "Contacted",
-      status: "Contacted"
-    },
-    {
-      id: 5,
-      name: "Arlene McCoy",
-      type: "Maid",
-      contact: "(603) 555-0127",
-      date: "1 Jan 2025",
-      time: "09:30 AM",
-      source: "WhatsApp",
-      status: "Contacted"
-    },
-    {
-      id: 6,
-      name: "Savannah Nguyen",
-      type: "Employer",
-      contact: "(603) 555-0128",
-      date: "1 Jan 2025",
-      time: "09:30 AM",
-      source: "Contacted",
-      status: "Uncontacted"
-    },
-    {
-      id: 7,
-      name: "Savannah Nguyen",
-      type: "Maid",
-      contact: "(603) 555-0129",
-      date: "1 Jan 2025",
-      time: "09:30 AM",
-      source: "WhatsApp",
-      status: "Contacted"
-    },
-    {
-      id: 8,
-      name: "Savannah Nguyen",
-      type: "Employer",
-      contact: "(603) 555-0130",
-      date: "1 Jan 2025",
-      time: "09:30 AM",
-      source: "Contacted",
-      status: "Contacted"
-    },
-    {
-      id: 9,
-      name: "Savannah Nguyen",
-      type: "Maid",
-      contact: "(603) 555-0131",
-      date: "1 Jan 2025",
-      time: "09:30 AM",
-      source: "WhatsApp",
-      status: "Uncontacted "
-    },
-    {
-      id: 10,
-      name: "Savannah Nguyen",
-      type: "Employer",
-      contact: "(603) 555-0132",
-      date: "1 Jan 2025",
-      time: "09:30 AM",
-      source: "Contacted",
-      status: "Contacted"
+  // Debounce search term
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
+    return () => clearTimeout(handler);
+  }, [searchTerm]);
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearchTerm, selectedType, selectedStatus]);
+
+  // Build query parameters
+  const buildQueryParams = () => {
+    const params = new URLSearchParams();
+    
+    if (debouncedSearchTerm.trim()) {
+      params.append('search', debouncedSearchTerm.trim());
     }
-  ];
+    
+    if (selectedType !== "All Type") {
+      params.append('type', selectedType);
+    }
+    
+    if (selectedStatus !== "All Status") {
+      params.append('status', selectedStatus);
+    }
+    
+    params.append('page', currentPage.toString());
+    params.append('limit', itemsPerPage.toString());
+    
+    return params.toString();
+  };
+
+  const getEnquiriesData = async () => {
+    const queryString = buildQueryParams();
+    const response = await UserService.getEnquiriesData(queryString, token);
+    return response?.data?.data;
+  };
+
+  const {data, error, isLoading} = useQuery({
+    queryKey: ["enquiriesData", debouncedSearchTerm, selectedType, selectedStatus, currentPage, itemsPerPage],
+    queryFn: getEnquiriesData,
+    enabled: !!token, // Only run query when token is available
+  });
+
 
   const columns = [
     {
@@ -207,6 +156,8 @@ function DashboardUserTable({ recentOrder }: any) {
       },
     },
   ];
+  console.log("checkk enquiriesData",data);
+  
   return (
     <section>
       <div className="bg-white shadow p-5 rounded-md">
@@ -273,15 +224,17 @@ function DashboardUserTable({ recentOrder }: any) {
         </div>
         <DynamicTableTwo
           columns={columns}
-          data={demoData}
+          data={data?.enquiries || []}
           currentPage={currentPage}
           itemsPerPage={itemsPerPage}
           onPageChange={(page) => setCurrentPage(page)}
           onItemsPerPageChange={(newItemsPerPage) => {
-            console.log('Changing itemsPerPage from', itemsPerPage, 'to', newItemsPerPage);
             setItemsPerPage(newItemsPerPage);
+            setCurrentPage(1); // Reset to page 1 when items per page changes
           }}
-          totalpage={5}
+          loading={isLoading}
+          totalItems={data?.pagination?.totalCount || 0}
+          totalpage={data?.pagination?.totalPages || 0}
         />
       </div>
     </section>

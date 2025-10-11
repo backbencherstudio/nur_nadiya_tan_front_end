@@ -50,6 +50,20 @@ export const UserService = {
 
     return await Fetch.get(`${endpoint}`, _config);
   },
+  getEnquiriesData: async (queryString, token) => {
+    const userToken = token;
+
+    const _config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + userToken,
+      },
+    };
+
+    // Ensure query string starts with ? if it has parameters
+    const endpoint = queryString ? `/admin/get-all-enquiries?${queryString}` : '/admin/get-all-enquiries';
+    return await Fetch.get(endpoint, _config);
+  },
   getUserDetails: async ({ token = "", context = null }) => {
     // const userToken = CookieHelper.get({ key: "token", context });
     const userToken = token;
