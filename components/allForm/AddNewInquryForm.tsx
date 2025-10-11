@@ -6,12 +6,17 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { useToken } from "@/hooks/useToken"
 import { cn } from "@/lib/utils"
+import { UserService } from "@/service/user/user.service"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { format } from "date-fns"
 import { CalendarIcon, X } from "lucide-react"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import * as React from "react"
 import { Controller, useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import ButtonReuseable from "../reusable/CustomButton"
 
 interface SelectOption {
@@ -24,10 +29,17 @@ export default function AddNewInquryForm() {
   const [transferDate, setTransferDate] = React.useState<Date | undefined>()
   const [hasEmployer, setHasEmployer] = React.useState<string>("")
   const [imagePreview, setImagePreview] = React.useState<string | null>(null)
+  const [selectedFile, setSelectedFile] = React.useState<File | null>(null)
   const [selectedLanguages, setSelectedLanguages] = React.useState<string[]>([])
   const imageRef = React.useRef<HTMLInputElement>(null)
   const [enquiryType, setEnquiryType] = React.useState<"maid" | "employer">("maid")
-  const { register, handleSubmit, control, formState: { errors } } = useForm()
+  
+  // React Query setup
+  const { token } = useToken()
+  const queryClient = useQueryClient()
+  const router = useRouter()
+  
+  const { register, handleSubmit, control, reset, formState: { errors } } = useForm()
 
   const languageOptions: SelectOption[] = [
     { value: "english", label: "English" },
@@ -42,16 +54,62 @@ export default function AddNewInquryForm() {
     { value: "tagalog", label: "Tagalog" },
   ]
 
-  const onSubmit = (data: any) => {
-    const formData = { ...data, dob, transferDate, hasEmployer, languages: selectedLanguages }
-    // Replace with API call as needed
+  // React Query mutation for adding enquiry
+  const addEnquiryMutation = useMutation({
+    mutationFn: async (formData: FormData) => {
+      const response = await UserService.addEnquiry(formData, token)
+      return response
+    },
+    onSuccess: (data) => {
+      console.log("Enquiry submitted successfully!", data)
+      toast.success("Maid enquiry submitted successfully!")
+      router.push("/dashboard")
+      // Reset form
+      reset()
+      setSelectedLanguages([])
+      setImagePreview(null)
+      setSelectedFile(null)
+      setHasEmployer("")
+      setDob(undefined)
+      setTransferDate(undefined)
+      // Invalidate enquiries query to refresh the list
+      queryClient.invalidateQueries({ queryKey: ["enquiriesData"] })
+    },
+    onError: (error: any) => {
+      console.error("Error submitting enquiry:", error)
+      toast.error(error?.response?.data?.message || "Failed to submit enquiry. Please try again.")
+    }
+  })
 
-    console.log("Enquiry Submitted:", formData)
+  const onSubmit = (data: any) => {
+    // Create FormData for multipart/form-data submission
+    const formData = new FormData()
+    
+    // Add form fields based on API requirements
+    formData.append('full_name', data.fullName || '')
+    formData.append('date_of_birth', dob ? format(dob, 'yyyy-MM-dd') : '')
+    formData.append('transfer_date', transferDate ? format(transferDate, 'yyyy/MM/dd') : '')
+    formData.append('wp_number', data.wpnNumber || '')
+    formData.append('mobile_number', data.mobileNumber || '')
+    formData.append('language', selectedLanguages.join(',') || '')
+    formData.append('nationality', data.nationality || '')
+    formData.append('additional_information', data.additionalInfo || '')
+    formData.append('current_employer', hasEmployer || '')
+    formData.append('enquiry_type', 'maid')
+    
+    // Add image if selected
+    if (selectedFile) {
+      formData.append('image', selectedFile)
+    }
+    
+    // Submit using React Query mutation
+    addEnquiryMutation.mutate(formData)
   }
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
+      setSelectedFile(file)
       const reader = new FileReader()
       reader.onloadend = () => setImagePreview(reader.result as string)
       reader.readAsDataURL(file)
@@ -210,7 +268,13 @@ export default function AddNewInquryForm() {
           </div>
         </div>
         <div className="pt-6">
-          <ButtonReuseable type="submit" title="Submit" className="w-full" />
+          <ButtonReuseable 
+            type="submit" 
+            title="Submit" 
+            className="w-full" 
+            loading={addEnquiryMutation.isPending}
+            sendingMsg="Submitting..."
+          />
         </div>
         <input ref={imageRef} type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
       </form>

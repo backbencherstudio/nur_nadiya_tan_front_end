@@ -1,5 +1,5 @@
 "use client"
-import AddMaidEnquiry from '@/components/allForm/AddMaidEnquiry'
+import AddEmployerEnquiry from '@/components/allForm/AddEmployerEnquiry'
 import AddNewInquryForm from '@/components/allForm/AddNewInquryForm'
 import { useState } from 'react'
 
@@ -31,7 +31,7 @@ function AddEnquiry() {
         </button>
        </div>
       <div className=' p-4 md:p-10 rounded-2xl w-full bg-white mt-6'>
-        {activeForm === 'employer' ?  <AddMaidEnquiry/> : <AddNewInquryForm/>}
+        {activeForm === 'employer' ?  <AddEmployerEnquiry/> : <AddNewInquryForm/>}
       </div>
     </div>
   )

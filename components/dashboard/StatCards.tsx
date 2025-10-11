@@ -22,8 +22,7 @@ export default function StatCards() {
     queryFn: () => getStatCards(),
   });
 
-  console.log("check query data", data);
-  console.log("check isLoading isLoading", isLoading);
+
   
   const statCards = [
     {
