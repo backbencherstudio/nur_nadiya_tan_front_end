@@ -156,7 +156,6 @@ function DashboardUserTable({ recentOrder }: any) {
       },
     },
   ];
-  console.log("checkk enquiriesData",data);
   
   return (
     <section>

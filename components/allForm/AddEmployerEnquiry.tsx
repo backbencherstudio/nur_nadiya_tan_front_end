@@ -2,9 +2,14 @@
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { useToken } from "@/hooks/useToken"
+import { UserService } from "@/service/user/user.service"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { X } from "lucide-react"
+import { useRouter } from "next/navigation"
 import * as React from "react"
 import { Controller, useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import ButtonReuseable from "../reusable/CustomButton"
 
 // Define types for the form options
@@ -14,16 +19,18 @@ interface SelectOption {
     description?: string;
 }
 
-export default function AddMaidEnquiry() {
-    const [dob, setDob] = React.useState<Date | undefined>()
-    const [transferDate, setTransferDate] = React.useState<Date | undefined>()
+export default function AddEmployerEnquiry() {
+
     const [hasEmployer, setHasEmployer] = React.useState<string>("")
-    const [imagePreview, setImagePreview] = React.useState<string | null>(null)
-    const imageRef = React.useRef<HTMLInputElement>(null)
+    const [selectedFile, setSelectedFile] = React.useState<File | null>(null)
     const [selectedLanguages, setSelectedLanguages] = React.useState<string[]>([])
 
     // Arrays for multiple selections
     const [selectedHouseholdTypes, setSelectedHouseholdTypes] = React.useState<string[]>([])
+
+    // React Query setup
+    const { token } = useToken()
+    const queryClient = useQueryClient()
 
     // Arrays of objects for select options
     const householdTypeOptions: SelectOption[] = [
@@ -72,8 +79,34 @@ export default function AddMaidEnquiry() {
         register,
         handleSubmit,
         control,
+        reset,
         formState: { errors },
     } = useForm()
+  const router = useRouter()
+    // React Query mutation for adding enquiry
+    const addEnquiryMutation = useMutation({
+        mutationFn: async (formData: FormData) => {
+            const response = await UserService.addEnquiry(formData, token)
+            return response
+        },
+        onSuccess: (data) => {
+            console.log("Enquiry submitted successfully!", data)
+            toast.success("Enquiry submitted successfully!")
+            router.push("/dashboard")
+            // Reset form
+            reset()
+            setSelectedLanguages([])
+            setSelectedHouseholdTypes([])
+            setSelectedFile(null)
+            setHasEmployer("")
+            // Invalidate enquiries query to refresh the list
+            queryClient.invalidateQueries({ queryKey: ["enquiriesData"] })
+        },
+        onError: (error: any) => {
+            console.error("Error submitting enquiry:", error)
+            toast.error(error?.response?.data?.message || "Failed to submit enquiry. Please try again.")
+        }
+    })
 
     // Helper functions to get label by value
     const getHouseholdTypeLabel = (value: string) => {
@@ -112,45 +145,37 @@ export default function AddMaidEnquiry() {
     }
 
     const onSubmit = (data: any) => {
-        const formData = {
-            ...data,
-            householdTypes: selectedHouseholdTypes,
-            languages: selectedLanguages,
-            dob,
-            transferDate,
-            hasEmployer,
+        // Create FormData for multipart/form-data submission
+        const formData = new FormData()
+        
+        // Add form fields
+        formData.append('full_name', data.fullName || '')
+        formData.append('contact_number', data.contactNumber || '')
+        formData.append('email', data.email || '')
+        formData.append('enquiry_type', 'employer')
+        formData.append('language', selectedLanguages.join(',') || '')
+        formData.append('nationality', 'bd') // Default nationality
+        formData.append('hosehold_type', selectedHouseholdTypes.join(',') || '') // Note: keeping the typo as per API
+        formData.append('budget', data.salaryBudget || '')
+        formData.append('additional_information', data.additionalInfo || '')
+        formData.append('current_employer', hasEmployer || 'none')
+        
+        // Add image if selected
+        if (selectedFile) {
+            formData.append('image', selectedFile)
         }
-        console.log("Submitted Data:", formData)
+        // Submit using React Query mutation
+        addEnquiryMutation.mutate(formData)
     }
 
-const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0]
-        if (file) {
-            const reader = new FileReader()
-            reader.onloadend = () => {
-                setImagePreview(reader.result as string)
-            }
-            reader.readAsDataURL(file)
-        }
-    }
+
 
     return (
         <div className="w-full">
             <h2 className="text-2xl font-semibold text-headerColor  mb-6 text-center">Employer Enquiry</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 space-y-4 gap-4">
-                    <div className="col-span-2">
-            {/* <div className="flex gap-4">
-              <div>
-                <Image src={imagePreview || "/empty-user.png"} alt="Uploaded Preview" width={100} height={100} className="w-12 h-12 md:w-14 md:h-14 rounded-full object-cover" />
-              </div>
-              <div>
-                <button type="button" onClick={() => imageRef.current?.click()} className="text-base font-semibold text-primaryColor cursor-pointer">Upload photo</button>
-                <input type="file" accept="image/*" onChange={handleImageUpload} hidden ref={imageRef} className="w-full border border-dashed p-6 rounded-xl hidden" />
-                <p className="text-xs text-grayColor1 mt-1">Maximum photo size: 2MB</p>
-              </div>
-            </div> */}
-          </div>
+                  
                     <div className="col-span-2 relative sm:col-span-2 mt-2">
                         <label className="text-sm absolute -top-3 bg-white px-2 left-3 md:text-base block mb-1.5">Full Name</label>
                         <Input placeholder="Enter your name" className="w-full !h-12 lg:!h-13 !pl-4" {...register("fullName", { required: true })} />
@@ -261,7 +286,13 @@ const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
                     </div>
                 </div>
                 <div className="pt-6">
-                    <ButtonReuseable type="submit" title="Submit" className="w-full" />
+                    <ButtonReuseable 
+                        type="submit" 
+                        title="Submit" 
+                        className="w-full" 
+                        loading={addEnquiryMutation.isPending}
+                        sendingMsg="Submitting..."
+                    />
                 </div>
             </form>
         </div>

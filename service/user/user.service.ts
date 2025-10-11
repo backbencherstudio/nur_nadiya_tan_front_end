@@ -64,6 +64,19 @@ export const UserService = {
     const endpoint = queryString ? `/admin/get-all-enquiries?${queryString}` : '/admin/get-all-enquiries';
     return await Fetch.get(endpoint, _config);
   },
+
+  addEnquiry: async (formData, token) => {
+    const userToken = token;
+
+    const _config = {
+      headers: {
+        Authorization: "Bearer " + userToken,
+        // Don't set Content-Type for FormData, let browser set it with boundary
+      },
+    };
+
+    return await Fetch.post("/admin/add-enquiry", formData, _config);
+  },
   getUserDetails: async ({ token = "", context = null }) => {
     // const userToken = CookieHelper.get({ key: "token", context });
     const userToken = token;
