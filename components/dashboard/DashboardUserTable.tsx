@@ -19,12 +19,12 @@ import ButtonReuseable from "../reusable/CustomButton";
 function DashboardUserTable({ recentOrder }: any) {
   const [recentOrders, setRecentOrders] = useState<any>(recentOrder);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [selectedType, setSelectedType] = useState("All Type");
   const [selectedStatus, setSelectedStatus] = useState("All Status");
-  const {token} = useToken();
+  const { token } = useToken();
 
   // Debounce search term
   useEffect(() => {
@@ -42,22 +42,22 @@ function DashboardUserTable({ recentOrder }: any) {
   // Build query parameters
   const buildQueryParams = () => {
     const params = new URLSearchParams();
-    
+
     if (debouncedSearchTerm.trim()) {
       params.append('search', debouncedSearchTerm.trim());
     }
-    
+
     if (selectedType !== "All Type") {
       params.append('type', selectedType);
     }
-    
+
     if (selectedStatus !== "All Status") {
       params.append('status', selectedStatus);
     }
-    
+
     params.append('page', currentPage.toString());
     params.append('limit', itemsPerPage.toString());
-    
+
     return params.toString();
   };
 
@@ -67,7 +67,7 @@ function DashboardUserTable({ recentOrder }: any) {
     return response?.data?.data;
   };
 
-  const {data, error, isLoading} = useQuery({
+  const { data, error, isLoading } = useQuery({
     queryKey: ["enquiriesData", debouncedSearchTerm, selectedType, selectedStatus, currentPage, itemsPerPage],
     queryFn: getEnquiriesData,
     enabled: !!token, // Only run query when token is available
@@ -156,7 +156,7 @@ function DashboardUserTable({ recentOrder }: any) {
       },
     },
   ];
-  
+
   return (
     <section>
       <div className="bg-white shadow p-5 rounded-md">
