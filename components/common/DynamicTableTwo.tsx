@@ -25,6 +25,7 @@ interface DynamicTableProps {
   totalItems?: number;
   onItemsPerPageChange?: (n: number) => void;
   loading?: boolean;
+  error?: string;
 }
 
 export default function DynamicTableTwo({
@@ -37,13 +38,14 @@ export default function DynamicTableTwo({
   onView,
   totalpage,
   onDelete,
-  noDataMessage = "No data found.",
+  noDataMessage = "No data found !.",
   totalItems,
   onItemsPerPageChange,
+  error,
 }: DynamicTableProps) {
   const totalPages = totalpage;
 
-  const effectiveTotalItems = typeof totalItems === "number" ? totalItems : data.length;
+  const effectiveTotalItems = typeof totalItems === "number" ? totalItems : data?.length;
   const startIndex = data?.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0;
   const endIndex = Math.min(currentPage * itemsPerPage, effectiveTotalItems);
 
@@ -101,7 +103,7 @@ const uniqueArray = [...new Set(originalArray)];
                     <Loader />
                   </td>
                 </tr>
-              ) : data.length > 0 ? (
+              ) : data?.length > 0 ? (
                 data.map((row, i) => (
                   <tr key={i} className="border-t border-gray-100">
                     {columns.map((col, idx) => (
@@ -145,8 +147,10 @@ const uniqueArray = [...new Set(originalArray)];
                     colSpan={columns.length + (onView || onDelete ? 1 : 0)}
                     className="px-4 py-10 text-center text-[#4a4c56] text-sm"
                   >
-                    {noDataMessage}
-                  </td>
+                 {
+                  error ? <p className="text-red-500 text-xl capitalize font-semibold"> {error + " " + "please login again" }</p> : <p className="text-xl text-gray-500 capitalize font-semibold">{noDataMessage}</p>
+                 }  
+                    </td>
                 </tr>
               )}
             </tbody>

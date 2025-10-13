@@ -73,7 +73,6 @@ function DashboardUserTable({ recentOrder }: any) {
     enabled: !!token, // Only run query when token is available
   });
 
-
   const columns = [
     {
       label: "Name",

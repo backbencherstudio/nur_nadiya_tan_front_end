@@ -7,7 +7,10 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { useToken } from "@/hooks/useToken";
 import { cn } from "@/lib/utils";
+import { UserService } from "@/service/user/user.service";
+import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import Link from "next/link";
@@ -25,107 +28,16 @@ function Biodatapage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(6);
     const [searchTerm, setSearchTerm] = useState("");
-    const [selectedStatus, setSelectedStatus] = useState("All Status");
-    const [selectedNationality, setSelectedNationality] = useState("Nationality");
+    const [selectedStatus, setSelectedStatus] = useState("");
+    const [selectedNationality, setSelectedNationality] = useState("");
     const [dob, setDob] = useState<Date | undefined>()
+    const { token } = useToken();
     // Biodata demo data matching the table structure from the image
-    const biodataData = [
-        {
-            id: 1,
-            name: "Courtney Henry",
-            age: 28,
-            language: "English, Tagalog",
-            experience: "5 years",
-            nationality: "Philippines",
-            skills: "Cooking, Cleaning, Childcare",
-            status: "Available"
-        },
-        {
-            id: 2,
-            name: "Wade Warren",
-            age: 32,
-            language: "English, Bahasa",
-            experience: "3 years",
-            nationality: "Indonesia",
-            skills: "Cooking, Cleaning, Childcare",
-            status: "Not Available"
-        },
-        {
-            id: 3,
-            name: "Dianne Russell",
-            age: 35,
-            language: "English, Burmese",
-            experience: "4 years",
-            nationality: "Myanmar",
-            skills: "Cooking, Cleaning, Childcare",
-            status: "Available"
-        },
-        {
-            id: 4,
-            name: "Guy Hawkins",
-            age: 29,
-            language: "English, Tagalog",
-            experience: "2 years",
-            nationality: "Indonesia",
-            skills: "Cleaning, Eldercare",
-            status: "Confirmed"
-        },
-        {
-            id: 5,
-            name: "Arlene McCoy",
-            age: 28,
-            language: "English, Bahasa",
-            experience: "5 years",
-            nationality: "Myanmar",
-            skills: "Cooking, Cleaning, Childcare",
-            status: "Not Available"
-        },
-        {
-            id: 6,
-            name: "Savannah Nguyen",
-            age: 34,
-            language: "English, Burmese",
-            experience: "6 years",
-            nationality: "Indonesia",
-            skills: "Cooking, Cleaning",
-            status: "Available"
-        },
-        {
-            id: 7,
-            name: "Savannah Nguyen",
-            age: 28,
-            language: "English, Tagalog",
-            experience: "5 years",
-            nationality: "Philippines",
-            skills: "Cooking, Childcare",
-            status: "Confirmed"
-        },
-        {
-            id: 8,
-            name: "Savannah Nguyen",
-            age: 40,
-            language: "English, Burmese",
-            experience: "3 years",
-            nationality: "Indonesia",
-            skills: "Cooking, Childcare",
-            status: "Available"
-        },
-        {
-            id: 9,
-            name: "Savannah Nguyen",
-            age: 40,
-            language: "English, Tagalog",
-            experience: "5 years",
-            nationality: "Myanmar",
-            skills: "Cooking, Cleaning, Childcare",
-            status: "Available"
-        }
-    ];
-
+   
     const columns = [
         {
             label: "Name",
-            accessor: "name",
+            accessor: "full_name",
             width: "120px",
             formatter: (value: string) => (
                 <div className="flex items-center gap-3">
@@ -148,7 +60,7 @@ function Biodatapage() {
         },
         {
             label: "Language",
-            accessor: "language",
+            accessor: "language_abilities",
             width: "150px",
             formatter: (value: string) => (
                 <span className="text-sm">{value}</span>
@@ -183,14 +95,13 @@ function Biodatapage() {
             accessor: "status",
             width: "120px",
             formatter: (value: string) => (
-                <div className={`px-3 py-2 rounded-md text-xs w-[100%] text-center font-semibold ${value === "Available"
+                <div className={`px-3 py-2 rounded-md text-xs w-[100%] text-center font-semibold ${value === "available"
                         ? "bg-greenColor/15 text-greenColor"
-                        : value === "Not Available" ? "bg-redColor/15 text-redColor" :
+                        : value === "not available" ? "bg-redColor/15 text-redColor" :
                             "bg-ratingColor/15 text-ratingColor"
                     }`}>
                     {value}
                 </div>
-
             ),
         },
         {
@@ -203,7 +114,7 @@ function Biodatapage() {
                     <button className="w-8 h-8 cursor-pointer bg-primaryColor text-white rounded-md flex items-center justify-center transition-colors">
                         <GrEdit size={17} />
                     </button>
-                    <Link href={"/dashboard/biodata-management/biodata-preview"} className="w-8 h-8 cursor-pointer bg-primaryColor/40 text-headerColor rounded-md flex items-center justify-center transition-colors">
+                    <Link href={`/dashboard/biodata-management/${record?.id}/biodata-preview/`} className="w-8 h-8 cursor-pointer bg-primaryColor/40 text-headerColor rounded-md flex items-center justify-center transition-colors">
                         <BsFileEarmarkPdf size={17} />
                     </Link>
                     <button className="w-8 h-8 cursor-pointer bg-redColor text-white rounded-md flex items-center justify-center transition-colors">
@@ -214,8 +125,37 @@ function Biodatapage() {
             },
         },
     ];
-
-
+   const buildQueryParams = () => {
+      const params = new URLSearchParams()
+      if (searchTerm) {
+        params.append('search', searchTerm);
+      }
+      if (selectedStatus) {
+        params.append('status', selectedStatus);
+      }
+      if (selectedNationality) {
+        params.append('nationality', selectedNationality);
+      }
+      if (dob) {
+        params.append('dob', dob.toISOString());
+      }
+       params.append('page', currentPage.toString());
+    params.append('limit', itemsPerPage.toString());
+      return params.toString();
+   };
+    const getBiodata = async () => {
+    const response = await UserService.getBiodataList(queryString, token);
+    return response?.data?.data;
+   };
+   const queryString = buildQueryParams();
+   const { data, error:apiError, isLoading } = useQuery({
+    queryKey: ["biodata", searchTerm, selectedStatus, selectedNationality, dob],
+    queryFn: getBiodata,
+    enabled: !!token,
+   });  
+   
+  
+console.log("data", data);
     return (
         <section>
             <div className=" shadow p-6 bg-whiteColor rounded-md">
@@ -261,7 +201,7 @@ function Biodatapage() {
                                     <SelectValue placeholder="All Status" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="All Status">All Status</SelectItem>
+                                    <SelectItem value="all">All Status</SelectItem>
                                     <SelectItem value="Available">Available</SelectItem>
                                     <SelectItem value="Not Available">Not Available</SelectItem>
                                     <SelectItem value="Confirmed">Confirmed</SelectItem>
@@ -280,10 +220,8 @@ function Biodatapage() {
                                     <SelectItem value="Myanmar">Myanmar</SelectItem>
                                 </SelectContent>
                             </Select>
-
                             {/* Date Filter */}
                             <div>
-
                             <Popover>
                                 <PopoverTrigger asChild>
                                     <Button
@@ -310,14 +248,18 @@ function Biodatapage() {
 
                 <DynamicTableTwo
                     columns={columns}
-                    data={biodataData}
+                    data={data?.bioData}
                     currentPage={currentPage}
                     itemsPerPage={itemsPerPage}
                     onPageChange={(page) => setCurrentPage(page)}
                     onItemsPerPageChange={(newItemsPerPage) => {
                         setItemsPerPage(newItemsPerPage);
+                        setCurrentPage(1);
                     }}
-                    totalpage={Math.ceil(biodataData.length / itemsPerPage)}
+                    error={(apiError as any)?.response?.data?.error}
+                    totalpage={data?.pagination?.totalCount }
+                    totalItems={data?.pagination?.totalCount}
+                    loading={isLoading}
                 />
             </div>
         </section>
