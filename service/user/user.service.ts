@@ -78,6 +78,18 @@ export const UserService = {
     const endpoint = queryString ? `/admin/get-bio-list?${queryString}` : '/admin/get-bio-list';
     return await Fetch.get(endpoint, _config);
   },
+  getBiodata: async (id, token) => {
+    const userToken = token;
+
+    const _config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + userToken,
+      },
+    };
+
+    return await Fetch.get(`/admin/get-bio-data/${id}`, _config);
+  },
 
   addEnquiry: async (formData, token) => {
     const userToken = token;
