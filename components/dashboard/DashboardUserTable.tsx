@@ -135,7 +135,7 @@ function DashboardUserTable({ recentOrder }: any) {
       accessor: "status",
       width: "120px",
       formatter: (value: string) => (
-        <div className={`px-3 py-2 rounded-md text-xs w-full 2xl:w-[60%] text-center font-semibold ${value === "Contacted"
+        <div className={`px-3 py-2 rounded-md text-xs w-full  text-center font-semibold ${value === "Contacted"
           ? "bg-greenColor/15 text-greenColor"
           : "bg-redColor/15 text-redColor"
           }`}>

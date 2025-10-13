@@ -7,8 +7,7 @@ import StatCards from './StatCards'
 async function DashboardPage() {
   const cookieStore = await cookies()
   const token = cookieStore?.get("jobtoken")?.value;
-  console.log("check",token);
-  
+ 
   if (!token) {
     return (
       <div className="flex justify-center items-center h-screen">
