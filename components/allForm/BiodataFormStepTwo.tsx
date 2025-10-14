@@ -3,29 +3,30 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { BiodataStepTwo, getBiodataStep, saveBiodataStep } from "@/helper/biodataStorage.helper";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FiChevronLeft } from "react-icons/fi";
 import ButtonReuseable from "../reusable/CustomButton";
 
 export default function BiodataFormStepTwo() {
     const router = useRouter();
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const { register, handleSubmit, control, formState: { errors }, reset } = useForm<BiodataStepTwo>({
         defaultValues: {
-            allergies: "No",
-            physicalDisabilities: "No",
-            mentalIllness: "No",
-            diabetes: "No",
-            heartDisease: "No",
-            epilepsy: "No",
-            asthma: "No",
-            hypertension: "No",
-            malaria: "No",
-            tuberculosis: "No",
-            operations: "No",
+            allergies: false,
+            physical_disabilities: false,
+            mental_illness: false,
+            diabetes: false,
+            heart_disease: false,
+            epilepsy: false,
+            asthma: false,
+            hypertension: false,
+            malaria: false,
+            tuberculosis: false,
+            operations: false,
             others: "",
-            dietaryRestrictions: "No",
-            preferenceForRestDay: "No"
+            dietary_restrictions: false,
+            preference_for_rest_days: false
         }
     });
 
@@ -33,19 +34,45 @@ export default function BiodataFormStepTwo() {
     useEffect(() => {
         const existingData = getBiodataStep('stepTwo');
         if (existingData) {
-            reset(existingData);
+            const formData = {
+            allergies: existingData?.allergies || false,
+            physical_disabilities: existingData?.physical_disabilities || false,
+            mental_illness: existingData?.mental_illness || false,
+            diabetes: existingData?.diabetes || false,
+            heart_disease: existingData?.heart_disease || false,
+            epilepsy: existingData?.epilepsy || false,
+            asthma: existingData?.asthma || false,
+            hypertension: existingData?.hypertension || false,
+            malaria: existingData?.malaria || false,
+            tuberculosis: existingData?.tuberculosis || false,
+            operations: existingData?.operations || false,
+            others: existingData?.others || "",
+            dietary_restrictions: existingData?.dietary_restrictions || false,
+            preference_for_rest_days: existingData?.preference_for_rest_days || false
+      };
+
+      console.log("formData",formData);
+       
+            // Add a small delay to ensure proper initialization
+            setTimeout(() => {
+                reset(formData);
+            }, 100);
         }
     }, [reset]);
 
-    const onSubmit = (data: BiodataStepTwo) => {
-        console.log("Biodata Step Two Submitted:", data);
-        // Save to localStorage
-        const saved = saveBiodataStep('stepTwo', data);
-        if (saved) {
-            console.log("Data saved to localStorage successfully");
-            router.push("/dashboard/biodata-management/biodata-step-three");
-        } else {
-            console.error("Failed to save data to localStorage");
+    const onSubmit = async (data: BiodataStepTwo) => {
+        try {
+            setIsSubmitting(true);
+            const saved = saveBiodataStep('stepTwo', data);
+            if (saved) {
+                router.push("/dashboard/biodata-management/biodata-step-three");
+            } else {
+                console.error("Failed to save data to localStorage");
+            }
+        } catch (error) {
+            console.error("Error submitting form:", error);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -67,7 +94,7 @@ export default function BiodataFormStepTwo() {
             <div className="w-full border rounded-xl p-3 md:p-6">
                 <div className="mb-6">
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="md:p-6 p-3  rounded-xl bg-whiteColor border">
+                        <div className="md:p-6 p-3  rounded-xl bg-whiteColor border" key={JSON.stringify(getBiodataStep('stepTwo'))}>
                             <h3 className="text-lg font-semibold text-headerColor mb-6">Medical History</h3>
                             <div className="space-y-4  mb-4">
                                 <h4 className="text-md font-medium text-gray-600 mb-4">General Medical History</h4>
@@ -79,17 +106,27 @@ export default function BiodataFormStepTwo() {
                                         <Controller
                                             name="allergies"
                                             control={control}
-                                            render={({ field }) => (
-                                                <Select onValueChange={field.onChange} value={field.value}>
-                                                    <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
-                                                        <SelectValue placeholder="Select option" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="Yes">Yes</SelectItem>
-                                                        <SelectItem value="No">No</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            )}
+                                            render={({ field }) => {
+                                                const currentValue = field.value === true ? "true" : field.value === false ? "false" : "";
+                                                return (
+                                                    <Select 
+                                                        onValueChange={(value) => {
+                                                            console.log("allergies changing from", field.value, "to", value);
+                                                            field.onChange(value === "true");
+                                                        }} 
+                                                        value={currentValue}
+                                                        key={`allergies-${currentValue}`}
+                                                    >
+                                                        <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
+                                                            <SelectValue placeholder="Select option" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="true">Yes</SelectItem>
+                                                            <SelectItem value="false">No</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                );
+                                            }}
                                         />
                                     </div>
                                     <div className="relative">
@@ -97,19 +134,26 @@ export default function BiodataFormStepTwo() {
                                             Physical disabilities
                                         </label>
                                         <Controller
-                                            name="physicalDisabilities"
+                                            name="physical_disabilities"
                                             control={control}
-                                            render={({ field }) => (
-                                                <Select onValueChange={field.onChange} value={field.value}>
-                                                    <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
-                                                        <SelectValue placeholder="Select option" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="Yes">Yes</SelectItem>
-                                                        <SelectItem value="No">No</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            )}
+                                            render={({ field }) => {
+                                                const currentValue = field.value === true ? "true" : field.value === false ? "false" : "";
+                                                return (
+                                                    <Select 
+                                                        onValueChange={(value) => field.onChange(value === "true")} 
+                                                        value={currentValue}
+                                                        key={`physical_disabilities-${currentValue}`}
+                                                    >
+                                                        <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
+                                                            <SelectValue placeholder="Select option" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="true">Yes</SelectItem>
+                                                            <SelectItem value="false">No</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                );
+                                            }}
                                         />
                                     </div>
                                 </div>
@@ -124,19 +168,26 @@ export default function BiodataFormStepTwo() {
                                             Mental illness
                                         </label>
                                         <Controller
-                                            name="mentalIllness"
+                                            name="mental_illness"
                                             control={control}
-                                            render={({ field }) => (
-                                                <Select onValueChange={field.onChange} value={field.value}>
-                                                    <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
-                                                        <SelectValue placeholder="Select option" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="Yes">Yes</SelectItem>
-                                                        <SelectItem value="No">No</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            )}
+                                            render={({ field }) => {
+                                                const currentValue = field.value === true ? "true" : field.value === false ? "false" : "";
+                                                return (
+                                                    <Select 
+                                                        onValueChange={(value) => field.onChange(value === "true")} 
+                                                        value={currentValue}
+                                                        key={`mental_illness-${currentValue}`}
+                                                    >
+                                                        <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
+                                                            <SelectValue placeholder="Select option" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="true">Yes</SelectItem>
+                                                            <SelectItem value="false">No</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                );
+                                            }}
                                         />
                                     </div>
                                     {/* Epilepsy */}
@@ -147,17 +198,24 @@ export default function BiodataFormStepTwo() {
                                         <Controller
                                             name="epilepsy"
                                             control={control}
-                                            render={({ field }) => (
-                                                <Select onValueChange={field.onChange} value={field.value}>
-                                                    <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
-                                                        <SelectValue placeholder="Select option" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="Yes">Yes</SelectItem>
-                                                        <SelectItem value="No">No</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            )}
+                                            render={({ field }) => {
+                                                const currentValue = field.value === true ? "true" : field.value === false ? "false" : "";
+                                                return (
+                                                    <Select 
+                                                        onValueChange={(value) => field.onChange(value === "true")} 
+                                                        value={currentValue}
+                                                        key={`epilepsy-${currentValue}`}
+                                                    >
+                                                        <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
+                                                            <SelectValue placeholder="Select option" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="true">Yes</SelectItem>
+                                                            <SelectItem value="false">No</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                );
+                                            }}
                                         />
                                     </div>
                                     {/* Asthma */}
@@ -168,17 +226,24 @@ export default function BiodataFormStepTwo() {
                                         <Controller
                                             name="asthma"
                                             control={control}
-                                            render={({ field }) => (
-                                                <Select onValueChange={field.onChange} value={field.value}>
-                                                    <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
-                                                        <SelectValue placeholder="Select option" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="Yes">Yes</SelectItem>
-                                                        <SelectItem value="No">No</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            )}
+                                            render={({ field }) => {
+                                                const currentValue = field.value === true ? "true" : field.value === false ? "false" : "";
+                                                return (
+                                                    <Select 
+                                                        onValueChange={(value) => field.onChange(value === "true")} 
+                                                        value={currentValue}
+                                                        key={`asthma-${currentValue}`}
+                                                    >
+                                                        <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
+                                                            <SelectValue placeholder="Select option" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="true">Yes</SelectItem>
+                                                            <SelectItem value="false">No</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                );
+                                            }}
                                         />
                                     </div>
 
@@ -190,17 +255,24 @@ export default function BiodataFormStepTwo() {
                                         <Controller
                                             name="diabetes"
                                             control={control}
-                                            render={({ field }) => (
-                                                <Select onValueChange={field.onChange} value={field.value}>
-                                                    <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
-                                                        <SelectValue placeholder="Select option" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="Yes">Yes</SelectItem>
-                                                        <SelectItem value="No">No</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            )}
+                                            render={({ field }) => {
+                                                const currentValue = field.value === true ? "true" : field.value === false ? "false" : "";
+                                                return (
+                                                    <Select 
+                                                        onValueChange={(value) => field.onChange(value === "true")} 
+                                                        value={currentValue}
+                                                        key={`diabetes-${currentValue}`}
+                                                    >
+                                                        <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
+                                                            <SelectValue placeholder="Select option" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="true">Yes</SelectItem>
+                                                            <SelectItem value="false">No</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                );
+                                            }}
                                         />
                                     </div>
 
@@ -212,17 +284,24 @@ export default function BiodataFormStepTwo() {
                                         <Controller
                                             name="hypertension"
                                             control={control}
-                                            render={({ field }) => (
-                                                <Select onValueChange={field.onChange} value={field.value}>
-                                                    <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
-                                                        <SelectValue placeholder="Select option" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="Yes">Yes</SelectItem>
-                                                        <SelectItem value="No">No</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            )}
+                                            render={({ field }) => {
+                                                const currentValue = field.value === true ? "true" : field.value === false ? "false" : "";
+                                                return (
+                                                    <Select 
+                                                        onValueChange={(value) => field.onChange(value === "true")} 
+                                                        value={currentValue}
+                                                        key={`hypertension-${currentValue}`}
+                                                    >
+                                                        <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
+                                                            <SelectValue placeholder="Select option" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="true">Yes</SelectItem>
+                                                            <SelectItem value="false">No</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                );
+                                            }}
                                         />
                                     </div>
                                     {/* Tuberculosis */}
@@ -233,17 +312,24 @@ export default function BiodataFormStepTwo() {
                                         <Controller
                                             name="tuberculosis"
                                             control={control}
-                                            render={({ field }) => (
-                                                <Select onValueChange={field.onChange} value={field.value}>
-                                                    <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
-                                                        <SelectValue placeholder="Select option" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="Yes">Yes</SelectItem>
-                                                        <SelectItem value="No">No</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            )}
+                                            render={({ field }) => {
+                                                const currentValue = field.value === true ? "true" : field.value === false ? "false" : "";
+                                                return (
+                                                    <Select 
+                                                        onValueChange={(value) => field.onChange(value === "true")} 
+                                                        value={currentValue}
+                                                        key={`tuberculosis-${currentValue}`}
+                                                    >
+                                                        <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
+                                                            <SelectValue placeholder="Select option" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="true">Yes</SelectItem>
+                                                            <SelectItem value="false">No</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                );
+                                            }}
                                         />
                                     </div>
                                     {/* Heart disease */}
@@ -252,19 +338,26 @@ export default function BiodataFormStepTwo() {
                                             Heart disease
                                         </label>
                                         <Controller
-                                            name="heartDisease"
+                                            name="heart_disease"
                                             control={control}
-                                            render={({ field }) => (
-                                                <Select onValueChange={field.onChange} value={field.value}>
-                                                    <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
-                                                        <SelectValue placeholder="Select option" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="Yes">Yes</SelectItem>
-                                                        <SelectItem value="No">No</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            )}
+                                            render={({ field }) => {
+                                                const currentValue = field.value === true ? "true" : field.value === false ? "false" : "";
+                                                return (
+                                                    <Select 
+                                                        onValueChange={(value) => field.onChange(value === "true")} 
+                                                        value={currentValue}
+                                                        key={`heart_disease-${currentValue}`}
+                                                    >
+                                                        <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
+                                                            <SelectValue placeholder="Select option" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="true">Yes</SelectItem>
+                                                            <SelectItem value="false">No</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                );
+                                            }}
                                         />
                                     </div>
                                     {/* Malaria */}
@@ -275,17 +368,24 @@ export default function BiodataFormStepTwo() {
                                         <Controller
                                             name="malaria"
                                             control={control}
-                                            render={({ field }) => (
-                                                <Select onValueChange={field.onChange} value={field.value}>
-                                                    <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
-                                                        <SelectValue placeholder="Select option" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="Yes">Yes</SelectItem>
-                                                        <SelectItem value="No">No</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            )}
+                                            render={({ field }) => {
+                                                const currentValue = field.value === true ? "true" : field.value === false ? "false" : "";
+                                                return (
+                                                    <Select 
+                                                        onValueChange={(value) => field.onChange(value === "true")} 
+                                                        value={currentValue}
+                                                        key={`malaria-${currentValue}`}
+                                                    >
+                                                        <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
+                                                            <SelectValue placeholder="Select option" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="true">Yes</SelectItem>
+                                                            <SelectItem value="false">No</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                );
+                                            }}
                                         />
                                     </div>
 
@@ -299,17 +399,24 @@ export default function BiodataFormStepTwo() {
                                         <Controller
                                             name="operations"
                                             control={control}
-                                            render={({ field }) => (
-                                                <Select onValueChange={field.onChange} value={field.value}>
-                                                    <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
-                                                        <SelectValue placeholder="Select option" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="Yes">Yes</SelectItem>
-                                                        <SelectItem value="No">No</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            )}
+                                            render={({ field }) => {
+                                                const currentValue = field.value === true ? "true" : field.value === false ? "false" : "";
+                                                return (
+                                                    <Select 
+                                                        onValueChange={(value) => field.onChange(value === "true")} 
+                                                        value={currentValue}
+                                                        key={`operations-${currentValue}`}
+                                                    >
+                                                        <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
+                                                            <SelectValue placeholder="Select option" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="true">Yes</SelectItem>
+                                                            <SelectItem value="false">No</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                );
+                                            }}
                                         />
                                     </div>
                                 </div>
@@ -333,19 +440,26 @@ export default function BiodataFormStepTwo() {
                                             Dietary restrictions
                                         </label>
                                         <Controller
-                                            name="dietaryRestrictions"
+                                            name="dietary_restrictions"
                                             control={control}
-                                            render={({ field }) => (
-                                                <Select onValueChange={field.onChange} value={field.value}>
-                                                    <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
-                                                        <SelectValue placeholder="Select option" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="Yes">Yes</SelectItem>
-                                                        <SelectItem value="No">No</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            )}
+                                            render={({ field }) => {
+                                                const currentValue = field.value === true ? "true" : field.value === false ? "false" : "";
+                                                return (
+                                                    <Select 
+                                                        onValueChange={(value) => field.onChange(value === "true")} 
+                                                        value={currentValue}
+                                                        key={`dietary_restrictions-${currentValue}`}
+                                                    >
+                                                        <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
+                                                            <SelectValue placeholder="Select option" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="true">Yes</SelectItem>
+                                                            <SelectItem value="false">No</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                );
+                                            }}
                                         />
                                     </div>
 
@@ -355,19 +469,26 @@ export default function BiodataFormStepTwo() {
                                             Preference for rest day
                                         </label>
                                         <Controller
-                                            name="preferenceForRestDay"
+                                            name="preference_for_rest_days"
                                             control={control}
-                                            render={({ field }) => (
-                                                <Select onValueChange={field.onChange} value={field.value}>
-                                                    <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
-                                                        <SelectValue placeholder="Select option" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="Yes">Yes</SelectItem>
-                                                        <SelectItem value="No">No</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            )}
+                                            render={({ field }) => {
+                                                const currentValue = field.value === true ? "true" : field.value === false ? "false" : "";
+                                                return (
+                                                    <Select 
+                                                        onValueChange={(value) => field.onChange(value === "true")} 
+                                                        value={currentValue}
+                                                        key={`preference_for_rest_days-${currentValue}`}
+                                                    >
+                                                        <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
+                                                            <SelectValue placeholder="Select option" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="true">Yes</SelectItem>
+                                                            <SelectItem value="false">No</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                );
+                                            }}
                                         />
                                     </div>
                                 </div>
@@ -383,8 +504,9 @@ export default function BiodataFormStepTwo() {
                             />
                             <ButtonReuseable
                                 type="submit"
-                                title="Next >"
+                                title={isSubmitting ? "Submitting..." : "Next >"}
                                 className=" !px-5"
+                                loading={isSubmitting}
                             />
                         </div>
                     </form>

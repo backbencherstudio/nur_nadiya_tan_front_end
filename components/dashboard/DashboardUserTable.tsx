@@ -42,19 +42,15 @@ function DashboardUserTable({ recentOrder }: any) {
   // Build query parameters
   const buildQueryParams = () => {
     const params = new URLSearchParams();
-
     if (debouncedSearchTerm.trim()) {
       params.append('search', debouncedSearchTerm.trim());
     }
-
     if (selectedType !== "All Type") {
       params.append('type', selectedType);
     }
-
     if (selectedStatus !== "All Status") {
       params.append('status', selectedStatus);
     }
-
     params.append('page', currentPage.toString());
     params.append('limit', itemsPerPage.toString());
 

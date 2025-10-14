@@ -10,40 +10,54 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import * as React from "react";
+import React, { useContext } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ButtonReuseable from "../reusable/CustomButton";
+import { ImageContext } from "@/provider/ImageProvider";
 
 export default function BiodataFormStepOne() {
     const router = useRouter();
     const [dob, setDob] = React.useState<Date | undefined>();
     const [imagePreview, setImagePreview] = React.useState<string | null>(null);
     const imageRef = React.useRef<HTMLInputElement>(null);
-
+   const { image, setImage } = useContext(ImageContext);
     const { register, handleSubmit, control, formState: { errors }, reset } = useForm<BiodataStepOne>({
         defaultValues: {
-            fullName: "",
-            placeOfBirth: "",
+            full_name: "",
+            place_of_birth: "",
             height: "",
-            portAirport: "",
+            name_of_airPort: "",
             religion: "",
-            ageOfChildren: "",
+            age_of_childern: "",
             nationality: "",
             weight: "",
-            maritalStatus: " ",
-            educationLevel: "",
-            numberOfChildren: ""
+            marital_status: " ",
+            education_level: "",
+            number_of_childern: ""
         }
     });
 
     // Load existing data on component mount
     React.useEffect(() => {
         const existingData = getBiodataStep('stepOne');
+        console.log("existingData",existingData);
         if (existingData) {
-            reset(existingData);
-            if (existingData.dob) {
-                setDob(new Date(existingData.dob));
+            // Add a small delay to ensure proper initialization
+            setTimeout(() => {
+                reset(existingData);
+            }, 100);
+            
+            if (existingData.date_of_birth) {
+                try {
+                    const dateValue = new Date(existingData.date_of_birth);
+                    if (!isNaN(dateValue.getTime())) {
+                        setDob(dateValue);
+                    }
+                } catch (error) {
+                    console.error("Invalid date value:", existingData.date_of_birth);
+                }
             }
+            
             if (existingData.imagePreview) {
                 setImagePreview(existingData.imagePreview);
             }
@@ -51,8 +65,12 @@ export default function BiodataFormStepOne() {
     }, [reset]);
 
     const onSubmit = (data: BiodataStepOne) => {
-        const formData = { ...data, dob, imagePreview };
-        console.log("Biodata Step One Submitted:", formData);
+        const formData = { 
+            ...data, 
+            date_of_birth: dob, 
+            imagePreview ,
+        };
+        console.log("Biodata Step One Submitted:", image);
         // Save to localStorage
         const saved = saveBiodataStep('stepOne', formData);
         if (saved) {
@@ -66,6 +84,7 @@ export default function BiodataFormStepOne() {
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
+             setImage(event.target.files[0]);            
             const reader = new FileReader();
             reader.onloadend = () => setImagePreview(reader.result as string);
             reader.readAsDataURL(file);
@@ -97,7 +116,7 @@ export default function BiodataFormStepOne() {
                                     <Image src={imagePreview || "/empty-user.png"} alt="Uploaded Preview" width={100} height={100} className=" w-12 h-12 md:w-14 md:h-14 rounded-full object-cover" />
                                 </div>
                                 <div>
-                                    <button onClick={() => imageRef.current?.click()} className="text-base font-semibold text-primaryColor cursor-pointer">Upload Photo</button>
+                                    <button type="button" aria-label="Upload Photo" onClick={() => imageRef.current?.click()} className="text-base font-semibold text-primaryColor cursor-pointer">Upload Photo</button>
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -132,7 +151,7 @@ export default function BiodataFormStepOne() {
                                     </label>
                                     <Input
                                         placeholder="Enter full name"
-                                        {...register("fullName", { required: true })}
+                                        {...register("full_name", { required: true })}
                                         className="w-full !h-12 lg:!h-13 !pl-4"
                                     />
                                 </div>
@@ -144,7 +163,7 @@ export default function BiodataFormStepOne() {
                                     </label>
                                     <Input
                                         placeholder="Enter place of birth"
-                                        {...register("placeOfBirth")}
+                                        {...register("place_of_birth")}
                                         className="w-full !h-12 lg:!h-13 !pl-4"
                                     />
                                 </div>
@@ -155,7 +174,7 @@ export default function BiodataFormStepOne() {
                                         Height
                                     </label>
                                     <Input
-                                        placeholder="Enter height"
+                                        placeholder="Enter height in cm"
                                         {...register("height")}
                                         className="w-full !h-12 lg:!h-13 !pl-4"
                                     />
@@ -168,7 +187,7 @@ export default function BiodataFormStepOne() {
                                     </label>
                                     <Input
                                         placeholder="Enter port/airport name"
-                                        {...register("portAirport")}
+                                        {...register("name_of_airPort")}
                                         className="w-full !h-12 lg:!h-13 !pl-4"
                                     />
                                 </div>
@@ -181,20 +200,27 @@ export default function BiodataFormStepOne() {
                                     <Controller
                                         name="religion"
                                         control={control}
-                                        render={({ field }) => (
-                                            <Select onValueChange={field.onChange} value={field.value}>
-                                                <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
-                                                    <SelectValue placeholder="Select religion" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="Islam">Islam</SelectItem>
-                                                    <SelectItem value="Christianity">Christianity</SelectItem>
-                                                    <SelectItem value="Hinduism">Hinduism</SelectItem>
-                                                    <SelectItem value="Buddhism">Buddhism</SelectItem>
-                                                    <SelectItem value="Other">Other</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        )}
+                                        render={({ field }) => {
+                                            const currentValue = field.value || "";
+                                            return (
+                                                <Select 
+                                                    onValueChange={field.onChange} 
+                                                    value={currentValue}
+                                                    key={`religion-${currentValue}`}
+                                                >
+                                                    <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
+                                                        <SelectValue placeholder="Select religion" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="Islam">Islam</SelectItem>
+                                                        <SelectItem value="Christianity">Christianity</SelectItem>
+                                                        <SelectItem value="Hinduism">Hinduism</SelectItem>
+                                                        <SelectItem value="Buddhism">Buddhism</SelectItem>
+                                                        <SelectItem value="Other">Other</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            );
+                                        }}
                                     />
                                 </div>
 
@@ -205,7 +231,7 @@ export default function BiodataFormStepOne() {
                                     </label>
                                     <Input
                                         placeholder="Enter age of children"
-                                        {...register("ageOfChildren")}
+                                        {...register("age_of_childern")}
                                         className="w-full !h-12 lg:!h-13 !pl-4"
                                     />
                                 </div>
@@ -228,14 +254,18 @@ export default function BiodataFormStepOne() {
                                                 )}
                                             >
                                                 <CalendarIcon className="mr-2 h-4 w-4" />
-                                                {dob ? format(dob, "MM/dd/yyyy") : "mm/dd/yyyy"}
+                                                {dob && !isNaN(dob.getTime()) ? format(dob, "MM/dd/yyyy") : "mm/dd/yyyy"}
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-auto p-0">
                                             <Calendar
                                                 mode="single"
                                                 selected={dob}
-                                                onSelect={setDob}
+                                                onSelect={(date) => {
+                                                    if (date && !isNaN(date.getTime())) {
+                                                        setDob(date);
+                                                    }
+                                                }}
                                                 captionLayout="dropdown"
                                             />
                                         </PopoverContent>
@@ -250,20 +280,27 @@ export default function BiodataFormStepOne() {
                                     <Controller
                                         name="nationality"
                                         control={control}
-                                        render={({ field }) => (
-                                            <Select onValueChange={field.onChange} value={field.value}>
-                                                <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
-                                                    <SelectValue placeholder="Select nationality" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="Philopenas">Philippines</SelectItem>
-                                                    <SelectItem value="Indonesia">Indonesia</SelectItem>
-                                                    <SelectItem value="Myanmar">Myanmar</SelectItem>
-                                                    <SelectItem value="India">India</SelectItem>
-                                                    <SelectItem value="Other">Other</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        )}
+                                        render={({ field }) => {
+                                            const currentValue = field.value || "";
+                                            return (
+                                                <Select 
+                                                    onValueChange={field.onChange} 
+                                                    value={currentValue}
+                                                    key={`nationality-${currentValue}`}
+                                                >
+                                                    <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
+                                                        <SelectValue placeholder="Select nationality" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="Philopenas">Philippines</SelectItem>
+                                                        <SelectItem value="Indonesia">Indonesia</SelectItem>
+                                                        <SelectItem value="Myanmar">Myanmar</SelectItem>
+                                                        <SelectItem value="India">India</SelectItem>
+                                                        <SelectItem value="Other">Other</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            );
+                                        }}
                                     />
                                 </div>
 
@@ -285,21 +322,28 @@ export default function BiodataFormStepOne() {
                                         Marital Status
                                     </label>
                                     <Controller
-                                        name="maritalStatus"
+                                        name="marital_status"
                                         control={control}
-                                        render={({ field }) => (
-                                            <Select onValueChange={field.onChange} value={field.value}>
-                                                <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
-                                                    <SelectValue placeholder="Select marital status" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="Married">Married</SelectItem>
-                                                    <SelectItem value="Single">Single</SelectItem>
-                                                    <SelectItem value="Divorced">Divorced</SelectItem>
-                                                    <SelectItem value="Widowed">Widowed</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        )}
+                                        render={({ field }) => {
+                                            const currentValue = field.value || "";
+                                            return (
+                                                <Select 
+                                                    onValueChange={field.onChange} 
+                                                    value={currentValue}
+                                                    key={`marital_status-${currentValue}`}
+                                                >
+                                                    <SelectTrigger className="w-full !h-12 text-black lg:!h-13 !pl-4">
+                                                        <SelectValue placeholder="Select marital status" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="Married">Married</SelectItem>
+                                                        <SelectItem value="Single">Single</SelectItem>
+                                                        <SelectItem value="Divorced">Divorced</SelectItem>
+                                                        <SelectItem value="Widowed">Widowed</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            );
+                                        }}
                                     />
                                 </div>
 
@@ -309,22 +353,29 @@ export default function BiodataFormStepOne() {
                                         Education level
                                     </label>
                                     <Controller
-                                        name="educationLevel"
+                                        name="education_level"
                                         control={control}
-                                        render={({ field }) => (
-                                            <Select onValueChange={field.onChange} value={field.value}>
-                                                <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
-                                                    <SelectValue placeholder="Select education level" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="Senior High School">Senior High School</SelectItem>
-                                                    <SelectItem value="Junior High School">Junior High School</SelectItem>
-                                                    <SelectItem value="Elementary School">Elementary School</SelectItem>
-                                                    <SelectItem value="College">College</SelectItem>
-                                                    <SelectItem value="University">University</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        )}
+                                        render={({ field }) => {
+                                            const currentValue = field.value || "";
+                                            return (
+                                                <Select 
+                                                    onValueChange={field.onChange} 
+                                                    value={currentValue}
+                                                    key={`education_level-${currentValue}`}
+                                                >
+                                                    <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
+                                                        <SelectValue placeholder="Select education level" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="Senior High School">Senior High School</SelectItem>
+                                                        <SelectItem value="Junior High School">Junior High School</SelectItem>
+                                                        <SelectItem value="Elementary School">Elementary School</SelectItem>
+                                                        <SelectItem value="College">College</SelectItem>
+                                                        <SelectItem value="University">University</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            );
+                                        }}
                                     />
                                 </div>
 
@@ -334,23 +385,30 @@ export default function BiodataFormStepOne() {
                                         Number of children
                                     </label>
                                     <Controller
-                                        name="numberOfChildren"
+                                     name="number_of_childern"
                                         control={control}
-                                        render={({ field }) => (
-                                            <Select onValueChange={field.onChange} value={field.value}>
-                                                <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
-                                                    <SelectValue placeholder="Select number of children" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="0">0</SelectItem>
-                                                    <SelectItem value="1">1</SelectItem>
-                                                    <SelectItem value="2">2</SelectItem>
-                                                    <SelectItem value="3">3</SelectItem>
-                                                    <SelectItem value="4">4</SelectItem>
-                                                    <SelectItem value="5+">5+</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        )}
+                                        render={({ field }) => {
+                                            const currentValue = field.value || "";
+                                            return (
+                                                <Select 
+                                                    onValueChange={field.onChange} 
+                                                    value={currentValue}
+                                                    key={`number_of_childern-${currentValue}`}
+                                                >
+                                                    <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
+                                                        <SelectValue placeholder="Select number of children" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="0">0</SelectItem>
+                                                        <SelectItem value="1">1</SelectItem>
+                                                        <SelectItem value="2">2</SelectItem>
+                                                        <SelectItem value="3">3</SelectItem>
+                                                        <SelectItem value="4">4</SelectItem>
+                                                        <SelectItem value="5+">5+</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            );
+                                        }}
                                     />
                                 </div>
                             </div>

@@ -1,41 +1,41 @@
 // Biodata localStorage utility functions
 export interface BiodataStepOne {
-  fullName: string;
-  placeOfBirth: string;
+  full_name: string;
+  place_of_birth: string;
   height: string;
-  portAirport: string;
+  name_of_airPort: string;
   religion: string;
-  ageOfChildren: string;
+  age_of_childern: string;
   nationality: string;
   weight: string;
-  maritalStatus: string;
-  educationLevel: string;
-  numberOfChildren: string;
-  dob?: Date;
-  imagePreview?: string;
+  marital_status: string;
+  education_level: string;
+  number_of_childern: string;
+  date_of_birth?: Date;
+  image?: string;
 }
 
 export interface BiodataStepTwo {
-  allergies: string;
-  physicalDisabilities: string;
-  mentalIllness: string;
-  diabetes: string;
-  heartDisease: string;
-  epilepsy: string;
-  asthma: string;
-  hypertension: string;
-  malaria: string;
-  tuberculosis: string;
-  operations: string;
+  allergies: boolean;
+  physical_disabilities: boolean;
+  mental_illness: boolean;
+  diabetes: boolean;
+  heart_disease: boolean;
+  epilepsy: boolean;
+  asthma: boolean;
+  hypertension: boolean;
+  malaria: boolean;
+  tuberculosis: boolean;
+  operations: boolean;
   others: string;
-  dietaryRestrictions: string;
-  preferenceForRestDay: string;
+  dietary_restrictions: boolean;
+  preference_for_rest_days: boolean;
 }
 
 export interface AreaOfWork {
   areaOfWork: string;
-  willingness: string;
-  experience: string;
+  willingness: boolean;
+  experience: boolean;
   assessment: string;
 }
 

@@ -2,16 +2,17 @@
 import Header from "@/components/common/Header";
 import Sidebar from "@/components/common/Sidebar";
 import { TokenProvider } from "@/hooks/useToken";
+import { ImageProvider } from "@/provider/ImageProvider";
 import {
   QueryClient,
   QueryClientProvider
 } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import React, { useState } from "react";
 import { ToastContainer } from "react-toastify";
 interface AdminLayoutProps {
   children: React.ReactNode;
 }
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const queryClient = new QueryClient(); 
@@ -21,6 +22,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   return (
   <QueryClientProvider client={queryClient}>
     <TokenProvider>
+      <ImageProvider>
     <div className="w-full h-screen overflow-hidden relative">
       {/* Centered layout container */}
       <div className="relative  flex h-full">
@@ -63,6 +65,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         </div>
       </div>
     </div>
+    </ImageProvider>
     </TokenProvider>
      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

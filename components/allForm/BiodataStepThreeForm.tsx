@@ -2,33 +2,34 @@
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { AreaOfWork, BiodataStepThree, getBiodataStep, saveBiodataStep } from "@/helper/biodataStorage.helper";
+import { getBiodataStep, saveBiodataStep } from "@/helper/biodataStorage.helper";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FiChevronLeft } from "react-icons/fi";
 import ButtonReuseable from "../reusable/CustomButton";
 
 export default function BiodataStepThreeForm() {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { register, handleSubmit, control, formState: { errors }, reset } = useForm({
     defaultValues: {
       anyOtherRemarks: "",
       areaOfWork1: "Care of infants/children Please...",
-      willingness1: "Yes",
-      experience1: "No",
+      willingness1: true,
+      experience1: false,
       assessment1: "",
       areaOfWork2: "Care of elderly",
-      willingness2: "Yes",
-      experience2: "No",
+      willingness2: true,
+      experience2: false,
       assessment2: "",
       areaOfWork3: "Care of disabled",
-      willingness3: "No",
-      experience3: "No",
+      willingness3: false,
+      experience3: false,
       assessment3: "",
       areaOfWork4: "General housework",
-      willingness4: "Yes",
-      experience4: "No",
+      willingness4: true,
+      experience4: false,
       assessment4: ""
     }
   });
@@ -36,37 +37,61 @@ export default function BiodataStepThreeForm() {
   // Load existing data on component mount
   useEffect(() => {
     const existingData = getBiodataStep('stepThree');
+    console.log("existingData",existingData);
     if (existingData) {
-      reset(existingData);
+        const formData = {
+        areaOfWork1: existingData.areasOfWork?.areaOfWork1 || "Care of infants/children Please...",
+        willingness1: existingData.areasOfWork?.willingness1 || false,
+        experience1: existingData.areasOfWork?.experience1 || false,
+        assessment1: existingData.areasOfWork?.assessment1 || "",
+        areaOfWork2: existingData.areasOfWork?.areaOfWork2 || "Care of elderly",
+        willingness2: existingData.areasOfWork?.willingness2 || false,
+        experience2: existingData.areasOfWork?.experience2 || false,
+        assessment2: existingData.areasOfWork?.assessment2 || "",
+        areaOfWork3: existingData.areasOfWork?.areaOfWork3 || "Care of disabled",
+        willingness3: existingData.areasOfWork?.willingness3 || false,
+        experience3: existingData.areasOfWork?.experience3 || false,
+        assessment3: existingData.areasOfWork?.assessment3 || "",
+        areaOfWork4: existingData.areasOfWork?.areaOfWork4 || "General housework",
+        willingness4: existingData.areasOfWork?.willingness4 || false,
+        experience4: existingData.areasOfWork?.experience4 || false,
+        assessment4: existingData.areasOfWork?.assessment4 || "",
+        anyOtherRemarks: existingData.anyOtherRemarks || ""
+      };
+      reset(formData);
     }
   }, [reset]);
 
-  const onSubmit = (data: any) => {
-    console.log("Biodata Step Three Submitted:", data);
-    
-    // Transform data to match the expected format
-    const areasOfWork: AreaOfWork[] = [];
-    for (let i = 1; i <= 4; i++) {
-      areasOfWork.push({
-        areaOfWork: data[`areaOfWork${i}`] || "",
-        willingness: data[`willingness${i}`] || "",
-        experience: data[`experience${i}`] || "",
-        assessment: data[`assessment${i}`] || ""
-      });
-    }
+  const onSubmit = async (data: any) => {
+    try {
+      setIsSubmitting(true);
+      
+      // Transform data to match the expected format
+      const areasOfWork: any = {};
+      for (let i = 1; i <= 4; i++) {
+        areasOfWork[`areaOfWork${i}`] = data[`areaOfWork${i}`] || "";
+        areasOfWork[`willingness${i}`] = data[`willingness${i}`] || false;
+        areasOfWork[`experience${i}`] = data[`experience${i}`] || false;
+        areasOfWork[`assessment${i}`] = data[`assessment${i}`] || "";
+      }
 
-    const stepThreeData: BiodataStepThree = {
-      anyOtherRemarks: data.anyOtherRemarks,
-      areasOfWork
-    };
-
-    // Save to localStorage
-    const saved = saveBiodataStep('stepThree', stepThreeData);
-    if (saved) {
-      console.log("Data saved to localStorage successfully");
-      router.push("/dashboard/biodata-management/biodata-step-four");
-    } else {
-      console.error("Failed to save data to localStorage");
+      const stepThreeData: any = {
+        anyOtherRemarks: data.anyOtherRemarks,
+        areasOfWork
+      };
+   console.log("check stepThreeData",stepThreeData);
+   
+      // Save to localStorage
+      const saved = saveBiodataStep('stepThree', stepThreeData);
+      if (saved) {
+        router.push("/dashboard/biodata-management/biodata-step-four");
+      } else {
+        console.error("Failed to save data to localStorage");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -123,6 +148,7 @@ export default function BiodataStepThreeForm() {
                       placeholder="Enter area of work"
                       {...register(`areaOfWork${sectionNumber}` as any)}
                       className="w-full !h-12 lg:!h-13 !pl-4"
+                      readOnly
                     />
                   </div>
 
@@ -135,13 +161,13 @@ export default function BiodataStepThreeForm() {
                       name={`willingness${sectionNumber}` as any}
                       control={control}
                       render={({ field }) => (
-                        <Select onValueChange={field.onChange} value={field.value}>
+                        <Select onValueChange={(value) => field.onChange(value === "true")} value={field.value ? "true" : "false"}>
                           <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
                             <SelectValue placeholder="Select option" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="Yes">Yes</SelectItem>
-                            <SelectItem value="No">No</SelectItem>
+                            <SelectItem value="true">Yes</SelectItem>
+                            <SelectItem value="false">No</SelectItem>
                           </SelectContent>
                         </Select>
                       )}
@@ -157,13 +183,13 @@ export default function BiodataStepThreeForm() {
                       name={`experience${sectionNumber}` as any}
                       control={control}
                       render={({ field }) => (
-                        <Select onValueChange={field.onChange} value={field.value}>
+                        <Select onValueChange={(value) => field.onChange(value === "true")} value={field.value ? "true" : "false"}>
                           <SelectTrigger className="w-full !h-12 lg:!h-13 !pl-4">
                             <SelectValue placeholder="Select option" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="Yes">Yes</SelectItem>
-                            <SelectItem value="No">No</SelectItem>
+                            <SelectItem value="true">Yes</SelectItem>
+                            <SelectItem value="false">No</SelectItem>
                           </SelectContent>
                         </Select>
                       )}
@@ -198,8 +224,10 @@ export default function BiodataStepThreeForm() {
 
             <ButtonReuseable
               type="submit"
-              title="Next >"
+              title={"Next >"}
+              sendingMsg="Submitting..."
               className="bg-primaryColor !px-5"
+              loading={isSubmitting}
             />
           </div>
         </form>

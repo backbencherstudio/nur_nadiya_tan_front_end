@@ -103,6 +103,17 @@ export const UserService = {
 
     return await Fetch.post("/admin/add-enquiry", formData, _config);
   },
+
+  addBiodata: async (formData, token) => {
+    const userToken = token;
+    const _config = {
+      headers: {
+        Authorization: "Bearer " + userToken,
+        "content-type": "multipart/form-data",
+      },
+    };
+    return await Fetch.post("/admin/add-bio", formData, _config);
+  },
   getUserDetails: async ({ token = "", context = null }) => {
     // const userToken = CookieHelper.get({ key: "token", context });
     const userToken = token;
