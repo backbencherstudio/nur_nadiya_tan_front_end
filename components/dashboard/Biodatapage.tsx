@@ -133,11 +133,11 @@ function Biodatapage() {
       if (selectedStatus) {
         params.append('status', selectedStatus);
       }
-      if (selectedNationality) {
+      if (selectedNationality !== "nationality") {
         params.append('nationality', selectedNationality);
       }
       if (dob) {
-        params.append('dob', dob.toISOString());
+        params.append('date_to', dob.toISOString());
       }
        params.append('page', currentPage.toString());
     params.append('limit', itemsPerPage.toString());
@@ -149,7 +149,7 @@ function Biodatapage() {
    };
    const queryString = buildQueryParams();
    const { data, error:apiError, isLoading } = useQuery({
-    queryKey: ["biodata", searchTerm, selectedStatus, selectedNationality, dob],
+    queryKey: ["biodata", searchTerm,currentPage, itemsPerPage, selectedStatus, selectedNationality, dob],
     queryFn: getBiodata,
     enabled: !!token,
    });  
@@ -202,9 +202,9 @@ console.log("data", data);
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">All Status</SelectItem>
-                                    <SelectItem value="Available">Available</SelectItem>
-                                    <SelectItem value="Not Available">Not Available</SelectItem>
-                                    <SelectItem value="Confirmed">Confirmed</SelectItem>
+                                    <SelectItem value="available">Available</SelectItem>
+                                    <SelectItem value="not available">Not Available</SelectItem>
+                                    <SelectItem value="confirmed">Confirmed</SelectItem>
                                 </SelectContent>
                             </Select>
 
@@ -214,15 +214,16 @@ console.log("data", data);
                                     <SelectValue placeholder="Nationality" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="Nationality">Nationality</SelectItem>
-                                    <SelectItem value="Philippines">Philippines</SelectItem>
-                                    <SelectItem value="Indonesia">Indonesia</SelectItem>
-                                    <SelectItem value="Myanmar">Myanmar</SelectItem>
+                                    <SelectItem value="nationality">Nationality</SelectItem>
+                                    <SelectItem value="philippines">Philippines</SelectItem>
+                                    <SelectItem value="indonesia">Indonesia</SelectItem>
+                                    <SelectItem value="myanmar">Myanmar</SelectItem>
+                                    <SelectItem value="bangladesh">Bangladesh</SelectItem>
                                 </SelectContent>
                             </Select>
                             {/* Date Filter */}
-                            <div>
-                            <Popover>
+                             <div className="flex relative items-center gap-2">
+                             <Popover>
                                 <PopoverTrigger asChild>
                                     <Button
                                         variant={"outline"}
@@ -236,6 +237,16 @@ console.log("data", data);
                                     <Calendar className=" " mode="single" selected={dob} onSelect={setDob} captionLayout="dropdown" />
                                 </PopoverContent>
                             </Popover>
+                             {dob && (
+                               <button
+                                 type="button"  
+                                 onClick={() => { setDob(undefined); setTimeout(buildQueryParams(), 0); }}
+                                 className=" h-6 w-6 border absolute -right-2 -top-2 bg-redColor/60 border-redColor rounded-full text-white cursor-pointer"
+                                 aria-label="Clear date filter"
+                               >
+                                 ×
+                               </button>
+                             )}
                             </div>
                         </div>
                         <ButtonReuseable
@@ -257,7 +268,7 @@ console.log("data", data);
                         setCurrentPage(1);
                     }}
                     error={(apiError as any)?.response?.data?.error}
-                    totalpage={data?.pagination?.totalCount }
+                    totalpage={data?.pagination?.totalPages }
                     totalItems={data?.pagination?.totalCount}
                     loading={isLoading}
                 />

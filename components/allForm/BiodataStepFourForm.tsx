@@ -91,7 +91,6 @@ export default function BiodataStepFourForm() {
 
   const onSubmit = async (data: any) => {
     const bool = (v: any) => Boolean(v);
-
     const payload: any = {
       any_other_remarks: allBiodata?.stepThree?.anyOtherRemarks ?? "",
       date_from: dateFrom ? dateFrom.toISOString() : "",

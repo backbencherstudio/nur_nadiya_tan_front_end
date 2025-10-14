@@ -22,8 +22,8 @@ function DashboardUserTable({ recentOrder }: any) {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
-  const [selectedType, setSelectedType] = useState("All Type");
-  const [selectedStatus, setSelectedStatus] = useState("All Status");
+  const [selectedType, setSelectedType] = useState("all");
+  const [selectedStatus, setSelectedStatus] = useState("all");
   const { token } = useToken();
 
   // Debounce search term
@@ -45,10 +45,10 @@ function DashboardUserTable({ recentOrder }: any) {
     if (debouncedSearchTerm.trim()) {
       params.append('search', debouncedSearchTerm.trim());
     }
-    if (selectedType !== "All Type") {
+    if (selectedType !== "all") {
       params.append('type', selectedType);
     }
-    if (selectedStatus !== "All Status") {
+    if (selectedStatus !== "all") {
       params.append('status', selectedStatus);
     }
     params.append('page', currentPage.toString());
@@ -130,7 +130,7 @@ function DashboardUserTable({ recentOrder }: any) {
       accessor: "status",
       width: "120px",
       formatter: (value: string) => (
-        <div className={`px-3 py-2 rounded-md text-xs w-full  text-center font-semibold ${value === "Contacted"
+        <div className={`px-3 py-2 rounded-md text-xs w-full  text-center font-semibold ${value === "contacted"
           ? "bg-greenColor/15 text-greenColor"
           : "bg-redColor/15 text-redColor"
           }`}>
@@ -191,9 +191,9 @@ function DashboardUserTable({ recentOrder }: any) {
                   <SelectValue placeholder="All Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="All Type">All Type</SelectItem>
-                  <SelectItem value="Maid">Maid</SelectItem>
-                  <SelectItem value="Employer">Employer</SelectItem>
+                  <SelectItem value="all">All Type</SelectItem>
+                  <SelectItem value="maid">Maid</SelectItem>
+                  <SelectItem value="employer">Employer</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -203,9 +203,9 @@ function DashboardUserTable({ recentOrder }: any) {
                   <SelectValue placeholder="All Status" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="All Status">All Status</SelectItem>
-                  <SelectItem value="Contacted">Contacted</SelectItem>
-                  <SelectItem value="Uncontacted">Uncontacted</SelectItem>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="contacted">Contacted</SelectItem>
+                  <SelectItem value="uncontacted">Uncontacted</SelectItem>
                 </SelectContent>
               </Select>
 
