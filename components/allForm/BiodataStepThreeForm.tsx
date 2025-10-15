@@ -81,8 +81,6 @@ export default function BiodataStepThreeForm() {
       const saved = saveBiodataStep('stepThree', stepThreeData);
       if (saved) {
         router.push("/dashboard/biodata-management/biodata-step-four");
-      } else {
-        console.error("Failed to save data to localStorage");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -118,7 +116,7 @@ export default function BiodataStepThreeForm() {
               <Textarea
                 placeholder="other..."
                 rows={3}
-                {...register("anyOtherRemarks")}
+                {...register("anyOtherRemarks",{required: "Any other remarks is required"})}
                 className="w-full !p-4"
               />
             </div>
@@ -199,7 +197,7 @@ export default function BiodataStepThreeForm() {
                   <Textarea
                     placeholder="any..."
                     rows={3}
-                    {...register(`assessment${sectionNumber}` as any)}
+                    {...register(`assessment${sectionNumber}` as any ,{required: "Assessment/Observation is required"})}
                     className="w-full !p-4"
                   />
                 </div>

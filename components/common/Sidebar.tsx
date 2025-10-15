@@ -1,5 +1,6 @@
 "use client";
-import { TbLogout2 } from "react-icons/tb";
+import { clearBiodataData } from "@/helper/biodataStorage.helper";
+import { CookieHelper } from "@/helper/cookie.helper";
 import mainLogo from "@/public/icon/mainlogo.png";
 import { X } from "lucide-react";
 import Image from "next/image";
@@ -9,7 +10,7 @@ import React from "react";
 import { FaPlus } from "react-icons/fa";
 import { LuUsers } from "react-icons/lu";
 import { RiHome6Line } from "react-icons/ri";
-import { CookieHelper } from "@/helper/cookie.helper";
+import { TbLogout2 } from "react-icons/tb";
 
 
 interface NavItem {
@@ -57,6 +58,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   };
   const handleLogout = () => {
     CookieHelper.destroy({ key: "jobtoken" });
+    clearBiodataData()
     router.push("/login")
 
   }

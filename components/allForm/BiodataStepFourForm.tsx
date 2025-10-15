@@ -171,11 +171,11 @@ export default function BiodataStepFourForm() {
         router.push("/dashboard/biodata-management");
         reset();
       }else{
-        toast.error(response?.data?.message || "Failed to submit biodata");
+        toast.error(response?.data?.message + " " + "Please Login Again" || "Failed to submit biodata");
       }
     } catch (error) {
-      console.error("Error submitting form:", error);
-      toast.error(error?.response?.data?.message || "Failed to submit biodata");
+      console.error("Error submitting form:", error?.response?.data?.error);
+      toast.error(error?.response?.data?.error + " " + "Please Login Again" || "Failed to submit biodata");
     } finally {
       setIsSubmitting(false);
     }
@@ -281,9 +281,10 @@ export default function BiodataStepFourForm() {
                   <Textarea
                     placeholder="any..."
                     rows={3}
-                    {...register(`assessment${sectionNumber}` as any)}
+                    {...register(`assessment${sectionNumber}` as any ,{required: "Assessment/Observation is required"})}
                     className="w-full !p-4"
                   />
+        
                 </div>
               </div>
             ))}
@@ -360,9 +361,10 @@ export default function BiodataStepFourForm() {
                 </label>
                 <Input
                   placeholder="Enter country"
-                  {...register("country")}
+                  {...register("country" ,{required: "Country is required"})}
                   className="w-full !h-12 lg:!h-13 !pl-4"
                 />
+                {errors.country && <p className="text-xs text-red-500 mt-1">{String(errors.country.message)}</p>}
               </div>
             </div>
 
@@ -375,9 +377,10 @@ export default function BiodataStepFourForm() {
                 </label>
                 <Input
                   placeholder="Enter employer"
-                  {...register("employer")}
+                  {...register("employer" ,{required: "Employer is required"})}
                   className="w-full !h-12 lg:!h-13 !pl-4"
                 />
+                {errors.employer && <p className="text-xs text-red-500 mt-1">{String(errors.employer.message)}</p>}
               </div>
 
               {/* Work duties */}
@@ -387,9 +390,10 @@ export default function BiodataStepFourForm() {
                 </label>
                 <Input
                   placeholder="Enter work duties"
-                  {...register("workDuties")}
+                  {...register("workDuties" ,{required: "Work duties is required"})}
                   className="w-full !h-12 lg:!h-13 !pl-4"
                 />
+                {errors.workDuties && <p className="text-xs text-red-500 mt-1">{String(errors.workDuties.message)}</p>}
               </div>
             </div>
 
@@ -401,9 +405,10 @@ export default function BiodataStepFourForm() {
               <Textarea
                 placeholder="any..."
                 rows={3}
-                {...register("remarks")}
+                {...register("remarks" ,{required: "Remarks is required"})}
                 className="w-full !p-4"
               />
+              {errors.remarks && <p className="text-xs text-red-500 mt-1">{String(errors.remarks.message)}</p>}
             </div>
 
             {/* Fourth Row - Full width */}
@@ -414,10 +419,11 @@ export default function BiodataStepFourForm() {
               <Textarea
                 placeholder="any..."
                 rows={3}
-                {...register("otherRemarks")}
+                {...register("otherRemarks" ,{required: "Other remarks is required"})}
                 className="w-full !p-4"
               />
-            </div>
+              {errors.otherRemarks && <p className="text-xs text-red-500 mt-1">{String(errors.otherRemarks.message)}</p>}
+              </div>
           </div>
           {/* Navigation Buttons */}
           <div className="flex justify-between mt-8">

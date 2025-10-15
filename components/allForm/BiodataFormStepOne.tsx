@@ -22,7 +22,7 @@ export default function BiodataFormStepOne() {
     const [imagePreview, setImagePreview] = React.useState<string | null>(null);
     const imageRef = React.useRef<HTMLInputElement>(null);
    const { image, setImage } = useContext(ImageContext);
-    const { register, handleSubmit, control, formState: { errors }, reset } = useForm<BiodataStepOne>({
+    const { register, handleSubmit, control, formState: { errors }, reset, setError, clearErrors } = useForm<BiodataStepOne>({
         defaultValues: {
             full_name: "",
             place_of_birth: "",
@@ -67,10 +67,18 @@ export default function BiodataFormStepOne() {
 
     const onSubmit = (data: BiodataStepOne) => {
         setIsSubmitting(true);
+        // validate required date
+        if (!dob || isNaN(dob.getTime())) {
+            setError("date_of_birth" as any, { type: "manual", message: "Date of birth is required" });
+           
+            return;
+        } else {
+            clearErrors("date_of_birth" as any);
+        }
             const formData = { 
             ...data, 
             date_of_birth: dob, 
-            imagePreview ,
+            imagePreview: imagePreview || "/empty-user.png",
         };
         console.log("Biodata Step One Submitted:", image);
         // Save to localStorage
@@ -78,11 +86,9 @@ export default function BiodataFormStepOne() {
         if (saved) {
             console.log("Data saved to localStorage successfully");
             router.push("/dashboard/biodata-management/biodata-step-two");
-            setIsSubmitting(false);
         } else {
             console.error("Failed to save data to localStorage");
         }
-        setIsSubmitting(false);
     };
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -156,9 +162,10 @@ export default function BiodataFormStepOne() {
                                     <Input
                                         type="text"
                                         placeholder="Enter full name"
-                                        {...register("full_name", { required: true })}
+                                        {...register("full_name", { required: "Full name is required" })}
                                         className="w-full !h-12 lg:!h-13 !pl-4"
                                     />
+                                    {errors.full_name && <p className="text-xs text-red-500 mt-1">{String(errors.full_name.message)}</p>}
                                 </div>
 
                                 {/* Place of Birth */}
@@ -169,9 +176,10 @@ export default function BiodataFormStepOne() {
                                     <Input
                                         type="text"
                                         placeholder="Enter place of birth"
-                                        {...register("place_of_birth")}
+                                        {...register("place_of_birth", { required: "Place of birth is required" })}
                                         className="w-full !h-12 lg:!h-13 !pl-4"
                                     />
+                                    {errors.place_of_birth && <p className="text-xs text-red-500 mt-1">{String(errors.place_of_birth.message)}</p>}
                                 </div>
 
                                 {/* Height */}
@@ -182,9 +190,10 @@ export default function BiodataFormStepOne() {
                                     <Input
                                         type="number"
                                         placeholder="Enter height in cm"
-                                        {...register("height")}
+                                        {...register("height", { required: "Height is required" })}
                                         className="w-full !h-12 lg:!h-13 !pl-4"
                                     />
+                                    {errors.height && <p className="text-xs text-red-500 mt-1">{String(errors.height.message)}</p>}
                                 </div>
 
                                 {/* Name of port/Airport */}
@@ -195,9 +204,10 @@ export default function BiodataFormStepOne() {
                                     <Input
                                         type="text"
                                         placeholder="Enter port/airport name"
-                                        {...register("name_of_airPort")}
+                                        {...register("name_of_airPort", { required: "Airport name is required" })}
                                         className="w-full !h-12 lg:!h-13 !pl-4"
                                     />
+                                    {errors.name_of_airPort && <p className="text-xs text-red-500 mt-1">{String((errors as any).name_of_airPort?.message)}</p>}
                                 </div>
 
                                 {/* Religion */}
@@ -208,6 +218,7 @@ export default function BiodataFormStepOne() {
                                     <Controller
                                         name="religion"
                                         control={control}
+                                        rules={{ required: "Religion is required" }}
                                         render={({ field }) => {
                                             const currentValue = field.value || "";
                                             return (
@@ -230,6 +241,7 @@ export default function BiodataFormStepOne() {
                                             );
                                         }}
                                     />
+                                    {errors.religion && <p className="text-xs text-red-500 mt-1">{String(errors.religion.message)}</p>}
                                 </div>
 
                                 {/* Age of children */}
@@ -240,9 +252,10 @@ export default function BiodataFormStepOne() {
                                     <Input
                                     type="number"
                                         placeholder="Enter age of children"
-                                        {...register("age_of_childern")}
+                                        {...register("age_of_childern", { required: "Age of children is required" })}
                                         className="w-full !h-12 lg:!h-13 !pl-4"
                                     />
+                                    {errors.age_of_childern && <p className="text-xs text-red-500 mt-1">{String((errors as any).age_of_childern?.message)}</p>}
                                 </div>
                             </div>
 
@@ -279,6 +292,7 @@ export default function BiodataFormStepOne() {
                                             />
                                         </PopoverContent>
                                     </Popover>
+                                    {errors.date_of_birth && <p className="text-xs text-red-500 mt-1">{String((errors as any).date_of_birth?.message)}</p>}
                                 </div>
 
                                 {/* Nationality */}
@@ -289,6 +303,7 @@ export default function BiodataFormStepOne() {
                                     <Controller
                                         name="nationality"
                                         control={control}
+                                        rules={{ required: "Nationality is required" }}
                                         render={({ field }) => {
                                             const currentValue = field.value || "";
                                             return (
@@ -311,6 +326,7 @@ export default function BiodataFormStepOne() {
                                             );
                                         }}
                                     />
+                                    {errors.nationality && <p className="text-xs text-red-500 mt-1">{String(errors.nationality.message)}</p>}
                                 </div>
 
                                 {/* Weight */}
@@ -321,9 +337,10 @@ export default function BiodataFormStepOne() {
                                     <Input
                                         type="number"
                                         placeholder="Enter weight"
-                                        {...register("weight")}
+                                        {...register("weight", { required: "Weight is required" })}
                                         className="w-full !h-12 lg:!h-13 !pl-4"
                                     />
+                                    {errors.weight && <p className="text-xs text-red-500 mt-1">{String(errors.weight.message)}</p>}
                                 </div>
 
                                 {/* Marital Status */}
@@ -334,6 +351,7 @@ export default function BiodataFormStepOne() {
                                     <Controller
                                         name="marital_status"
                                         control={control}
+                                        rules={{ required: "Marital status is required" }}
                                         render={({ field }) => {
                                             const currentValue = field.value || "";
                                             return (
@@ -355,6 +373,7 @@ export default function BiodataFormStepOne() {
                                             );
                                         }}
                                     />
+                                    {errors.marital_status && <p className="text-xs text-red-500 mt-1">{String((errors as any).marital_status?.message)}</p>}
                                 </div>
 
                                 {/* Education level */}
@@ -365,6 +384,7 @@ export default function BiodataFormStepOne() {
                                     <Controller
                                         name="education_level"
                                         control={control}
+                                        rules={{ required: "Education level is required" }}
                                         render={({ field }) => {
                                             const currentValue = field.value || "";
                                             return (
@@ -387,6 +407,7 @@ export default function BiodataFormStepOne() {
                                             );
                                         }}
                                     />
+                                    {errors.education_level && <p className="text-xs text-red-500 mt-1">{String(errors.education_level.message)}</p>}
                                 </div>
 
                                 {/* Number of children */}
@@ -397,6 +418,7 @@ export default function BiodataFormStepOne() {
                                     <Controller
                                      name="number_of_childern"
                                         control={control}
+                                        rules={{ required: "Number of children is required" }}
                                         render={({ field }) => {
                                             const currentValue = field.value || "";
                                             return (
@@ -420,6 +442,7 @@ export default function BiodataFormStepOne() {
                                             );
                                         }}
                                     />
+                                    {errors.number_of_childern && <p className="text-xs text-red-500 mt-1">{String((errors as any).number_of_childern?.message)}</p>}
                                 </div>
                             </div>
                         </div>

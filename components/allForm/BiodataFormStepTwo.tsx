@@ -62,25 +62,19 @@ export default function BiodataFormStepTwo() {
     }, [reset]);
 
     const onSubmit = async (data: BiodataStepTwo) => {
+        setIsSubmitting(true);
         try {
-            setIsSubmitting(true);
             const saved = saveBiodataStep('stepTwo', data);
             if (saved) {
                 router.push("/dashboard/biodata-management/biodata-step-three");
-            } else {
-                console.error("Failed to save data to localStorage");
-            }
+            } 
         } catch (error) {
             console.error("Error submitting form:", error);
-        } finally {
-            setIsSubmitting(false);
-        }
+        } 
     };
 
     const onBack = () => {
         setBackLoading(true);
-        router.push("/dashboard/biodata-management/biodata-step-one");
-        setBackLoading(false);
         router.push("/dashboard/biodata-management/biodata-step-one");
     };
 
@@ -431,9 +425,10 @@ export default function BiodataFormStepTwo() {
                                 <Textarea
                                     placeholder="any..."
                                     rows={3}
-                                    {...register("others")}
+                                    {...register("others",{required: "Others is required"})}
                                     className="w-full !p-4"
                                 />
+                                {errors.others && <p className="text-xs text-red-500 mt-1">Others is required</p>}
                             </div>
                             <div className="space-y-4 mt-8">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
