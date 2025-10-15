@@ -162,9 +162,7 @@ export default function BiodataStepFourForm() {
     setIsSubmitting(true);
     try {
       const response = await UserService.addBiodata(payload, token)
-      console.log("response",response);
       if(response?.data?.success === true){
-        console.log("response?.data?.success",response?.data?.success);
         toast.success( response?.data?.message ||"Biodata submitted successfully");
         queryClient.invalidateQueries({ queryKey: ["biodataData"] });
         clearBiodataData()

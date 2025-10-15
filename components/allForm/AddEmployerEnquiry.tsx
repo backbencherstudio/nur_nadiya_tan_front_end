@@ -90,20 +90,16 @@ export default function AddEmployerEnquiry() {
             return response
         },
         onSuccess: (data) => {
-            console.log("Enquiry submitted successfully!", data)
             toast.success("Enquiry submitted successfully!")
             router.push("/dashboard")
-            // Reset form
             reset()
             setSelectedLanguages([])
             setSelectedHouseholdTypes([])
             setSelectedFile(null)
             setHasEmployer("")
-            // Invalidate enquiries query to refresh the list
             queryClient.invalidateQueries({ queryKey: ["enquiriesData"] })
         },
         onError: (error: any) => {
-            console.error("Error submitting enquiry:", error)
             toast.error(error?.response?.data?.message || "Failed to submit enquiry. Please try again.")
         }
     })

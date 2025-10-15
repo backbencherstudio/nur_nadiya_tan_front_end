@@ -10,7 +10,7 @@ import {
 import { useToken } from "@/hooks/useToken";
 import { cn } from "@/lib/utils";
 import { UserService } from "@/service/user/user.service";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import Link from "next/link";
@@ -24,6 +24,7 @@ import DynamicTableTwo from "../common/DynamicTableTwo";
 import ButtonReuseable from "../reusable/CustomButton";
 import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
+import { toast } from "react-toastify";
 function Biodatapage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(6);
@@ -33,7 +34,7 @@ function Biodatapage() {
     const [dob, setDob] = useState<Date | undefined>()
     const { token } = useToken();
     // Biodata demo data matching the table structure from the image
-   
+   const queryClient = useQueryClient()
     const columns = [
         {
             label: "Name",
@@ -117,7 +118,7 @@ function Biodatapage() {
                     <Link href={`/dashboard/biodata-management/${record?.id}/biodata-preview/`} className="w-8 h-8 cursor-pointer bg-primaryColor/40 text-headerColor rounded-md flex items-center justify-center transition-colors">
                         <BsFileEarmarkPdf size={17} />
                     </Link>
-                    <button className="w-8 h-8 cursor-pointer bg-redColor text-white rounded-md flex items-center justify-center transition-colors">
+                    <button onClick={() => handleDelete(record?.id)} className="w-8 h-8 cursor-pointer bg-redColor text-white rounded-md flex items-center justify-center transition-colors">
                         <RiDeleteBin6Line size={17} />
                     </button>
                     </div>
@@ -125,6 +126,21 @@ function Biodatapage() {
             },
         },
     ];
+     const deleteBiodataMutation = useMutation({
+      mutationFn: (id: string) => UserService.deleteBiodata(id, token),
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["biodataData"] });
+        toast.success("Biodata deleted successfully.");
+      },
+      onError: (error: any) => {
+        toast.error(error?.response?.data?.message || "Failed to delete biodata. Please try again.");
+      }
+    });
+   const handleDelete = (id: string) => {
+    deleteBiodataMutation.mutate(id);
+   };
+
+   
    const buildQueryParams = () => {
       const params = new URLSearchParams()
       if (searchTerm) {
@@ -154,8 +170,6 @@ function Biodatapage() {
     enabled: !!token,
    });  
    
-  
-console.log("data", data);
     return (
         <section>
             <div className=" shadow p-6 bg-whiteColor rounded-md">

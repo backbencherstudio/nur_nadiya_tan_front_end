@@ -1,14 +1,15 @@
 "use client";
 
+import { useToken } from "@/hooks/useToken";
+import { UserService } from "@/service/user/user.service";
+import { useQuery } from "@tanstack/react-query";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import React, { useState } from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
 import Loader from "../reusable/Loader";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-
 
 interface HeaderProps {
   onNotificationClick?: () => void;
@@ -25,16 +26,14 @@ const Header: React.FC<HeaderProps> = ({
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showAllNotifications, setShowAllNotifications] = useState(false);
-
+  
+   const {token} = useToken()
   const [notifications, setNotifications] = useState<null | []>([]);
   const [error, setError] = useState<string | null>()
   const [profile, setProfile] = useState<any>()
   const displayedNotifications = showAllNotifications
     ? notifications
     : notifications.slice(0, 5);
-
-
-
 
   function timeAgo(createdAtString) {
     const createdAt: any = new Date(createdAtString);
@@ -52,6 +51,12 @@ const Header: React.FC<HeaderProps> = ({
     const diffInDays = Math.floor(diffInHours / 24);
     return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
   }
+
+  const {data: userDetails, isLoading} = useQuery({
+    queryKey: ["notifications"],
+    queryFn: () => UserService.getUserDetails(token),
+  })
+
 
   return (
     <nav className=" text-blackColor border-b bg-whiteColor border-borderColor  py-3">
@@ -178,8 +183,7 @@ const Header: React.FC<HeaderProps> = ({
           </Popover>
 
           <div className="  relative sm:ml-0">
-            <Link
-              href="/dashboard/my-profile"
+            <div
               className="flex items-center md:gap-3 gap-2 p-1.5 sm:p-2 rounded-md"
               style={{
                 boxShadow: "2px 2px 7px 2px rgba(0, 0, 0, 0.1)", // uniform shadow all sides
@@ -191,7 +195,7 @@ const Header: React.FC<HeaderProps> = ({
               >
                 <div className=" w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden">
                   <Image
-                    src={"/profile.png"}
+                    src={userDetails?.data?.data?.avatar_url || "/profile.png"}
                     alt="Admin Avatar"
                     width={40}
                     height={40}
@@ -200,15 +204,15 @@ const Header: React.FC<HeaderProps> = ({
                 </div>
                 <div className="whitespace-nowrap">
                   <h4 className="sm:text-sm text-[13px] font-medium text-blackColor">
-                    Jonathan
+                    {userDetails?.data?.data?.name}
                   </h4>
-                  <p className="text-descriptionColor md:text-base text-sm">demo@gmail.com</p>
+                  <p className="text-descriptionColor md:text-base text-sm">{userDetails?.data?.data?.email}</p>
                 </div>
                 <button className=" cursor-pointer">
                   <IoIosArrowDown size={16} className="text-grayColor1" />
                 </button>
               </div>
-            </Link>
+            </div>
           </div>
         </div>
       </div>
