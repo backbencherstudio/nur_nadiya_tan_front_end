@@ -12,6 +12,7 @@ import ButtonReuseable from "../reusable/CustomButton";
 export default function BiodataStepThreeForm() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [backLoading, setBackLoading] = useState(false);
   const { register, handleSubmit, control, formState: { errors }, reset } = useForm({
     defaultValues: {
       anyOtherRemarks: "",
@@ -63,9 +64,8 @@ export default function BiodataStepThreeForm() {
   }, [reset]);
 
   const onSubmit = async (data: any) => {
+    setIsSubmitting(true);
     try {
-      setIsSubmitting(true);
-      
       // Transform data to match the expected format
       const areasOfWork: any = {};
       for (let i = 1; i <= 4; i++) {
@@ -74,14 +74,10 @@ export default function BiodataStepThreeForm() {
         areasOfWork[`experience${i}`] = data[`experience${i}`] || false;
         areasOfWork[`assessment${i}`] = data[`assessment${i}`] || "";
       }
-
       const stepThreeData: any = {
         anyOtherRemarks: data.anyOtherRemarks,
         areasOfWork
       };
-   console.log("check stepThreeData",stepThreeData);
-   
-      // Save to localStorage
       const saved = saveBiodataStep('stepThree', stepThreeData);
       if (saved) {
         router.push("/dashboard/biodata-management/biodata-step-four");
@@ -90,14 +86,12 @@ export default function BiodataStepThreeForm() {
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
+    } 
   };
 
   const onBack = () => {
-    console.log("Go back to previous step");
-    router.push("/dashboard/biodata-management/biodata-step-two");
+    setBackLoading(true);
+    router.push("/dashboard/biodata-management/biodata-step-four");
   };
 
   return (
@@ -217,9 +211,11 @@ export default function BiodataStepThreeForm() {
             <ButtonReuseable
               type="button"
               title="Back"
+              sendingMsg="Backing..."
               icon={<FiChevronLeft className="w-4 h-4" />}
               className="!bg-whiteColor !border border-primaryColor !text-primaryColor !px-5"
               onClick={onBack}
+              loading={backLoading}
             />
 
             <ButtonReuseable

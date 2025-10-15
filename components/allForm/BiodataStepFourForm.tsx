@@ -2,17 +2,19 @@
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { getBiodataStep, getCompleteBiodata } from "@/helper/biodataStorage.helper";
+import { clearBiodataData, getBiodataStep, getCompleteBiodata } from "@/helper/biodataStorage.helper";
 import { useToken } from "@/hooks/useToken";
 import { cn } from "@/lib/utils";
 import { ImageContext } from "@/provider/ImageProvider";
 import { UserService } from "@/service/user/user.service";
+import { useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FiChevronLeft } from "react-icons/fi";
+import { toast } from "react-toastify";
 import ButtonReuseable from "../reusable/CustomButton";
 import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
@@ -22,9 +24,11 @@ export default function BiodataStepFourForm() {
   const router = useRouter();
   const [dateFrom, setDateFrom] = React.useState<Date | undefined>();
   const [dateTo, setDateTo] = React.useState<Date | undefined>();
+  const [backLoading, setBackLoading] = useState(false);
   const [allBiodata, setAllBiodata] = React.useState<any>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
- const {token} =useToken()
+  const {token} =useToken()
+ const queryClient = useQueryClient();
   const { register, handleSubmit, control, formState: { errors }, reset } = useForm({
     defaultValues: {
       // Areas of Work Section
@@ -51,7 +55,6 @@ export default function BiodataStepFourForm() {
     }
   });
  const { image, setImage } = useContext(ImageContext);
- console.log("image",image);
   useEffect(() => {
     const completeData = getCompleteBiodata();
     setAllBiodata(completeData);
@@ -101,78 +104,87 @@ export default function BiodataStepFourForm() {
       remarks: data.remarks ?? "",
       other_remarks: data.otherRemarks ?? "",
       age_of_childern: allBiodata?.stepOne?.age_of_childern ?? "",
-      nationality: allBiodata?.stepOne?.nationality ?? "",
       religion: allBiodata?.stepOne?.religion ?? "",
       number_of_childern: allBiodata?.stepOne?.number_of_childern ?? "",
-      place_of_birth: allBiodata?.stepOne?.place_of_birth ?? "",
       marital_status: allBiodata?.stepOne?.marital_status ?? "",
-      name_of_airPort: allBiodata?.stepOne?.name_of_airPort ?? "",
-      date_of_birth: allBiodata?.stepOne?.date_of_birth ? new Date(allBiodata?.stepOne?.date_of_birth as any).toISOString() : "",
       education_level: allBiodata?.stepOne?.education_level ?? "",
+      name_of_airPort: allBiodata?.stepOne?.name_of_airPort ?? "",
       height: allBiodata?.stepOne?.height ?? "",
       weight: allBiodata?.stepOne?.weight ?? "",
+      nationality: allBiodata?.stepOne?.nationality ?? "",
+      date_of_birth: allBiodata?.stepOne?.date_of_birth ? new Date(allBiodata?.stepOne?.date_of_birth as any).toISOString() : "",
+      place_of_birth: allBiodata?.stepOne?.place_of_birth ?? "",
       full_name: allBiodata?.stepOne?.full_name ?? "",
       image: image || "",
-
       allergies: bool(allBiodata?.stepTwo?.allergies),
-      asthma: bool(allBiodata?.stepTwo?.asthma),
-      diabetes: bool(allBiodata?.stepTwo?.diabetes),
-      dietary_restrictions: bool(allBiodata?.stepTwo?.dietary_restrictions),
-      epilepsy: bool(allBiodata?.stepTwo?.epilepsy),
-      heart_disease: bool(allBiodata?.stepTwo?.heart_disease),
-      hypertension: bool(allBiodata?.stepTwo?.hypertension),
-      malaria: bool(allBiodata?.stepTwo?.malaria),
+      physical_disabilities: bool(allBiodata?.stepTwo?.physical_disabilities),
       mental_illness: bool(allBiodata?.stepTwo?.mental_illness),
+      epilepsy: bool(allBiodata?.stepTwo?.epilepsy),
+      tuberculosis: bool(allBiodata?.stepTwo?.tuberculosis),
+      heart_disease: bool(allBiodata?.stepTwo?.heart_disease),
+      malaria: bool(allBiodata?.stepTwo?.malaria),
       operations: bool(allBiodata?.stepTwo?.operations),
       others: allBiodata?.stepTwo?.others ?? "",
-      physical_disabilities: bool(allBiodata?.stepTwo?.physical_disabilities),
+      dietary_restrictions: bool(allBiodata?.stepTwo?.dietary_restrictions),
       preference_for_rest_days: bool(allBiodata?.stepTwo?.preference_for_rest_days),
-      tuberculosis: bool(allBiodata?.stepTwo?.tuberculosis),
-
-      area_of_work_one: allBiodata?.stepThree?.areasOfWork?.areaOfWork1 ?? "",
-      area_of_work_two: allBiodata?.stepThree?.areasOfWork?.areaOfWork2 ?? "",
-      area_of_work_three: allBiodata?.stepThree?.areasOfWork?.areaOfWork3 ?? "",
-      area_of_work_four: allBiodata?.stepThree?.areasOfWork?.areaOfWork4 ?? "",
-      area_of_work_five: data?.areaOfWork5 ?? "",
-      area_of_work_six: data?.areaOfWork6 ?? "",
-      area_of_work_seven: data?.areaOfWork7 ?? "",
-      assessment_or_observation_one: allBiodata?.stepThree?.areasOfWork?.assessment1 ?? "",
-      assessment_or_observation_two: allBiodata?.stepThree?.areasOfWork?.assessment2 ?? "",
-      assessment_or_observation_three: allBiodata?.stepThree?.areasOfWork?.assessment3 ?? "",
-      assessment_or_observation_four: allBiodata?.stepThree?.areasOfWork?.assessment4 ?? "",
-      assessment_or_observation_five: data?.assessment5 ?? "",
-      assessment_or_observation_six: data?.assessment6 ?? "",
-      assessment_or_observation_seven: data?.assessment7 ?? "",
-
-      willingness_one: bool((allBiodata?.stepThree?.areasOfWork as any)?.willingness1),
-      willingness_two: bool((allBiodata?.stepThree?.areasOfWork as any)?.willingness2),
-      willingness_three: bool((allBiodata?.stepThree?.areasOfWork as any)?.willingness3),
-      willingness_four: bool((allBiodata?.stepThree?.areasOfWork as any)?.willingness4),
-      willingness_five: bool(data?.willingness5),
-      willingness_six: bool(data?.willingness6),
-      willingness_seven: bool(data?.willingness7),
-      experience_one: bool((allBiodata?.stepThree?.areasOfWork as any)?.experience1),
-      experience_two: bool((allBiodata?.stepThree?.areasOfWork as any)?.experience2),
-      experience_three: bool((allBiodata?.stepThree?.areasOfWork as any)?.experience3),
-      experience_four: bool((allBiodata?.stepThree?.areasOfWork as any)?.experience4),
-      experience_five: bool(data?.experience5),
-      experience_six: bool(data?.experience6),
-      experience_seven: bool(data?.experience7),
+      asthma: bool(allBiodata?.stepTwo?.asthma),
+      diabetes: bool(allBiodata?.stepTwo?.diabetes),
+      hypertension: bool(allBiodata?.stepTwo?.hypertension),
+      care_of_infants: allBiodata?.stepThree?.areasOfWork?.areaOfWork1 ?? "",
+      care_of_elderly: allBiodata?.stepThree?.areasOfWork?.areaOfWork2 ?? "",
+      care_of_disabled: allBiodata?.stepThree?.areasOfWork?.areaOfWork3 ?? "",
+      general_housework: allBiodata?.stepThree?.areasOfWork?.areaOfWork4 ?? "",
+      cooking: data?.areaOfWork5 ?? "",
+      language_abilities: data?.areaOfWork6 ?? "",
+      other_skills: data?.areaOfWork7 ?? "",
+      care_of_infants_assessment: allBiodata?.stepThree?.areasOfWork?.assessment1 ?? "",
+      care_of_elderly_assessment: allBiodata?.stepThree?.areasOfWork?.assessment2 ?? "",
+      care_of_disabled_assessment: allBiodata?.stepThree?.areasOfWork?.assessment3 ?? "",
+      general_housework_assessment: allBiodata?.stepThree?.areasOfWork?.assessment4 ?? "",
+      cooking_assessment: data?.assessment5 ?? "",
+      language_abilities_assessment: data?.assessment6 ?? "",
+      other_skills_assessment: data?.assessment7 ?? "",
+      care_of_infants_willingness: bool((allBiodata?.stepThree?.areasOfWork as any)?.willingness1),
+      care_of_elderly_willingness: bool((allBiodata?.stepThree?.areasOfWork as any)?.willingness2),
+      care_of_disabled_willingness: bool((allBiodata?.stepThree?.areasOfWork as any)?.willingness3),
+      general_housework_willingnes: bool((allBiodata?.stepThree?.areasOfWork as any)?.willingness4),
+      cooking_willingness: bool(data?.willingness5),
+      language_abilities_willingness: bool(data?.willingness6),
+      other_skills_willingness: bool(data?.willingness7),
+      care_of_infants_experience: bool((allBiodata?.stepThree?.areasOfWork as any)?.experience1),
+      care_of_elderly_experience: bool((allBiodata?.stepThree?.areasOfWork as any)?.experience2),
+      care_of_disabled_experience: bool((allBiodata?.stepThree?.areasOfWork as any)?.experience3),
+      general_housework_experience: bool((allBiodata?.stepThree?.areasOfWork as any)?.experience4),
+      cooking_experience: bool(data?.experience5),
+      language_abilities_experience: bool(data?.experience6),
+      other_skills_experience: bool(data?.experience7),
     };
     setIsSubmitting(true);
     try {
       const response = await UserService.addBiodata(payload, token)
       console.log("response",response);
+      if(response?.data?.success === true){
+        console.log("response?.data?.success",response?.data?.success);
+        toast.success( response?.data?.message ||"Biodata submitted successfully");
+        queryClient.invalidateQueries({ queryKey: ["biodataData"] });
+        clearBiodataData()
+        router.push("/dashboard/biodata-management");
+        reset();
+      }else{
+        toast.error(response?.data?.message || "Failed to submit biodata");
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
+      toast.error(error?.response?.data?.message || "Failed to submit biodata");
     } finally {
       setIsSubmitting(false);
     }
   };
- console.log("allBiodata",allBiodata);
  
   const onBack = () => {
+    setBackLoading(true);
     router.push("/dashboard/biodata-management/biodata-step-three");
+    setBackLoading(false);
   };
 
   return (
@@ -412,15 +424,18 @@ export default function BiodataStepFourForm() {
             <ButtonReuseable
               type="button"
               title="Back"
+              sendingMsg="Backing..."
               icon={<FiChevronLeft className="w-4 h-4" />}
               className="!bg-whiteColor !border border-primaryColor !text-primaryColor !px-5"
               onClick={onBack}
+              loading={backLoading}
             />
 
             <div className="flex gap-3">
               <ButtonReuseable
                 type="submit"
-                title={isSubmitting ? "Submitting..." : "Submit"}
+                sendingMsg="Submitting..."
+                title={ "Submit"}
                 className="bg-primaryColor !px-5"
                 loading={isSubmitting}
               />

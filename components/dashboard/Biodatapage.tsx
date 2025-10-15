@@ -149,7 +149,7 @@ function Biodatapage() {
    };
    const queryString = buildQueryParams();
    const { data, error:apiError, isLoading } = useQuery({
-    queryKey: ["biodata", searchTerm,currentPage, itemsPerPage, selectedStatus, selectedNationality, dob],
+    queryKey: ["biodataData", searchTerm,currentPage, itemsPerPage, selectedStatus, selectedNationality, dob],
     queryFn: getBiodata,
     enabled: !!token,
    });  

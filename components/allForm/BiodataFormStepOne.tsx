@@ -6,17 +6,18 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { BiodataStepOne, getBiodataStep, saveBiodataStep } from "@/helper/biodataStorage.helper";
 import { cn } from "@/lib/utils";
+import { ImageContext } from "@/provider/ImageProvider";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ButtonReuseable from "../reusable/CustomButton";
-import { ImageContext } from "@/provider/ImageProvider";
 
 export default function BiodataFormStepOne() {
     const router = useRouter();
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [dob, setDob] = React.useState<Date | undefined>();
     const [imagePreview, setImagePreview] = React.useState<string | null>(null);
     const imageRef = React.useRef<HTMLInputElement>(null);
@@ -65,7 +66,8 @@ export default function BiodataFormStepOne() {
     }, [reset]);
 
     const onSubmit = (data: BiodataStepOne) => {
-        const formData = { 
+        setIsSubmitting(true);
+            const formData = { 
             ...data, 
             date_of_birth: dob, 
             imagePreview ,
@@ -76,9 +78,11 @@ export default function BiodataFormStepOne() {
         if (saved) {
             console.log("Data saved to localStorage successfully");
             router.push("/dashboard/biodata-management/biodata-step-two");
+            setIsSubmitting(false);
         } else {
             console.error("Failed to save data to localStorage");
         }
+        setIsSubmitting(false);
     };
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -150,6 +154,7 @@ export default function BiodataFormStepOne() {
                                         Full Name<span className="text-red-500">*</span>
                                     </label>
                                     <Input
+                                        type="text"
                                         placeholder="Enter full name"
                                         {...register("full_name", { required: true })}
                                         className="w-full !h-12 lg:!h-13 !pl-4"
@@ -162,6 +167,7 @@ export default function BiodataFormStepOne() {
                                         Place of Birth
                                     </label>
                                     <Input
+                                        type="text"
                                         placeholder="Enter place of birth"
                                         {...register("place_of_birth")}
                                         className="w-full !h-12 lg:!h-13 !pl-4"
@@ -174,6 +180,7 @@ export default function BiodataFormStepOne() {
                                         Height
                                     </label>
                                     <Input
+                                        type="number"
                                         placeholder="Enter height in cm"
                                         {...register("height")}
                                         className="w-full !h-12 lg:!h-13 !pl-4"
@@ -186,6 +193,7 @@ export default function BiodataFormStepOne() {
                                         Name of port/Airport
                                     </label>
                                     <Input
+                                        type="text"
                                         placeholder="Enter port/airport name"
                                         {...register("name_of_airPort")}
                                         className="w-full !h-12 lg:!h-13 !pl-4"
@@ -230,6 +238,7 @@ export default function BiodataFormStepOne() {
                                         Age of children
                                     </label>
                                     <Input
+                                    type="number"
                                         placeholder="Enter age of children"
                                         {...register("age_of_childern")}
                                         className="w-full !h-12 lg:!h-13 !pl-4"
@@ -310,6 +319,7 @@ export default function BiodataFormStepOne() {
                                         Weight
                                     </label>
                                     <Input
+                                        type="number"
                                         placeholder="Enter weight"
                                         {...register("weight")}
                                         className="w-full !h-12 lg:!h-13 !pl-4"
@@ -419,7 +429,9 @@ export default function BiodataFormStepOne() {
                         <ButtonReuseable
                             type="submit"
                             title="Next >"
-                            className=" !px-5"
+                            className="!px-5"
+                            loading={isSubmitting}
+                            sendingMsg="Submitting..."
                         />
                     </div>
                 </form>

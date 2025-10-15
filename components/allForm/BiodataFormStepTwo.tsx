@@ -11,6 +11,7 @@ import ButtonReuseable from "../reusable/CustomButton";
 export default function BiodataFormStepTwo() {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [backLoading, setBackLoading] = useState(false);
     const { register, handleSubmit, control, formState: { errors }, reset } = useForm<BiodataStepTwo>({
         defaultValues: {
             allergies: false,
@@ -77,7 +78,9 @@ export default function BiodataFormStepTwo() {
     };
 
     const onBack = () => {
-        console.log("Go back to previous step");
+        setBackLoading(true);
+        router.push("/dashboard/biodata-management/biodata-step-one");
+        setBackLoading(false);
         router.push("/dashboard/biodata-management/biodata-step-one");
     };
 
@@ -498,14 +501,17 @@ export default function BiodataFormStepTwo() {
                             <ButtonReuseable
                                 type="button"
                                 title="Back"
+                                sendingMsg="Backing..."
                                 icon={<FiChevronLeft className="w-4 h-4" />}
                                 className="!bg-whiteColor !border border-primaryColor !text-primaryColor !px-5"
                                 onClick={onBack}
+                                loading={backLoading}
                             />
                             <ButtonReuseable
                                 type="submit"
-                                title={isSubmitting ? "Submitting..." : "Next >"}
+                                title={"Next >"}
                                 className=" !px-5"
+                                sendingMsg="Submitting..."
                                 loading={isSubmitting}
                             />
                         </div>
