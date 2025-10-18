@@ -9,55 +9,54 @@ import { Controller, useForm } from "react-hook-form";
 import { FiChevronLeft } from "react-icons/fi";
 import ButtonReuseable from "../reusable/CustomButton";
 
-export default function BiodataStepThreeForm() {
+export default function BiodataStepThreeForm({editedData}: {editedData?: any}) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [backLoading, setBackLoading] = useState(false);
   const { register, handleSubmit, control, formState: { errors }, reset } = useForm({
     defaultValues: {
-      anyOtherRemarks: "",
+      anyOtherRemarks: editedData?.any_other_remarks || "",
       areaOfWork1: "Care of infants/children Please...",
-      willingness1: true,
-      experience1: false,
-      assessment1: "",
+      willingness1: editedData?.care_of_infants_willingness || true,
+      experience1: editedData?.care_of_infants_experience || false,
+      assessment1: editedData?.care_of_infants_assessment || "",
       areaOfWork2: "Care of elderly",
-      willingness2: true,
-      experience2: false,
-      assessment2: "",
+      willingness2: editedData?.care_of_elderly_willingness || true,
+      experience2: editedData?.care_of_elderly_experience || false,
+      assessment2: editedData?.care_of_elderly_assessment || "",
       areaOfWork3: "Care of disabled",
-      willingness3: false,
-      experience3: false,
-      assessment3: "",
+      willingness3: editedData?.care_of_disabled_willingness || false,
+      experience3: editedData?.care_of_disabled_experience || false,
+      assessment3: editedData?.care_of_disabled_assessment || "",
       areaOfWork4: "General housework",
-      willingness4: true,
-      experience4: false,
-      assessment4: ""
+      willingness4: editedData?.general_housework_willingnes || true,
+      experience4: editedData?.general_housework_experience || false,
+      assessment4: editedData?.general_housework_assessment || ""
     }
   });
 
   // Load existing data on component mount
   useEffect(() => {
     const existingData = getBiodataStep('stepThree');
-    console.log("existingData",existingData);
     if (existingData) {
         const formData = {
-        areaOfWork1: existingData.areasOfWork?.areaOfWork1 || "Care of infants/children Please...",
-        willingness1: existingData.areasOfWork?.willingness1 || false,
-        experience1: existingData.areasOfWork?.experience1 || false,
-        assessment1: existingData.areasOfWork?.assessment1 || "",
-        areaOfWork2: existingData.areasOfWork?.areaOfWork2 || "Care of elderly",
-        willingness2: existingData.areasOfWork?.willingness2 || false,
-        experience2: existingData.areasOfWork?.experience2 || false,
-        assessment2: existingData.areasOfWork?.assessment2 || "",
-        areaOfWork3: existingData.areasOfWork?.areaOfWork3 || "Care of disabled",
-        willingness3: existingData.areasOfWork?.willingness3 || false,
-        experience3: existingData.areasOfWork?.experience3 || false,
-        assessment3: existingData.areasOfWork?.assessment3 || "",
-        areaOfWork4: existingData.areasOfWork?.areaOfWork4 || "General housework",
-        willingness4: existingData.areasOfWork?.willingness4 || false,
-        experience4: existingData.areasOfWork?.experience4 || false,
-        assessment4: existingData.areasOfWork?.assessment4 || "",
-        anyOtherRemarks: existingData.anyOtherRemarks || ""
+        areaOfWork1:  "Care of infants/children Please...",
+        willingness1: existingData ? existingData.areasOfWork?.willingness1 || editedData?.care_of_infants_willingness : false,
+        experience1: existingData ? existingData.areasOfWork?.experience1 || editedData?.care_of_infants_experience : false,
+        assessment1: existingData ? existingData.areasOfWork?.assessment1 || editedData?.care_of_infants_assessment : "",
+        areaOfWork2:  "Care of elderly",
+        willingness2: existingData ? existingData.areasOfWork?.willingness2 || editedData?.care_of_elderly_willingness : false,
+        experience2: existingData ? existingData.areasOfWork?.experience2 || editedData?.care_of_elderly_experience : false,
+        assessment2: existingData ? existingData.areasOfWork?.assessment2 || editedData?.care_of_elderly_assessment : "",
+        areaOfWork3:  "Care of disabled",
+        willingness3: existingData ? existingData.areasOfWork?.willingness3 || editedData?.care_of_disabled_willingness : false,
+        experience3: existingData ? existingData.areasOfWork?.experience3 || editedData?.care_of_disabled_experience : false,
+        assessment3: existingData ? existingData.areasOfWork?.assessment3 || editedData?.care_of_disabled_assessment : "",
+        areaOfWork4:  "General housework",
+        willingness4: existingData ? existingData.areasOfWork?.willingness4 || editedData?.general_housework_willingnes : false,
+        experience4: existingData ? existingData.areasOfWork?.experience4 || editedData?.general_housework_experience : false,
+        assessment4: existingData ? existingData.areasOfWork?.assessment4 || editedData?.general_housework_assessment : "",
+        anyOtherRemarks: existingData ? existingData.anyOtherRemarks || editedData?.any_other_remarks : ""
       };
       reset(formData);
     }
@@ -80,7 +79,7 @@ export default function BiodataStepThreeForm() {
       };
       const saved = saveBiodataStep('stepThree', stepThreeData);
       if (saved) {
-        router.push("/dashboard/biodata-management/biodata-step-four");
+        router.push(editedData ? `/dashboard/biodata-management/${editedData?.id}/biodata-edit-step-four` : "/dashboard/biodata-management/biodata-step-four");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -89,7 +88,7 @@ export default function BiodataStepThreeForm() {
 
   const onBack = () => {
     setBackLoading(true);
-    router.push("/dashboard/biodata-management/biodata-step-four");
+    router.push(editedData ? `/dashboard/biodata-management/${editedData?.id}/biodata-edit-step-three` : "/dashboard/biodata-management/biodata-step-three");
   };
 
   return (
