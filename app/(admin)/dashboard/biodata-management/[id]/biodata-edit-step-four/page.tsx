@@ -23,7 +23,6 @@ async function page(props: {
       </div>
     )
   } catch (error) {
-    console.log("error",error)
     return (
       <div>
         <p>Error: {error?.message || "Something went wrong."}</p>
