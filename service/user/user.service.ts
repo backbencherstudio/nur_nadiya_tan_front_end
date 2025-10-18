@@ -126,6 +126,16 @@ export const UserService = {
     };
     return await Fetch.post("/admin/add-bio", formData, _config);
   },
+  updateBiodata: async (id: string, formData: any, token: string) => {
+    const userToken = token;
+    const _config = {
+      headers: {
+        Authorization: "Bearer " + userToken,
+        "content-type": "multipart/form-data",
+      },
+    };
+    return await Fetch.patch(`/admin/edit-bio-data-by-id/${id}`, formData, _config);
+  },
   getUserDetails: async (token = "") => {
     // const userToken = CookieHelper.get({ key: "token", context });
     const userToken = token;
