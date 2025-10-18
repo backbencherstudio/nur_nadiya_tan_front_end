@@ -8,7 +8,7 @@ import { Controller, useForm } from "react-hook-form";
 import { FiChevronLeft } from "react-icons/fi";
 import ButtonReuseable from "../reusable/CustomButton";
 
-export default function BiodataFormStepTwo() {
+export default function BiodataFormStepTwo({editedData}: {editedData?: any}) {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [backLoading, setBackLoading] = useState(false);
@@ -30,10 +30,11 @@ export default function BiodataFormStepTwo() {
             preference_for_rest_days: false
         }
     });
+console.log(editedData,'editedData==========');
 
     // Load existing data on component mount
     useEffect(() => {
-        const existingData = getBiodataStep('stepTwo');
+        const existingData = editedData ? editedData : getBiodataStep('stepTwo');
         if (existingData) {
             const formData = {
             allergies: existingData?.allergies || false,
@@ -59,14 +60,14 @@ export default function BiodataFormStepTwo() {
                 reset(formData);
             }, 100);
         }
-    }, [reset]);
+    }, [reset, editedData   ]);
 
     const onSubmit = async (data: BiodataStepTwo) => {
         setIsSubmitting(true);
         try {
             const saved = saveBiodataStep('stepTwo', data);
             if (saved) {
-                router.push("/dashboard/biodata-management/biodata-step-three");
+                router.push(editedData ? `/dashboard/biodata-management/${editedData?.id}/biodata-edit-step-three` : "/dashboard/biodata-management/biodata-step-three");
             } 
         } catch (error) {
             console.error("Error submitting form:", error);
@@ -75,7 +76,7 @@ export default function BiodataFormStepTwo() {
 
     const onBack = () => {
         setBackLoading(true);
-        router.push("/dashboard/biodata-management/biodata-step-one");
+        router.push(editedData ? `/dashboard/biodata-management/${editedData?.id}/biodata-edit-step-one` : "/dashboard/biodata-management/biodata-step-one");
     };
 
     return (

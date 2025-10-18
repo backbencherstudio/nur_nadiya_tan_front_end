@@ -79,12 +79,10 @@ export default function BiodataFormStepOne({editedData}: {editedData?: any}) {
             date_of_birth: dob, 
             imagePreview: imagePreview  || "/empty-user.png",
         };
-        console.log("Biodata Step One Submitted:", image);
-        // Save to localStorage
         const saved = saveBiodataStep('stepOne', formData);
         if (saved) {
             console.log("Data saved to localStorage successfully");
-            router.push(editedData ? `/dashboard/biodata-management/${editedData.id}/biodata-step-two` : "/dashboard/biodata-management/biodata-step-two");
+            router.push(editedData ? `/dashboard/biodata-management/${editedData.id}/biodata-edit-step-two` : "/dashboard/biodata-management/biodata-step-two");
         } else {
             console.error("Failed to save data to localStorage");
         }
