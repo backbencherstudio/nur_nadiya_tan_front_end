@@ -20,7 +20,8 @@ interface SelectOption {
     label: string;
 }
 
-export default function TransferMaidForm({ open, setOpen }: any) {
+export default function TransferMaidForm({ open, setOpen, record }: {open: boolean, setOpen: (open: boolean) => void, record?: any}) {
+    console.log("record", record);
     const [dob, setDob] = React.useState<Date | undefined>()
     const [transferDate, setTransferDate] = React.useState<Date | undefined>()
     const [hasEmployer, setHasEmployer] = React.useState<string>("")

@@ -143,7 +143,6 @@ export default function AddEmployerEnquiry() {
     const onSubmit = (data: any) => {
         // Create FormData for multipart/form-data submission
         const formData = new FormData()
-        
         // Add form fields
         formData.append('full_name', data.fullName || '')
         formData.append('contact_number', data.contactNumber || '')
@@ -155,7 +154,6 @@ export default function AddEmployerEnquiry() {
         formData.append('budget', data.salaryBudget || '')
         formData.append('additional_information', data.additionalInfo || '')
         formData.append('current_employer', hasEmployer || 'none')
-        
         // Add image if selected
         if (selectedFile) {
             formData.append('image', selectedFile)

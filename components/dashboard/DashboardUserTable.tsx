@@ -9,13 +9,16 @@ import {
 import { useToken } from "@/hooks/useToken";
 import { UserService } from "@/service/user/user.service";
 import { useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FiPlus, FiSearch } from "react-icons/fi";
 import { GrEdit } from "react-icons/gr";
+import TransferMaidForm from "../allForm/RegistrationForm";
+import RequestForMaidForm from "../allForm/RequestForMaidForm";
 import DynamicTableTwo from "../common/DynamicTableTwo";
 import ButtonReuseable from "../reusable/CustomButton";
-
 function DashboardUserTable({ recentOrder }: any) {
   const [recentOrders, setRecentOrders] = useState<any>(recentOrder);
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,8 +27,10 @@ function DashboardUserTable({ recentOrder }: any) {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [selectedType, setSelectedType] = useState("all");
   const [selectedStatus, setSelectedStatus] = useState("all");
+  const [selectedEditRecord, setSelectedEditRecord] = useState<any>(null);
+  const [isEdite, setIsEdite] = useState(false)
   const { token } = useToken();
-
+  const router = useRouter();
   // Debounce search term
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -72,7 +77,7 @@ function DashboardUserTable({ recentOrder }: any) {
   const columns = [
     {
       label: "Name",
-      accessor: "name",
+      accessor: "full_name",
       width: "200px",
       formatter: (value: string) => (
         <div className="flex items-center gap-3">
@@ -95,7 +100,7 @@ function DashboardUserTable({ recentOrder }: any) {
     },
     {
       label: "Contact",
-      accessor: "contact",
+      accessor: "mobile_number",
       width: "150px",
       formatter: (value: string) => (
         <span className="text-sm">{value}</span>
@@ -103,10 +108,10 @@ function DashboardUserTable({ recentOrder }: any) {
     },
     {
       label: "Date",
-      accessor: "date",
+      accessor: "createdAt",
       width: "120px",
       formatter: (value: string) => (
-        <span className="text-sm">{value}</span>
+        <span className="text-sm">{dayjs(value).format("DD/MM/YYYY")}</span>
       ),
     },
     {
@@ -114,12 +119,12 @@ function DashboardUserTable({ recentOrder }: any) {
       accessor: "time",
       width: "100px",
       formatter: (value: string) => (
-        <span className="text-sm">{value}</span>
+        <span className="text-sm">{dayjs(value).format("hh:mm A")}</span>
       ),
     },
     {
       label: "Source",
-      accessor: "source",
+      accessor: "additional_information",
       width: "120px",
       formatter: (value: string) => (
         <span className="text-sm">{value}</span>
@@ -142,9 +147,9 @@ function DashboardUserTable({ recentOrder }: any) {
       label: "Action",
       accessor: "action",
       width: "80px",
-      formatter: (_: any, record: any) => {
+      formatter: (type: any, record: any) => {
         return (
-          <button className="w-8 h-8 cursor-pointer bg-primaryColor text-white rounded-md flex items-center justify-center  transition-colors">
+          <button onClick={() => handleEdit(record)} className="w-8 h-8 cursor-pointer bg-primaryColor text-white rounded-md flex items-center justify-center  transition-colors">
             <GrEdit size={17} />
           </button>
         );
@@ -152,6 +157,10 @@ function DashboardUserTable({ recentOrder }: any) {
     },
   ];
 
+  const handleEdit = (record: any) => {
+   setIsEdite(true)
+   setSelectedEditRecord(record)
+  }
   return (
     <section>
       <div className="bg-white shadow p-5 rounded-md">
@@ -231,6 +240,8 @@ function DashboardUserTable({ recentOrder }: any) {
           totalpage={data?.pagination?.totalPages || 0}
         />
       </div>
+
+      {isEdite && selectedEditRecord?.type == "Maid" ? <TransferMaidForm open={isEdite} setOpen={setIsEdite} record={selectedEditRecord} /> : <RequestForMaidForm open={isEdite} setOpen={setIsEdite} record={selectedEditRecord} />}
     </section>
   );
 }

@@ -9,7 +9,6 @@ async function page({ params }: { params: { id: string } }) {
 
   try {
     const biodata = await UserService.getBiodata(id, token);
-  console.log("biodata", biodata);
   
   return (
     <div className="p-6">
