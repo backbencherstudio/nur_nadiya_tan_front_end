@@ -15,7 +15,7 @@ import React, { useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ButtonReuseable from "../reusable/CustomButton";
 
-export default function BiodataFormStepOne() {
+export default function BiodataFormStepOne({editedData}: {editedData?: any}) {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [dob, setDob] = React.useState<Date | undefined>();
@@ -40,8 +40,7 @@ export default function BiodataFormStepOne() {
 
     // Load existing data on component mount
     React.useEffect(() => {
-        const existingData = getBiodataStep('stepOne');
-        console.log("existingData",existingData);
+        const existingData = editedData ? editedData : getBiodataStep('stepOne');
         if (existingData) {
             // Add a small delay to ensure proper initialization
             setTimeout(() => {
@@ -60,10 +59,10 @@ export default function BiodataFormStepOne() {
             }
             
             if (existingData.imagePreview) {
-                setImagePreview(existingData.imagePreview);
+                setImagePreview(existingData.imagePreview ? existingData.imagePreview : existingData?.image_url ? existingData?.image_url : "/empty-user.png");
             }
         }
-    }, [reset]);
+    }, [reset, editedData]);
 
     const onSubmit = (data: BiodataStepOne) => {
         setIsSubmitting(true);
@@ -78,14 +77,14 @@ export default function BiodataFormStepOne() {
             const formData = { 
             ...data, 
             date_of_birth: dob, 
-            imagePreview: imagePreview || "/empty-user.png",
+            imagePreview: imagePreview  || "/empty-user.png",
         };
         console.log("Biodata Step One Submitted:", image);
         // Save to localStorage
         const saved = saveBiodataStep('stepOne', formData);
         if (saved) {
             console.log("Data saved to localStorage successfully");
-            router.push("/dashboard/biodata-management/biodata-step-two");
+            router.push(editedData ? `/dashboard/biodata-management/${editedData.id}/biodata-step-two` : "/dashboard/biodata-management/biodata-step-two");
         } else {
             console.error("Failed to save data to localStorage");
         }

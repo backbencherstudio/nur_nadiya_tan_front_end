@@ -20,11 +20,11 @@ import { FiPlus, FiSearch } from "react-icons/fi";
 import { GrEdit } from "react-icons/gr";
 import { MdOutlineSimCardDownload } from "react-icons/md";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { toast } from "react-toastify";
 import DynamicTableTwo from "../common/DynamicTableTwo";
 import ButtonReuseable from "../reusable/CustomButton";
 import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
-import { toast } from "react-toastify";
 function Biodatapage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(6);
@@ -32,6 +32,7 @@ function Biodatapage() {
     const [selectedStatus, setSelectedStatus] = useState("");
     const [selectedNationality, setSelectedNationality] = useState("");
     const [dob, setDob] = useState<Date | undefined>()
+    const [deletingId, setDeletingId] = useState<string | null>(null);
     const { token } = useToken();
     // Biodata demo data matching the table structure from the image
    const queryClient = useQueryClient()
@@ -39,7 +40,7 @@ function Biodatapage() {
         {
             label: "Name",
             accessor: "full_name",
-            width: "120px",
+            width: "180px",
             formatter: (value: string) => (
                 <div className="flex items-center gap-3">
                     <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
@@ -86,7 +87,7 @@ function Biodatapage() {
         {
             label: "Skills",
             accessor: "skills",
-            width: "200px",
+            width: "160px",
             formatter: (value: string) => (
                 <span className="text-sm">{value}</span>
             ),
@@ -112,14 +113,22 @@ function Biodatapage() {
             formatter: (_: any, record: any) => {
                 return (
                     <div className="flex gap-2 items-center">
-                    <button className="w-8 h-8 cursor-pointer bg-primaryColor text-white rounded-md flex items-center justify-center transition-colors">
+                    <Link href={`/dashboard/biodata-management/${record?.id}/biodata-edit-step-one`} className="w-8 h-8 cursor-pointer bg-primaryColor text-white rounded-md flex items-center justify-center transition-colors">
                         <GrEdit size={17} />
-                    </button>
+                    </Link>
                     <Link href={`/dashboard/biodata-management/${record?.id}/biodata-preview/`} className="w-8 h-8 cursor-pointer bg-primaryColor/40 text-headerColor rounded-md flex items-center justify-center transition-colors">
                         <BsFileEarmarkPdf size={17} />
                     </Link>
-                    <button onClick={() => handleDelete(record?.id)} className="w-8 h-8 cursor-pointer bg-redColor text-white rounded-md flex items-center justify-center transition-colors">
-                        <RiDeleteBin6Line size={17} />
+                    <button 
+                        onClick={() => handleDelete(record?.id)} 
+                        disabled={deletingId === record?.id}
+                        className="w-8 h-8 cursor-pointer bg-redColor text-white rounded-md flex items-center justify-center transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {deletingId === record?.id ? (
+                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        ) : (
+                            <RiDeleteBin6Line size={17} />
+                        )}
                     </button>
                     </div>
                 );
@@ -137,10 +146,13 @@ function Biodatapage() {
       }
     });
    const handleDelete = (id: string) => {
-    deleteBiodataMutation.mutate(id);
+    setDeletingId(id);
+    deleteBiodataMutation.mutate(id, {
+        onSettled: () => {
+            setDeletingId(null);
+        }
+    });
    };
-
-   
    const buildQueryParams = () => {
       const params = new URLSearchParams()
       if (searchTerm) {
