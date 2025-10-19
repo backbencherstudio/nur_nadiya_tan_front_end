@@ -30,7 +30,7 @@ export default function BiodataFormStepTwo({editedData}: {editedData?: any}) {
             preference_for_rest_days: false
         }
     });
-console.log(editedData,'editedData==========');
+
 
     // Load existing data on component mount
     useEffect(() => {
@@ -52,8 +52,6 @@ console.log(editedData,'editedData==========');
             dietary_restrictions: existingData?.dietary_restrictions || false,
             preference_for_rest_days: existingData?.preference_for_rest_days || false
       };
-
-      console.log("formData",formData);
        
             // Add a small delay to ensure proper initialization
             setTimeout(() => {
@@ -68,9 +66,11 @@ console.log(editedData,'editedData==========');
             const saved = saveBiodataStep('stepTwo', data);
             if (saved) {
                 router.push(editedData ? `/dashboard/biodata-management/${editedData?.id}/biodata-edit-step-three` : "/dashboard/biodata-management/biodata-step-three");
-            } 
+            } else {
+                setIsSubmitting(false);
+            }
         } catch (error) {
-            console.error("Error submitting form:", error);
+            setIsSubmitting(false);
         } 
     };
 
@@ -109,7 +109,7 @@ console.log(editedData,'editedData==========');
                                                 return (
                                                     <Select 
                                                         onValueChange={(value) => {
-                                                            console.log("allergies changing from", field.value, "to", value);
+                                                           
                                                             field.onChange(value === "true");
                                                         }} 
                                                         value={currentValue}

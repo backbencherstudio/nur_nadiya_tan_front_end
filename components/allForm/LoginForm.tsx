@@ -35,8 +35,6 @@ export default function LoginForm() {
     setIsDisable(true);
     try {
       const response = await UserService.login(data);
-      console.log(response.data);
-      console.log(response.data.tokens.accessToken);
       
       if (response?.data?.success === true) {
         const tokenNumber = response?.data?.tokens?.accessToken;

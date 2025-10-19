@@ -1,4 +1,5 @@
-import BiodataStepFourForm from '@/components/allForm/BiodataStepFourForm'
+
+import BiodataUpdateStepFourForm from '@/components/allForm/BiodataUpdateFourForm'
 import { UserService } from '@/service/user/user.service'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -18,7 +19,7 @@ async function page(props: {
     const singleBiodata = data?.data?.data
     return (
         <div>
-        <BiodataStepFourForm editedData={singleBiodata} />
+        <BiodataUpdateStepFourForm editedData={singleBiodata} />
       </div>
     )
   } catch (error) {

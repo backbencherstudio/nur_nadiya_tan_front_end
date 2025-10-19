@@ -2,7 +2,7 @@
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { clearBiodataData, getBiodataStep, getCompleteBiodata } from "@/helper/biodataStorage.helper";
+import { clearBiodataData, getCompleteBiodata } from "@/helper/biodataStorage.helper";
 import { useToken } from "@/hooks/useToken";
 import { cn } from "@/lib/utils";
 import { ImageContext } from "@/provider/ImageProvider";
@@ -20,7 +20,7 @@ import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
-export default function BiodataStepFourForm() {
+export default function BiodataUpdateStepFourForm({editedData}: {editedData?: any}) {
   const router = useRouter();
   const [dateFrom, setDateFrom] = React.useState<Date | undefined>();
   const [dateTo, setDateTo] = React.useState<Date | undefined>();
@@ -31,7 +31,6 @@ export default function BiodataStepFourForm() {
  const queryClient = useQueryClient();
   const { register, handleSubmit, control, formState: { errors }, reset } = useForm({
     defaultValues: {
-      // Areas of Work Section
       areaOfWork5: "Cooking",
       willingness5: false,
       experience5: false,
@@ -44,7 +43,6 @@ export default function BiodataStepFourForm() {
       willingness7: false,
       experience7: false,
       assessment7: "",
-      // Employment History Section
       dateFrom: "",
       dateTo: "",
       country: "",
@@ -58,36 +56,36 @@ export default function BiodataStepFourForm() {
   useEffect(() => {
     const completeData = getCompleteBiodata();
     setAllBiodata(completeData);
-    const existingData = getBiodataStep('stepFour');
-    if (existingData) {
+
+    if (editedData) {
       const formData = {
-        areaOfWork5: existingData.areasOfWork?.areaOfWork5 || "Cooking",
-        willingness5: existingData.areasOfWork?.willingness5 || false,
-        experience5: existingData.areasOfWork?.experience5 || false,
-        assessment5: existingData.areasOfWork?.assessment5 || "",
-        areaOfWork6: existingData.areasOfWork?.areaOfWork6 || "Language abilities",
-        willingness6: existingData.areasOfWork?.willingness6 || false,
-        experience6: existingData.areasOfWork?.experience6 || false,
-        assessment6: existingData.areasOfWork?.assessment6 || "",
-        areaOfWork7: existingData.areasOfWork?.areaOfWork7 || "other skills",
-        willingness7: existingData.areasOfWork?.willingness7 || false,
-        experience7: existingData.areasOfWork?.experience7 || false,
-        assessment7: existingData.areasOfWork?.assessment7 || "",
-        dateFrom: existingData.date_from || "",
-        dateTo: existingData.date_to || "",
-        country: existingData.country || "",
-        employer: existingData.employer || "",
-        workDuties: existingData.work_duties || "",
-        remarks: existingData.remarks || "",
-        otherRemarks: existingData.other_remarks || ""
+        areaOfWork5:  "Cooking",
+        willingness5: editedData ?  editedData?.cooking_willingness : false,
+        experience5: editedData ?  editedData?.cooking_experience : false,
+        assessment5: editedData ?  editedData?.cooking_assessment : "",
+        areaOfWork6: "Language abilities",
+        willingness6: editedData ?  editedData?.language_abilities_willingness : false,
+          experience6: editedData ?  editedData?.language_abilities_experience : false,
+        assessment6: editedData ?  editedData?.language_abilities_assessment : "",
+        areaOfWork7: "other skills",
+        willingness7: editedData ?  editedData?.other_skills_willingness : false,
+        experience7: editedData ?  editedData?.other_skills_experience : false,
+        assessment7: editedData ?  editedData?.other_skills_assessment : "",
+        dateFrom: editedData ? editedData?.date_from : "",
+        dateTo: editedData ? editedData?.date_to : "",
+        country: editedData ? editedData?.country : "",
+        employer: editedData ? editedData?.employer : "",
+        workDuties: editedData ? editedData?.work_duties : "",
+        remarks: editedData ? editedData?.remarks : "",
+        otherRemarks: editedData ? editedData?.other_remarks : ""
       };
       reset(formData);
       // Set dates
-      if (existingData.date_from) {
-        setDateFrom(new Date(existingData.date_from));
+      if (editedData.date_from) {
+        setDateFrom(new Date(editedData.date_from));
       }
-      if (existingData.date_to) {
-        setDateTo(new Date(existingData.date_to));
+      if (editedData.date_to) {
+        setDateTo(new Date(editedData.date_to));
       }
     }
   }, [reset]);
@@ -107,7 +105,7 @@ export default function BiodataStepFourForm() {
       religion: allBiodata?.stepOne?.religion ?? "",
       number_of_childern: allBiodata?.stepOne?.number_of_childern ?? "",
       marital_status: allBiodata?.stepOne?.marital_status ?? "",
-      education_level: allBiodata?.stepOne?.education_level ?? "",
+      eduatcion_level: allBiodata?.stepOne?.education_level ?? "",
       name_of_airPort: allBiodata?.stepOne?.name_of_airPort ?? "",
       height: allBiodata?.stepOne?.height ?? "",
       weight: allBiodata?.stepOne?.weight ?? "",
@@ -160,16 +158,20 @@ export default function BiodataStepFourForm() {
       other_skills_experience: bool(data?.experience7),
     };
     setIsSubmitting(true);
+    const bioId = editedData?.id || "";
     try {
-      const response = await UserService.addBiodata(payload, token)
-      if(response?.data?.success === true){
-        toast.success( response?.data?.message ||"Biodata submitted successfully");
-        queryClient.invalidateQueries({ queryKey: ["biodataData"] });
-        clearBiodataData()
-        router.push("/dashboard/biodata-management");
-        reset();
-      }else{
-        toast.error(response?.data?.message + " " + "Please Login Again" || "Failed to submit biodata");
+      if(bioId){
+        const response = await UserService.updateBiodata(bioId, payload, token)
+        if(response?.data?.success === true){
+          toast.success( response?.data?.message ||"Biodata updated successfully");
+          queryClient.invalidateQueries({ queryKey: ["biodataData"] });
+          clearBiodataData()
+          router.push("/dashboard/biodata-management");
+          reset();
+        }
+        else{
+          toast.error(response?.data?.message || "Failed to update biodata");
+        }
       }
     } catch (error) {
       toast.error(error?.response?.data?.error + " " + "Please Login Again" || "Failed to submit biodata");
@@ -180,8 +182,8 @@ export default function BiodataStepFourForm() {
  
   const onBack = () => {
     setBackLoading(true);
-    router.push("/dashboard/biodata-management/biodata-step-three");
-    setBackLoading(false);
+    router.push(editedData ? `/dashboard/biodata-management/${editedData?.id}/biodata-edit-step-three` : "/dashboard/biodata-management/biodata-step-three");
+
   };
 
   return (

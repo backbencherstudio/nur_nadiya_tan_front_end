@@ -54,7 +54,8 @@ export default function BiodataFormStepOne({editedData}: {editedData?: any}) {
                         setDob(dateValue);
                     }
                 } catch (error) {
-                    console.error("Invalid date value:", existingData.date_of_birth);
+                    setError("date_of_birth" as any, { type: "manual", message: "Invalid date value" });
+                    return;
                 }
             }
             
@@ -62,30 +63,31 @@ export default function BiodataFormStepOne({editedData}: {editedData?: any}) {
                 setImagePreview(existingData.imagePreview ? existingData.imagePreview : existingData?.image_url ? existingData?.image_url : "/empty-user.png");
             }
         }
-    }, [reset, editedData]);
+    }, [reset, editedData ,isSubmitting]);
+    
 
     const onSubmit = (data: BiodataStepOne) => {
         setIsSubmitting(true);
         // validate required date
+      
         if (!dob || isNaN(dob.getTime())) {
             setError("date_of_birth" as any, { type: "manual", message: "Date of birth is required" });
-           
             return;
         } else {
             clearErrors("date_of_birth" as any);
         }
+        
             const formData = { 
             ...data, 
             date_of_birth: dob, 
             imagePreview: imagePreview  || "/empty-user.png",
         };
+
+        
         const saved = saveBiodataStep('stepOne', formData);
         if (saved) {
-            console.log("Data saved to localStorage successfully");
             router.push(editedData ? `/dashboard/biodata-management/${editedData.id}/biodata-edit-step-two` : "/dashboard/biodata-management/biodata-step-two");
-        } else {
-            console.error("Failed to save data to localStorage");
-        }
+        } 
     };
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {

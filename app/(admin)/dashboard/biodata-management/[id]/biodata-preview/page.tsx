@@ -2,8 +2,11 @@ import BiodataPDFPreview from '@/components/biodata/BiodataPDFPreview';
 import { UserService } from '@/service/user/user.service';
 import { cookies } from 'next/headers';
 
-async function page({ params }: { params: { id: string } }) {
-  const { id } = await params;
+async function page(props: {
+  params: Promise<{ id: string }>
+}) {
+  const params = await props.params
+  const { id } = params
   const cookieStore = await cookies();  
   const token = cookieStore.get("jobtoken")?.value;
 
