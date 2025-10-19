@@ -78,7 +78,7 @@ function DashboardUserTable({ recentOrder }: any) {
   const columns = [
     {
       label: "Name",
-      accessor: selectedType == "Maid" ? "full_name" : "name",
+      accessor:  "full_name",
       width: "200px",
       formatter: (value: string, record: any) => (
         <div className="flex items-center gap-3">
@@ -93,7 +93,7 @@ function DashboardUserTable({ recentOrder }: any) {
     },
     {
       label: "Type",
-      accessor: "type",
+      accessor: "enquiry_type",
       width: "100px",
       formatter: (value: string) => (
         <span className="text-sm">{value}</span>
@@ -101,7 +101,7 @@ function DashboardUserTable({ recentOrder }: any) {
     },
     {
       label: "Contact",
-      accessor: selectedType == "Maid" ? "mobile_number" : "contact",
+      accessor:"mobile_number" ,
       width: "150px",
       formatter: (value: string) => (
         <span className="text-sm">{value}</span>
@@ -165,9 +165,7 @@ function DashboardUserTable({ recentOrder }: any) {
   return (
     <section>
       <div className="bg-white shadow p-5 rounded-md">
-        {/* Header Section */}
         <div className="mb-6">
-          {/* Title and Add Button Row */}
           <div className="flex justify-between items-center mb-4">
             <h4 className="text-2xl font-bold text-gray-800">
               All Enquiries
@@ -177,9 +175,7 @@ function DashboardUserTable({ recentOrder }: any) {
             </Link>
           </div>
 
-          {/* Search and Filter Row */}
           <div className=" md:flex items-center gap-4">
-            {/* Search Bar */}
             <div className="flex-1 relative">
               <div className="absolute top-1/2 -translate-y-1/2 left-0 pl-3 flex items-center pointer-events-none">
                 <FiSearch className="h-5 w-5 text-gray-400" />

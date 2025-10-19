@@ -2,9 +2,14 @@
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { useToken } from "@/hooks/useToken"
+import { UserService } from "@/service/user/user.service"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { X } from "lucide-react"
 import * as React from "react"
 import { Controller, useForm } from "react-hook-form"
+import { toast } from "react-toastify"
+import ButtonReuseable from "../reusable/CustomButton"
 import { Dialog, DialogContent, DialogHeader } from "../ui/dialog"
 
 // Define types for the form options
@@ -14,16 +19,51 @@ interface SelectOption {
     description?: string;
 }
 
-export default function RequestForMaidForm({open,setOpen} :any) {
-    const [dob, setDob] = React.useState<Date | undefined>()
-    const [transferDate, setTransferDate] = React.useState<Date | undefined>()
+export default function RequestForMaidForm({open,setOpen, record} :any) {
     const [hasEmployer, setHasEmployer] = React.useState<string>("")
-    const [imagePreview, setImagePreview] = React.useState<string | null>(null)
-    const imageRef = React.useRef<HTMLInputElement>(null)
+
 
     // Arrays for multiple selections
     const [selectedHouseholdTypes, setSelectedHouseholdTypes] = React.useState<string[]>([])
     const [selectedLanguages, setSelectedLanguages] = React.useState<string[]>([])
+
+    const {
+        register,
+        handleSubmit,
+        control,
+        reset,
+        setValue,
+        formState: { errors },
+    } = useForm()
+    const { token } = useToken()
+    const queryClient = useQueryClient()
+    const addEnquiryMutation = useMutation({
+        mutationFn: async (formData: FormData) => {
+            if (record?.id) {
+                // Update existing record
+                const response = await UserService.updateEnquiry(record.id, formData, token)
+                return response
+            } else {
+                // Create new record
+                const response = await UserService.addEnquiry(formData, token)
+                return response
+            }
+        },
+        onSuccess: (data) => {
+            const message = record?.id ? "Request for maid updated successfully!" : "Request for maid submitted successfully!"
+            toast.success(data?.data?.message || message)
+            setOpen(false)
+            reset()
+            setSelectedLanguages([])
+            setSelectedHouseholdTypes([])
+            setHasEmployer("")
+            queryClient.invalidateQueries({ queryKey: ["enquiriesData"] })
+        },
+        onError: (error: any) => {
+            const message = record?.id ? "Failed to update request. Please try again." : "Failed to submit request. Please try again."
+            toast.error(error?.response?.data?.message || message)
+        }
+    })
 
     // Arrays of objects for select options
     const householdTypeOptions: SelectOption[] = [
@@ -68,12 +108,38 @@ export default function RequestForMaidForm({open,setOpen} :any) {
         { value: "Above $800", label: "Above $800" }
     ];
 
-    const {
-        register,
-        handleSubmit,
-        control,
-        formState: { errors },
-    } = useForm()
+    // Populate form with existing data when editing
+    React.useEffect(() => {
+        if (record && open) {
+            // Set form values
+            setValue("fullName", record.full_name || "")
+            setValue("contactNumber", record.mobile_number || "")
+            setValue("email", record.email || "")
+            setValue("salaryBudget", record.budget || "")
+            setValue("additionalInfo", record.additional_information || "")
+            
+            // Set household types
+            if (record.hosehold_type) {
+                const householdTypes = record.hosehold_type.split(',').filter(type => type.trim())
+                setSelectedHouseholdTypes(householdTypes)
+            }
+            
+            // Set languages
+            if (record.language) {
+                const languages = record.language.split(',').filter(lang => lang.trim())
+                setSelectedLanguages(languages)
+            }
+            
+            // Set current employer (default to "none" if not specified)
+            setHasEmployer(record.current_employer || "none")
+        } else if (!record && open) {
+            // Reset form for new record
+            reset()
+            setSelectedLanguages([])
+            setSelectedHouseholdTypes([])
+            setHasEmployer("")
+        }
+    }, [record, open, setValue, reset])
 
     // Helper functions to get label by value
     const getHouseholdTypeLabel = (value: string) => {
@@ -112,50 +178,53 @@ export default function RequestForMaidForm({open,setOpen} :any) {
     }
 
     const onSubmit = (data: any) => {
-        const formData = {
-            ...data,
-            householdTypes: selectedHouseholdTypes,
-            languages: selectedLanguages,
-            dob,
-            transferDate,
-            hasEmployer,
-        }
-        console.log("Submitted Data:", formData)
-    }
-
-    const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0]
-        if (file) {
-            const reader = new FileReader()
-            reader.onloadend = () => {
-                setImagePreview(reader.result as string)
-            }
-            reader.readAsDataURL(file)
-        }
+        // Create FormData for multipart/form-data submission
+        const formData = new FormData()
+        // Add form fields based on API documentation
+        formData.append('full_name', data.fullName || '')
+        formData.append('contact_number', data.contactNumber || '')
+        formData.append('email', data.email || '')
+        formData.append('enquiry_type', 'employer')
+        formData.append('language', selectedLanguages.join(',') || '')
+        formData.append('nationality', 'bd') // Default nationality
+        formData.append('hosehold_type', selectedHouseholdTypes.join(',') || '') // Note: keeping the typo as per API
+        formData.append('budget', data.salaryBudget || '')
+        formData.append('additional_information', data.additionalInfo || '')
+        formData.append('current_employer', hasEmployer || 'none')
+        // Submit using React Query mutation
+        addEnquiryMutation.mutate(formData)
     }
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="md:!max-w-[710px] max-w-[90%] max-h-[90%] overflow-y-auto p-4 sm:p-7">
                 <DialogHeader>
-                    <h2 className="text-2xl font-semibold text-headerColor">Request for a Maid Form</h2>
+                    <h2 className="text-2xl font-semibold text-headerColor">
+                        {record?.id ? "Edit Request for a Maid" : "Request for a Maid Form"}
+                    </h2>
                 </DialogHeader>
+                
+               
+
                 <form onSubmit={handleSubmit(onSubmit)} className="mt-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
                         <div className="col-span-2">
                             <label className="text-sm md:text-base block mb-1.5">Full Name </label>
-                            <Input placeholder="Enter your name" className="w-full !h-10 md:!h-12" {...register("fullName", { required: true })} />
+                            <Input placeholder="Enter your name" className="w-full !h-10 md:!h-12" {...register("fullName", { required: "Full name is required" })} />
+                            {errors.fullName && <p className="text-red-500 text-sm mt-1">{(errors.fullName as any).message as string || "Full name is required"}</p>}
                         </div>
 
                         <div className="col-span-2 lg:col-span-1">
                             <label className="text-sm md:text-base block mb-1.5">Contact Number </label>
-                            <Input placeholder="Enter your number" className="w-full !h-10 md:!h-12" {...register("contactNumber", { required: true })} />
+                            <Input placeholder="Enter your number" className="w-full !h-10 md:!h-12" {...register("contactNumber", { required: "Contact number is required" })} />
+                            {errors.contactNumber && <p className="text-red-500 text-sm mt-1">{(errors.contactNumber as any).message as string || "Contact number is required"}</p>}
                         </div>
 
                         <div className="col-span-2 lg:col-span-1">
                             <label className="text-sm md:text-base block mb-1.5">Email Address </label>
-                            <Input placeholder="Enter your email" className="w-full !h-10 md:!h-12" {...register("email", { required: true })} />
+                            <Input placeholder="Enter your email" className="w-full !h-10 md:!h-12" {...register("email", { required: "Email is required" })} />
+                            {errors.email && <p className="text-red-500 text-sm mt-1">{(errors.email as any).message as string || "Email is required"}</p>}
                         </div>
 
                         <div className="col-span-2 ">
@@ -254,9 +323,13 @@ export default function RequestForMaidForm({open,setOpen} :any) {
                     </div>
 
                     <div className="pt-6">
-                        <button className={`md:py-3 disabled:bg-grayColor1 disabled:text-white/50 disabled:cursor-not-allowed md:px-4 text-sm md:text-base justify-center flex items-center gap-2 py-2 px-3 rounded-sm cursor-pointer w-full text-white bg-primaryColor transition-all shadow-md duration-200 `}>
-                            Submit
-                        </button>
+                        <ButtonReuseable 
+                            type="submit" 
+                            title={record?.id ? "Update" : "Submit"} 
+                            className="w-full"
+                            loading={addEnquiryMutation.isPending}
+                            sendingMsg={record?.id ? "Updating..." : "Submitting..."}
+                        />
                     </div>
                 </form>
             </DialogContent>
