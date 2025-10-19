@@ -1,8 +1,9 @@
-import { LanguageProvider } from "@/components/home/LanguageProvider";
+import ClientLayout from "@/components/common/ClientLayout";
 import { AppConfig } from "@/config/app.config";
 import type { Metadata } from "next";
 import { Poppins } from 'next/font/google';
 import Script from "next/script";
+import { ToastContainer } from "react-toastify";
 import "./globals.css";
 
 // If loading a variable font, you don't need to specify the font weight
@@ -36,9 +37,10 @@ export default function RootLayout({
           src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
           strategy="afterInteractive"
         />
-        <LanguageProvider>
+        <ToastContainer/>
+        <ClientLayout>
           {children}
-        </LanguageProvider>
+        </ClientLayout>
       </body>
     </html>
   );

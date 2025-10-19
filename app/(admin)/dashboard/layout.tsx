@@ -21,7 +21,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
 
   return (
   <QueryClientProvider client={queryClient}>
-    <TokenProvider>
+    
       <ImageProvider>
     <div className="w-full h-screen overflow-hidden relative">
       {/* Centered layout container */}
@@ -66,8 +66,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       </div>
     </div>
     </ImageProvider>
-    </TokenProvider>
-     <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 };

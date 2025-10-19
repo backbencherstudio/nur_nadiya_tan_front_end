@@ -25,6 +25,7 @@ import DynamicTableTwo from "../common/DynamicTableTwo";
 import ButtonReuseable from "../reusable/CustomButton";
 import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
+import Image from "next/image";
 function Biodatapage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(6);
@@ -40,12 +41,12 @@ function Biodatapage() {
         {
             label: "Name",
             accessor: "full_name",
-            width: "180px",
-            formatter: (value: string) => (
+            width: "200px",
+            formatter: (value: string, record: any) => (
                 <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                    <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
                         <span className="text-xs font-medium text-gray-600">
-                            {value.split(' ').map(n => n[0]).join('')}
+                            {record?.image ? <Image src={`${record?.image}`} alt="Uploaded Preview" width={100} height={100} className=" w-10 h-10 rounded-full object-cover" /> : value?.split(' ')?.map(n => n[0])?.join('')}
                         </span>
                     </div>
                     <span className="text-sm font-medium">{value}</span>

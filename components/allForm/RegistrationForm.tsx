@@ -6,12 +6,16 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { useToken } from "@/hooks/useToken"
 import { cn } from "@/lib/utils"
+import { UserService } from "@/service/user/user.service"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { format } from "date-fns"
 import { CalendarIcon, X } from "lucide-react"
 import Image from "next/image"
 import * as React from "react"
 import { Controller, useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import ButtonReuseable from "../reusable/CustomButton"
 
 // Define types for the form options
@@ -25,6 +29,7 @@ export default function TransferMaidForm({ open, setOpen, record }: {open: boole
     const [dob, setDob] = React.useState<Date | undefined>()
     const [transferDate, setTransferDate] = React.useState<Date | undefined>()
     const [hasEmployer, setHasEmployer] = React.useState<string>("")
+    const [selectedFile, setSelectedFile] = React.useState<File | null>(null)
     const [imagePreview, setImagePreview] = React.useState<string | null>(null)
     const [selectedLanguages, setSelectedLanguages] = React.useState<string[]>([])
     const imageRef = React.useRef<HTMLInputElement>(null)
@@ -32,14 +37,48 @@ export default function TransferMaidForm({ open, setOpen, record }: {open: boole
         register,
         handleSubmit,
         control,
+        reset,
+        setValue,
         formState: { errors },
     } = useForm()
+    const { token } = useToken()
+    const queryClient = useQueryClient()
+    const addEnquiryMutation = useMutation({
+        mutationFn: async (formData: FormData) => {
+            if (record?.id) {
+                // Update existing record
+                const response = await UserService.updateEnquiry(record.id, formData, token)
+                return response
+            } else {
+                // Create new record
+                const response = await UserService.addEnquiry(formData, token)
+                return response
+            }
+        },
+        onSuccess: (data) => {
+            const message = record?.id ? "Transfer maid updated successfully!" : "Transfer maid submitted successfully!"
+            toast.success(data?.data?.message || message)
+            setOpen(false)
+            reset()
+            setSelectedLanguages([])
+            setSelectedFile(null)
+            setImagePreview(null)
+            setHasEmployer("")
+            setDob(undefined)
+            setTransferDate(undefined)
+            queryClient.invalidateQueries({ queryKey: ["enquiriesData"] })
+        },
+        onError: (error: any) => {
+            const message = record?.id ? "Failed to update registration. Please try again." : "Failed to submit registration. Please try again."
+            toast.error(error?.response?.data?.message || message)
+        }
+    })
 
     const languageOptions: SelectOption[] = [
         { value: "english", label: "English" },
         { value: "hindi", label: "Hindi" },
         { value: "tamil", label: "Tamil" },
-        { value: "Bahasa_Indonesia", label: "Bahasa Inggeris" },
+        { value: "Bahasa_Indonesia", label: "Bahasa Indonesia" },
         { value: "Bahasa_Melayu", label: "Mandarin" },
         { value: "malay", label: "Malay" },
         { value: "bahasa_melayu", label: "Bahasa Melayu" },
@@ -48,19 +87,78 @@ export default function TransferMaidForm({ open, setOpen, record }: {open: boole
         { value: "tagalog", label: "Tagalog" },
     ];
 
-    const onSubmit = (data: any) => {
-        const formData = {
-            ...data,
-            dob,
-            transferDate,
-            hasEmployer,
+    // Populate form with existing data when editing
+    React.useEffect(() => {
+        if (record && open) {
+            // Set form values
+            setValue("fullName", record.full_name || "")
+            setValue("wpnNumber", record.wp_number || "")
+            setValue("mobileNumber", record.mobile_number || "")
+            setValue("nationality", record.nationality || "")
+            setValue("additionalInfo", record.additional_information || "")
+            
+            // Set dates
+            if (record.date_of_birth) {
+                setDob(new Date(record.date_of_birth))
+            }
+            if (record.transfer_date) {
+                setTransferDate(new Date(record.transfer_date))
+            }
+            
+            // Set languages
+            if (record.language) {
+                const languages = record.language.split(',').filter(lang => lang.trim())
+                setSelectedLanguages(languages)
+            }
+            
+            // Set current employer
+            setHasEmployer(record.current_employer ? "yes" : "no")
+            
+            // Set image preview if exists
+            if (record.image_name) {
+                setImagePreview(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/uploads/${record.image_name}`)
+            }
+        } else if (!record && open) {
+            // Reset form for new record
+            reset()
+            setDob(undefined)
+            setTransferDate(undefined)
+            setSelectedLanguages([])
+            setHasEmployer("")
+            setImagePreview(null)
+            setSelectedFile(null)
         }
-        console.log("Submitted Data:", formData)
+    }, [record, open, setValue, reset])
+
+    const onSubmit = (data: any) => {
+        // Create FormData for multipart/form-data submission
+        const formData = new FormData()
+        const currentEmployer = hasEmployer === "yes" ? true : false
+        // Add form fields based on API documentation
+        formData.append('full_name', data.fullName || '')
+        formData.append('date_of_birth', dob ? format(dob, 'yyyy-MM-dd') : '')
+        formData.append('transfer_date', transferDate ? format(transferDate, 'yyyy/MM/dd') : '')
+        formData.append('wp_number', data.wpnNumber || '')
+        formData.append('mobile_number', data.mobileNumber || '')
+        formData.append('language', selectedLanguages.join(',') || '')
+        formData.append('nationality', data.nationality || '')
+        formData.append('additional_information', data.additionalInfo || '')
+        formData.append('current_employer', currentEmployer.toString())
+        formData.append('enquiry_type', 'maid')
+        
+        // Add image if selected
+        if (selectedFile) {
+            formData.append('image', selectedFile)
+        }
+        
+        // Submit using React Query mutation
+        addEnquiryMutation.mutate(formData)
     }
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0]
         if (file) {
+            setSelectedFile(file)
             const reader = new FileReader()
             reader.onloadend = () => {
                 setImagePreview(reader.result as string)
@@ -88,12 +186,11 @@ export default function TransferMaidForm({ open, setOpen, record }: {open: boole
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="md:!max-w-[710px] max-w-[90%] max-h-[90%] overflow-y-auto p-4 sm:p-7">
                 <DialogHeader>
-                    <h2 className="mt-4 text-xl font-semibold text-headerColor sm:mt-0">Transfer Maid Registration Form / Formulir Pendaftaran Pembantu</h2>
+                    <h2 className="mt-4 text-xl font-semibold text-headerColor sm:mt-0">
+                        {record?.id ? "Edit Transfer Maid Registration" : "Transfer Maid Registration Form"} / Formulir Pendaftaran Pembantu
+                    </h2>
                 </DialogHeader>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="col-span-2">
-                            <div className=" flex gap-4">
+                 <div className=" flex gap-4">
                                 <div>
                                         <Image src={imagePreview || "/empty-user.png"} alt="Uploaded Preview" width={100} height={100} className=" w-12 h-12 md:w-14 md:h-14 rounded-full object-cover" />
                                 </div>
@@ -110,11 +207,12 @@ export default function TransferMaidForm({ open, setOpen, record }: {open: boole
                                     <p className="text-xs text-grayColor1 mt-1">Maximum photo size: 2MB</p>
                                 </div>
                             </div>
-                        </div>
-
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="col-span-2 ">
                             <label className="text-sm md:text-base block mb-1.5">Full name (as per passport)</label>
-                            <Input placeholder="Enter your full name" className="w-full !h-10 lg:!h-12" {...register("fullName", { required: true })}  />
+                            <Input placeholder="Enter your full name" className="w-full !h-10 lg:!h-12" {...register("fullName", { required: "Full name is required" })}  />
+                            {errors.fullName && <p className="text-red-500 text-sm mt-1">{(errors.fullName as any).message as string || "Full name is required"}</p>}
                         </div>
 
                         <div className="col-span-2 sm:col-span-1 ">
@@ -160,7 +258,8 @@ export default function TransferMaidForm({ open, setOpen, record }: {open: boole
 
                         <div className="col-span-2 sm:col-span-1 ">
                             <label className="text-sm md:text-base block mb-1.5">Mobile Number</label>
-                            <Input placeholder="Enter your mobile number" {...register("mobileNumber")} className="!h-10 lg:!h-12" />
+                            <Input placeholder="Enter your mobile number" {...register("mobileNumber", { required: "Mobile number is required" })} className="!h-10 lg:!h-12" />
+                            {errors.mobileNumber && <p className="text-red-500 text-sm mt-1">{(errors.mobileNumber as any).message as string || "Mobile number is required"}</p>}
                         </div>
 
                         <div className="col-span-2 sm:col-span-1 ">
@@ -243,7 +342,13 @@ export default function TransferMaidForm({ open, setOpen, record }: {open: boole
                         </div>
                     </div>
                     <div className="pt-6">
-                        <ButtonReuseable type="submit" title="Submit" className="w-full"/>
+                        <ButtonReuseable 
+                            type="submit" 
+                            title={record?.id ? "Update" : "Submit"} 
+                            className="w-full"
+                            loading={addEnquiryMutation.isPending}
+                            sendingMsg={record?.id ? "Updating..." : "Submitting..."}
+                        />
                     </div>
                 </form>
             </DialogContent>

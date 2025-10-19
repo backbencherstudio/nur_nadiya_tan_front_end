@@ -129,6 +129,7 @@ interface BiodataPDFPreviewProps {
    
     
    ]
+console.log("biodata", biodata);
 
    return (
      <section className="pdf-safe-colors">
@@ -210,9 +211,9 @@ interface BiodataPDFPreviewProps {
               </div>
             </div>
              <div className="w-32 h-32 flex-shrink-0">
-              {data.stepOne?.imagePreview ? (
+              {data.image_url ? (
                 <Image
-                  src={data.image_url || ""}
+                  src={data?.image_url || ""}
                   alt="Profile"
                   width={128}
                   height={128}

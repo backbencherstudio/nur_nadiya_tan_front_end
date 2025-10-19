@@ -109,11 +109,23 @@ export const UserService = {
     const _config = {
       headers: {
         Authorization: "Bearer " + userToken,
-        // Don't set Content-Type for FormData, let browser set it with boundary
+         "content-type": "multipart/form-data",
       },
     };
 
     return await Fetch.post("/admin/add-enquiry", formData, _config);
+  },
+  updateEnquiry: async (id, formData, token) => {
+    const userToken = token;
+
+    const _config = {
+      headers: {
+        Authorization: "Bearer " + userToken,
+        "content-type": "multipart/form-data",
+      },
+    };
+
+    return await Fetch.patch(`/admin/edit-enquiry/${id}`, formData, _config);
   },
 
   addBiodata: async (formData, token) => {

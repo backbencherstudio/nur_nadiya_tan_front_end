@@ -10,6 +10,7 @@ import { useToken } from "@/hooks/useToken";
 import { UserService } from "@/service/user/user.service";
 import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -77,13 +78,13 @@ function DashboardUserTable({ recentOrder }: any) {
   const columns = [
     {
       label: "Name",
-      accessor: "full_name",
+      accessor: selectedType == "Maid" ? "full_name" : "name",
       width: "200px",
-      formatter: (value: string) => (
+      formatter: (value: string, record: any) => (
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
             <span className="text-xs font-medium text-gray-600">
-              {value.split(' ').map(n => n[0]).join('')}
+              {record?.image_name ? <Image src={`${process.env.NEXT_PUBLIC_API_ENDPOINT}/uploads/${record?.image_name}`} alt="Uploaded Preview" width={100} height={100} className=" w-8 h-8 rounded-full object-cover" /> : value?.split(' ')?.map(n => n[0])?.join('')}
             </span>
           </div>
           <span className="text-sm font-medium">{value}</span>
@@ -100,7 +101,7 @@ function DashboardUserTable({ recentOrder }: any) {
     },
     {
       label: "Contact",
-      accessor: "mobile_number",
+      accessor: selectedType == "Maid" ? "mobile_number" : "contact",
       width: "150px",
       formatter: (value: string) => (
         <span className="text-sm">{value}</span>
