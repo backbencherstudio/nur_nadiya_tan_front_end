@@ -5,11 +5,13 @@ import { UserService } from "@/service/user/user.service";
 import { useQuery } from "@tanstack/react-query";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
 import Loader from "../reusable/Loader";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+
 
 interface HeaderProps {
   onNotificationClick?: () => void;
@@ -26,10 +28,10 @@ const Header: React.FC<HeaderProps> = ({
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showAllNotifications, setShowAllNotifications] = useState(false);
-  
+  const router = useRouter()
    const {token} = useToken()
   const [notifications, setNotifications] = useState<null | []>([]);
-  const [error, setError] = useState<string | null>()
+
   const [profile, setProfile] = useState<any>()
   const displayedNotifications = showAllNotifications
     ? notifications
@@ -52,10 +54,17 @@ const Header: React.FC<HeaderProps> = ({
     return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
   }
 
-  const {data: userDetails, isLoading} = useQuery({
+  const {data: userDetails, isLoading ,isError ,error} = useQuery({
     queryKey: ["notifications"],
     queryFn: () => UserService.getUserDetails(token),
   })
+
+
+// Handle authentication errors
+if (error) {
+  const { handleAuthError } = require('@/helper/auth.helper')
+  handleAuthError(error, router)
+}
 
 
   return (

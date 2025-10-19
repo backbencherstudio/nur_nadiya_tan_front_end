@@ -1,4 +1,3 @@
-import React from 'react'
 import BiodataStepThreeForm from '@/components/allForm/BiodataStepThreeForm'
 import { UserService } from '@/service/user/user.service'
 import { cookies } from 'next/headers'
