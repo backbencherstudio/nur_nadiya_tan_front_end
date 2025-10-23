@@ -115,7 +115,7 @@ export const UserService = {
 
     return await Fetch.post("/admin/add-enquiry", formData, _config);
   },
-  updateEnquiry: async (id, formData, token) => {
+  updateEnquiry: async (id: string, formData: any, token: string) => {
     const userToken = token;
 
     const _config = {
@@ -126,6 +126,18 @@ export const UserService = {
     };
 
     return await Fetch.patch(`/admin/edit-enquiry/${id}`, formData, _config);
+  },
+  changeEnquiryStatus: async (id: string, status: string, token: string) => {
+    const userToken = token;
+
+    const _config = {
+      headers: {
+        Authorization: "Bearer " + userToken,
+        "Content-Type": "application/json",
+      },
+    };
+
+    return await Fetch.patch(`/admin/change-enquiry-status/${id}`, { status }, _config);
   },
 
   addBiodata: async (formData, token) => {
