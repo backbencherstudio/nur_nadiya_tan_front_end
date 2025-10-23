@@ -7,8 +7,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToken } from "@/hooks/useToken";
+import { Fetch } from "@/lib/Fetch";
 import { UserService } from "@/service/user/user.service";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,8 +31,11 @@ function DashboardUserTable({ recentOrder }: any) {
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [selectedEditRecord, setSelectedEditRecord] = useState<any>(null);
   const [isEdite, setIsEdite] = useState(false)
+  const [loadingStatusId, setLoadingStatusId] = useState<string | null>(null);
   const { token } = useToken();
   const router = useRouter();
+  const queryClient = useQueryClient();
+  
   // Debounce search term
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -74,6 +78,33 @@ function DashboardUserTable({ recentOrder }: any) {
     queryFn: getEnquiriesData,
     enabled: !!token, // Only run query when token is available
   });
+
+  // Handle status change
+  const handle_status_change = async (new_status: string, record: any) => {
+    try {
+      setLoadingStatusId(record?.id);
+      const header = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await Fetch.patch(
+        `/admin/change-enquiry-status/${record?.id}`,
+        { status: new_status },
+        header
+      );
+      
+      if (response?.data?.success) {
+        // Refetch the data
+        queryClient.invalidateQueries({ queryKey: ["enquiriesData"] });
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+    } finally {
+      setLoadingStatusId(null);
+    }
+  };
 
   const columns = [
     {
@@ -134,13 +165,29 @@ function DashboardUserTable({ recentOrder }: any) {
     {
       label: "Status",
       accessor: "status",
-      width: "120px",
-      formatter: (value: string) => (
-        <div className={`px-3 py-2 rounded-md text-xs w-full  text-center font-semibold ${value === "contacted"
-          ? "bg-greenColor/15 text-greenColor"
-          : "bg-redColor/15 text-redColor"
+      width: "140px",
+      formatter: (value: string, record: any) => (
+        <div className="change-arrow">
+        <Select 
+          value={value || "uncontacted"} 
+          onValueChange={(new_status) => handle_status_change(new_status, record)}
+          disabled={loadingStatusId === record?._id}
+        >
+          <SelectTrigger className={`w-full change-arrow h-10 text-xs !justify-center focus-visible:ring-ring/50 focus-visible:ring-0 font-semibold rounded-md border-0 ${
+            value === "contacted"
+              ? "bg-greenColor/15 text-greenColor"
+              : value === "pending"
+              ? "bg-yellow-500/15 text-yellow-500"
+              : "bg-redColor/15 text-redColor"
           }`}>
-          {value}
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent className="">
+            <SelectItem className={"bg-redColor/15 text-redColor !mb-1"} value="uncontacted">Uncontacted</SelectItem>
+            <SelectItem className={"bg-greenColor/15 text-greenColor !mb-1"} value="contacted">Contacted</SelectItem>
+            <SelectItem className={"bg-yellow-500/15 text-yellow-500"} value="pending">Pending</SelectItem>
+          </SelectContent>
+        </Select>
         </div>
       ),
     },
@@ -212,6 +259,7 @@ function DashboardUserTable({ recentOrder }: any) {
                   <SelectItem value="all">All Status</SelectItem>
                   <SelectItem value="contacted">Contacted</SelectItem>
                   <SelectItem value="uncontacted">Uncontacted</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
                 </SelectContent>
               </Select>
 

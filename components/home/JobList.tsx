@@ -83,6 +83,7 @@ function JobList() {
           <ButtonReuseable
             title="View Available Biodata"
             className="!text-headerColor lg:!px-7 lg:!py-3.5 !font-medium"
+             onClick={handleWhatsAppClick}
           />
         </div>
       </div>

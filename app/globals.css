@@ -235,3 +235,7 @@ input:checked ~ .checkmark {
 .goog-te-banner-frame {
   display: none !important;
 }
+
+.change-arrow .removed-arrow {
+  display: none !important;
+}
