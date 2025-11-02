@@ -12,6 +12,7 @@
   --breakpoint-3xl: 106rem;
   --color-primaryColor: var(--primaryColor);
   --color-secondaryColor: var(--secondaryColor);
+  --color-skyColor: #45CCD2;
   --color-blackColor: var(--blackColor);
   --color-whiteColor: var(--whiteColor);
   --color-ratingColor: var(--ratingColor);

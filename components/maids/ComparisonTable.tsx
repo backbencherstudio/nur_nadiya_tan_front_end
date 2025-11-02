@@ -47,7 +47,7 @@ function ComparisonTable() {
               <col className="w-1/3" />
             </colgroup>
             <thead>
-              <tr className="bg-[#FEFEC6]">
+              <tr className="bg-primaryColor">
                 <th className="md:py-4 py-3 px-3 md:px-6 text-base md:text-lg font-semibold text-headerColor text-left  border-b border-[#F6F6D9]">Feature</th>
                 <th className="md:py-4 py-3 px-3 md:px-6 text-base md:text-lg font-semibold text-headerColor text-left  border-b border-l border-[#F6F6D9]">Transfer Maid</th>
                 <th className="md:py-4 py-3 px-3 md:px-6 text-base md:text-lg font-semibold text-headerColor text-left border-b border-l border-[#F6F6D9]">New maid From Overseas</th>

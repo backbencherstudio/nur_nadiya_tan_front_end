@@ -28,7 +28,7 @@ export default function PricingPlan() {
             {pricingPlans.map((plan) => (
                 <div
                     key={plan.id}
-                    className={`w-full p-6 hover:shadow-2xl  rounded-lg cursor-pointer border bg-primaryColor text-white transition-all duration-200 group  `}
+                    className={`w-full p-6 hover:shadow-2xl  rounded-lg cursor-pointer border bg-skyColor text-white transition-all duration-200 group  `}
                 >
                     <div className="p-4 bg-white inline-block rounded-lg ">
                         <Image src={homeIcon} alt="house" width={18} height={18} className="" />
@@ -57,7 +57,7 @@ export default function PricingPlan() {
                     </ul>
                     <div className="w-full mt-6 lg:mt-8">
 
-                        <ButtonReuseable className="w-full border border-primaryColor bg-white  !text-primaryColor !rounded-full" title={plan.buttonText} />
+                        <ButtonReuseable className="w-full border border-skyColor bg-white  !text-skyColor !rounded-full" title={plan.buttonText} />
                     </div>
                 </div>
             ))}

@@ -1,12 +1,42 @@
 "use client"
+import { useToken } from "@/hooks/useToken";
+import { UserService } from "@/service/user/user.service";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 export default function ContactForm() {
+  const { token } = useToken();
+  const [isDisable, setIsDisable] = useState(false);
   // Use useForm hook to handle form validation and submission
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
   // Handle form submission
-  const onSubmit = (data) => {
-    console.log(data);
+
+  const addContactMutation = useMutation({
+    mutationFn: async (data) => {
+      const response = await UserService.addContact(data, token);
+      return response;
+    },
+    onSuccess: () => {
+      toast.success("Contact submitted successfully!");
+      reset();
+       setIsDisable(false);
+    },
+    onError: (error) => {
+      toast.error("Failed to submit contact. Please try again.");
+      setIsDisable(false);
+    }
+  })
+  const onSubmit = async (data) => {
+    try {
+      setIsDisable(true);
+      addContactMutation.mutate(data);
+     
+    } catch (error) {
+      toast.error("Failed to submit contact. Please try again.");
+    }
+
   };
 
   return (
@@ -68,7 +98,7 @@ export default function ContactForm() {
         </div>
 
         <div>
-          <button type="submit"   className={`md:py-3 disabled:bg-grayColor1 disabled:text-white/50 disabled:cursor-not-allowed md:px-4 text-sm md:text-base justify-center flex items-center gap-2 py-2 px-3 rounded-sm cursor-pointer w-full text-white bg-primaryColor transition-all shadow-md duration-200 `}>
+          <button type="submit"   className={`md:py-3 disabled:bg-grayColor1 disabled:text-white/50 disabled:cursor-not-allowed md:px-4 text-sm md:text-base justify-center flex items-center gap-2 py-2 px-3 rounded-sm cursor-pointer w-full text-blackColor bg-primaryColor transition-all shadow-md duration-200 `}>
                   Submite
                    </button>
         </div>

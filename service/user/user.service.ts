@@ -115,6 +115,18 @@ export const UserService = {
 
     return await Fetch.post("/admin/add-enquiry", formData, _config);
   },
+  addContact: async (formData, token) => {
+    const userToken = token;
+
+    const _config = {
+      headers: {
+        Authorization: "Bearer " + userToken,
+         "content-type": "multipart/form-data",
+      },
+    };
+
+    return await Fetch.post("/contact", formData, _config);
+  },
   updateEnquiry: async (id: string, formData: any, token: string) => {
     const userToken = token;
 

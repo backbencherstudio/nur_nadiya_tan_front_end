@@ -41,7 +41,7 @@ function MaidpreferPage() {
               key={card.id}
               className="bg-[#F8FAFB] hover:shadow-xl transition-all  shadow rounded-lg p-6 "
             >
-              <div className="w-[40px] h-[40px] md:w-[56px] md:h-[56px]  bg-primaryColor/10 rounded-md mb-6 flex items-center justify-center">
+              <div className="w-[40px] h-[40px] md:w-[56px] md:h-[56px]  bg-skyColor/10 rounded-md mb-6 flex items-center justify-center">
                 <Image src={card.icon} alt={card.title} width={32} height={32} className="w-[30px] h-[30px]" />
               </div>
               <h4 className="text-lg   font-semibold text-headerColor mb-3">

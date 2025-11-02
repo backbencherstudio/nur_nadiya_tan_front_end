@@ -73,8 +73,8 @@ function Work() {
                                 >
                                     <div className={`absolute ${index % 2 !== 0 ? `-right-[36px]` : `-right-[36px] md:-left-[250px] lg:-left-[300px]`}  -top-[16px]`} >
                                         <div className="flex flex-col justify-center items-center mb-3">
-                                            <div className="border rounded-lg p-[2px] w-9 h-9 mx-auto border-primaryColor">
-                                                <div className="bg-primaryColor w-full h-full rounded-md flex items-center justify-center mr-3">
+                                            <div className="border rounded-lg p-[2px] w-9 h-9 mx-auto border-skyColor">
+                                                <div className="bg-skyColor w-full h-full rounded-md flex items-center justify-center mr-3">
                                                     <Image src={step.icon} alt={step.title} width={18} height={18} />
                                                 </div>
                                             </div>

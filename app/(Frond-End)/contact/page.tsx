@@ -39,7 +39,7 @@ function ContactPage() {
               <ul className="space-y-4 text-base leading-[150%]">
                 {contactInfo.map((item) => (
                   <li key={item.id} className="flex gap-3 items-center">
-                    <span className="h-9 w-9 lg:w-12 lg:h-12 rounded-lg bg-primaryColor text-white text-xl  lg:text-2xl flex items-center justify-center">{item.icon}</span>
+                    <span className="h-9 w-9 lg:w-12 lg:h-12 rounded-lg bg-primaryColor text-blackColor text-xl  lg:text-2xl flex items-center justify-center">{item.icon}</span>
                     {item.link ? (
                       <Link href={item.link} className={`${item.additionalClass} text-descriptionColor`}>
                         {item.text}
