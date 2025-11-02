@@ -34,12 +34,12 @@ function InterviewSection() {
     ];
     return (
         <section className='my-14 lg:my-[120px]'>
-            <div className=' container '>
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-5 xl:gap-7'>
-                    <div >
-                        <Image src={interviewImage} alt='InterviewImage' width={700} height={700} className='w-full bg-yellow-100 h-auto lg:h-full object-cover rounded-2xl' />
+            <div className=' max-w-[1320px] mx-auto'>
+                <div className='grid grid-cols-1 md:grid-cols-2 xl:items-center gap-5 xl:gap-7 bg-secondaryColor lg:rounded-2xl overflow-hidden'> 
+                    <div className="lg:rounded-l-2xl  " >
+                        <Image src={interviewImage} alt='InterviewImage' width={700} height={700} className='w-full bg-yellow-100 h-auto lg:h-full object-cover' />
                     </div>
-                    <div>
+                    <div className="py-7 lg:py-0">
                         <h2 className='text-2xl  lg:text-[32px] xl:text-5xl leading-[120%] text-blackColor font-semibold'>
                             What Are Transfer Maids in Singapore?
                         </h2>
@@ -54,8 +54,8 @@ function InterviewSection() {
                             <div className=" space-y-3.5">
                                 {countryData.map((item) => (
                                     <div key={item.id} className="">
-                                        <div className="flex items-start gap-2">
-                                            <Image src={locationIcon} alt="locationIcon" width={14} height={14} />
+                                        <div className="flex items-center gap-2">
+                                            <Image src={locationIcon} alt="locationIcon" width={20} height={20} />
                                             <div>
                                                 <p className="text-descriptionColor text-sm xl:text-base leading-relaxed">
                                                     <span className="text-headerColor font-semibold">{item.country} -</span>   {item.skills}

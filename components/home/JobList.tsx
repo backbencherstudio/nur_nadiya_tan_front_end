@@ -31,7 +31,7 @@ function JobList() {
           {maidProfiles.map((maid) => (
             <div
               key={maid.id}
-              className="flex group  flex-col-reverse md:grid grid-cols-10 p-5 lg:p-10 bg-[#EDFAFB] items-center rounded-2xl  overflow-hidden hover:shadow-xl transition-all shadow-primaryColor/40"
+              className="flex group  flex-col-reverse md:grid grid-cols-10 p-5 lg:p-10 bg-secondaryColor items-center rounded-2xl  overflow-hidden hover:shadow-xl transition-all shadow-primaryColor/40"
             >
               {/* Maid Info */}
               <div className=" md:col-span-8 mt-4">

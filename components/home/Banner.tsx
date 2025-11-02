@@ -38,7 +38,7 @@ function Banner() {
                         className="2xl:py-[96px] bg-primaryColor text-center md:text-left md:py-14 lg:py-18 py-10 pl-10 xl:pl-[40px]   3xl:pl-[120px] pr-10 lg:pr-14 xl:pr-[100px] 3xl:pr-[227px] h-full"
                        
                     >
-                        <h5 className="md:font-semibold font-medium text-lg md:text-2xl lg:text-3xl xl:text-[40px] text-white  md:mb-4">
+                        <h5 className="md:font-semibold font-medium text-lg md:text-2xl lg:text-3xl xl:text-[40px] text-[#FFFFCC]  md:mb-4">
                             For Employer
                         </h5>
                         <h2 className="text-[28px] leading-[120%] md:text-[32px] lg:text-5xl xl:text-[60px] 2xl:text-[64px] text-headerColor font-bold ">
@@ -52,7 +52,7 @@ function Banner() {
                             <Link href="#" onClick={() => setOpenRequest(true)}>
                                 <ButtonReuseable
                                     title="Hire a transfer maid"
-                                    className="!text-headerColor !bg-[#FBDE6E] py-3.5 !text-base !w-full md:!w-auto !font-medium"
+                                    className="!text-headerColor !bg-secondaryColor py-3.5 !text-base !w-full md:!w-auto !font-medium"
                                 />
                             </Link>
                         </div>
