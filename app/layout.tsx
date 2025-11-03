@@ -11,6 +11,9 @@ const poppins = Poppins({ subsets: ['latin'], weight: ['400', '500', '600', '700
 export const metadata: Metadata = {
   title: AppConfig().app.name,
   description: AppConfig().app.slogan,
+  icons: {
+    icon: "/icon/siteIcon.svg",
+  },  
 };
 
 export default function RootLayout({
