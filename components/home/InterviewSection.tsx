@@ -34,12 +34,12 @@ function InterviewSection() {
     ];
     return (
         <section className='my-14 lg:my-[120px]'>
-            <div className=' max-w-[1320px] mx-auto'>
+            <div className=' max-w-[1320px] mx-auto '>
                 <div className='grid grid-cols-1 md:grid-cols-2 xl:items-center gap-5 xl:gap-7 bg-secondaryColor lg:rounded-2xl overflow-hidden'> 
                     <div className="lg:rounded-l-2xl  " >
                         <Image src={interviewImage} alt='InterviewImage' width={700} height={700} className='w-full bg-yellow-100 h-auto lg:h-full object-cover' />
                     </div>
-                    <div className="py-7 lg:py-0">
+                    <div className="py-7 xl:py-0 px-4 lg:px-0">
                         <h2 className='text-2xl  lg:text-[32px] xl:text-5xl leading-[120%] text-blackColor font-semibold'>
                             What Are Transfer Maids in Singapore?
                         </h2>

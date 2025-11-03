@@ -48,7 +48,7 @@ export default function MaidsHero() {
                     {/* Right image */}
                     <div className=" h-full md:h-full"
                         style={{ backgroundImage: "url('/home/maid-bg.png')", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}>
-                        <div className="w-[90%] mx-auto h-full">
+                        <div className="w-[90%] flex items-end justify-center h-full">
 
                             <Image
                                 src={imageSrc}

@@ -65,7 +65,7 @@ function JobList() {
                 </div>
               </div>
               {/* Maid Image */}
-              <div className="relative overflow-hidden w-full rounded-full  h-full md:col-span-2">
+              <div className="relative  overflow-hidden  xl:w-[250px] xl:h-[250px] lg:w-[200px] lg:h-[200px] w-[150px] h-[150px] rounded-full   md:col-span-2">
                 <Image
                   src={maid.image}
                   alt={`${maid.name} - ${maid.nationality} maid`}

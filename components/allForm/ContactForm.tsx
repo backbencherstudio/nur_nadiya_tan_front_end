@@ -1,7 +1,7 @@
 "use client"
 import { useToken } from "@/hooks/useToken";
 import { UserService } from "@/service/user/user.service";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -14,8 +14,8 @@ export default function ContactForm() {
   // Handle form submission
 
   const addContactMutation = useMutation({
-    mutationFn: async (data) => {
-      const response = await UserService.addContact(data, token);
+    mutationFn: async (formData: FormData) => {
+      const response = await UserService.addContact(formData, token);
       return response;
     },
     onSuccess: () => {
@@ -31,12 +31,19 @@ export default function ContactForm() {
   const onSubmit = async (data) => {
     try {
       setIsDisable(true);
-      addContactMutation.mutate(data);
-     
+      // Create FormData for multipart/form-data submission
+      const formData = new FormData();
+      formData.append('firstName', data.firstName || '');
+      formData.append('lastName', data.lastName || '');
+      formData.append('phone', data.phone || '');
+      formData.append('email', data.email || '');
+      formData.append('message', data.message || '');
+      
+      addContactMutation.mutate(formData);
     } catch (error) {
       toast.error("Failed to submit contact. Please try again.");
+      setIsDisable(false);
     }
-
   };
 
   return (
@@ -44,7 +51,7 @@ export default function ContactForm() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Fast Name</label>
+            <label className="block text-sm font-medium text-gray-700">First Name</label>
             <input
               type="text"
               placeholder="Enter your first name"
@@ -98,8 +105,8 @@ export default function ContactForm() {
         </div>
 
         <div>
-          <button type="submit"   className={`md:py-3 disabled:bg-grayColor1 disabled:text-white/50 disabled:cursor-not-allowed md:px-4 text-sm md:text-base justify-center flex items-center gap-2 py-2 px-3 rounded-sm cursor-pointer w-full text-blackColor bg-primaryColor transition-all shadow-md duration-200 `}>
-                  Submite
+          <button type="submit" disabled={isDisable} className={`md:py-3 disabled:bg-grayColor1 disabled:text-white/50 disabled:cursor-not-allowed md:px-4 text-sm md:text-base justify-center flex items-center gap-2 py-2 px-3 rounded-sm cursor-pointer w-full text-blackColor bg-primaryColor transition-all shadow-md duration-200 `}>
+                {isDisable ? "Submitting..." : "Submit"}
                    </button>
         </div>
       </form>

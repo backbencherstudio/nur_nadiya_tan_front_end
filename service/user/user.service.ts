@@ -121,8 +121,8 @@ export const UserService = {
     const _config = {
       headers: {
         Authorization: "Bearer " + userToken,
-         "content-type": "multipart/form-data",
-      },
+        "Content-Type": "application/json",
+      }
     };
 
     return await Fetch.post("/contact", formData, _config);
