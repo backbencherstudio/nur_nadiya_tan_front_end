@@ -9,15 +9,17 @@ type PolicyItem = {
 
 type PolicySection = {
   title: string;
-  items: PolicyItem[];
+  number?: string;
+  subTitle?: string | React.ReactNode;
+  items?: PolicyItem[];
+  description?: string | React.ReactNode;
 };
 
 const lastUpdated = 'April 20, 2025';
 const siteUrl = 'https://nur-nadiya-tan-front-end.vercel.app/';
 const sections: PolicySection[] = [
   {
-    title: 'Definitions',
-    number: '2.',
+    title: '2. Definitions',
     items: [
       {
         text: (
@@ -68,9 +70,8 @@ const sections: PolicySection[] = [
     ],
   },
   {
-    title: 'ELIGIBILITY',
+    title: '3. ELIGIBILITY',
     subTitle: 'You confirm that:',
-    number: '3.',
     items: [
       {
         text: (
@@ -86,8 +87,7 @@ const sections: PolicySection[] = [
     ],
   },
   {
-    title: 'USE OF THE SITE',
-    number: '4.',
+    title: '4. USE OF THE SITE',
     subTitle: (
       <>
         'You agree that you will{' '}
@@ -116,8 +116,7 @@ const sections: PolicySection[] = [
   },
 
   {
-    title: 'INFORMATION DISCLAIMER',
-    number: '5.',
+    title: '5. INFORMATION DISCLAIMER',
     subTitle: (
       <>
         <p>
@@ -158,8 +157,7 @@ const sections: PolicySection[] = [
     ],
   },
   {
-    title: 'THIRD-PARTY LINKS ',
-    number: '6.',
+    title: '6. THIRD-PARTY LINKS ',
     subTitle: (
       <>
         <p className="">
@@ -177,8 +175,7 @@ const sections: PolicySection[] = [
     ),
   },
   {
-    title: 'INTELLECTUAL PROPERTY ',
-    number: '7.',
+    title: '7. INTELLECTUAL PROPERTY ',
     subTitle: (
       <>
         <p className="">
@@ -197,8 +194,7 @@ const sections: PolicySection[] = [
     ],
   },
   {
-    title: 'LIMITATION OF LIABILITY ',
-    number: '8.',
+    title: ' 8. LIMITATION OF LIABILITY ',
     subTitle: (
       <>
         <p className="">To the maximum extent permitted by Singapore law: </p>
@@ -315,7 +311,7 @@ function TermsAndConditionPage() {
             {sections.map((section, idx) => (
               <div key={idx} className="space-y-3">
                 <h2 className="text-lg md:text-xl lg:text-2xl font-semibold text-headerColor   ">
-                  {section?.number} {section?.title}
+                  {section?.title}
                 </h2>
                 <h5 className="text-base ">{section?.subTitle}</h5>
                 {section?.items && (
