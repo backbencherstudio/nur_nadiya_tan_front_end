@@ -245,7 +245,6 @@ function PrivacyPolicyPage() {
                 </p>
               </div>
             </div>
-
             {sections.map((section, idx) => (
               <div key={idx} className="space-y-3">
                 <h2 className="text-lg md:text-xl lg:text-2xl font-semibold text-headerColor   ">
