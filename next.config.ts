@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "backend.transfermaidsingapore.com",
       },
+      {
+        protocol: "https",
+        hostname: "peterson-timing-focused-articles.trycloudflare.com",
+      },
     ],
   },
 };

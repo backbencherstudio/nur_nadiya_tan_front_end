@@ -12,7 +12,6 @@ import { IoIosArrowDown } from "react-icons/io";
 import Loader from "../reusable/Loader";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
-
 interface HeaderProps {
   onNotificationClick?: () => void;
   adminName?: string;
@@ -28,11 +27,12 @@ const Header: React.FC<HeaderProps> = ({
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showAllNotifications, setShowAllNotifications] = useState(false);
-  const router = useRouter()
-   const {token} = useToken()
+  const router = useRouter();
+  const { token } = useToken();
   const [notifications, setNotifications] = useState<null | []>([]);
+  console.log(token, " token in header");
 
-  const [profile, setProfile] = useState<any>()
+  const [profile, setProfile] = useState<any>();
   const displayedNotifications = showAllNotifications
     ? notifications
     : notifications.slice(0, 5);
@@ -44,28 +44,34 @@ const Header: React.FC<HeaderProps> = ({
     const diffInMs = now - createdAt;
     const diffInMinutes = Math.floor(diffInMs / 60000);
 
-    if (diffInMinutes < 1) return 'just now';
-    if (diffInMinutes < 60) return `${diffInMinutes} minute${diffInMinutes > 1 ? 's' : ''} ago`;
+    if (diffInMinutes < 1) return "just now";
+    if (diffInMinutes < 60)
+      return `${diffInMinutes} minute${diffInMinutes > 1 ? "s" : ""} ago`;
 
     const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
+    if (diffInHours < 24)
+      return `${diffInHours} hour${diffInHours > 1 ? "s" : ""} ago`;
 
     const diffInDays = Math.floor(diffInHours / 24);
-    return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`;
+    return `${diffInDays} day${diffInDays > 1 ? "s" : ""} ago`;
   }
 
-  const {data: userDetails, isLoading ,isError ,error} = useQuery({
+  const {
+    data: userDetails,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["notifications"],
     queryFn: () => UserService.getUserDetails(token),
-  })
+    enabled: !!token, // Only run the query when token exists
+  });
 
-
-// Handle authentication errors
-if (error) {
-  const { handleAuthError } = require('@/helper/auth.helper')
-  handleAuthError(error, router)
-}
-
+  // Handle authentication errors
+  if (error) {
+    const { handleAuthError } = require("@/helper/auth.helper");
+    handleAuthError(error, router);
+  }
 
   return (
     <nav className=" text-blackColor border-b bg-whiteColor border-borderColor  py-3">
@@ -132,13 +138,12 @@ if (error) {
                 >
                   <X className="" />
                 </button>
-
               </div>
 
-
               <div className="overflow-y-auto px-4 py-3 flex-1">
-
-                {loading ? <Loader /> : notifications?.length > 0 ? (
+                {loading ? (
+                  <Loader />
+                ) : notifications?.length > 0 ? (
                   <div className="flex flex-col space-y-6">
                     {displayedNotifications.map((notification: any) => (
                       <div
@@ -147,7 +152,9 @@ if (error) {
                       >
                         <div className="w-8 h-8 lg:w-12 lg:h-12 rounded-full">
                           <Image
-                            src={notification.avatar_url || "/image/profile.jpg"}
+                            src={
+                              notification.avatar_url || "/image/profile.jpg"
+                            }
                             alt="notification"
                             width={50}
                             height={50}
@@ -215,7 +222,9 @@ if (error) {
                   <h4 className="sm:text-sm text-[13px] font-medium text-blackColor">
                     {userDetails?.data?.data?.name}
                   </h4>
-                  <p className="text-descriptionColor md:text-base text-sm">{userDetails?.data?.data?.email}</p>
+                  <p className="text-descriptionColor md:text-base text-sm">
+                    {userDetails?.data?.data?.email}
+                  </p>
                 </div>
                 <button className=" cursor-pointer">
                   <IoIosArrowDown size={16} className="text-grayColor1" />
