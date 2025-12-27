@@ -8,7 +8,7 @@ import SectionHeader from "../reusable/SectionHeader";
 function JobList() {
 
   const handleWhatsAppClick = () => {
-    const phoneNumber = "+6587427269"; // Remove spaces and format properly
+    const phoneNumber = "+88972767"; // Remove spaces and format properly
     const whatsappUrl = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}`;
     window.open(whatsappUrl, '_blank');
   };

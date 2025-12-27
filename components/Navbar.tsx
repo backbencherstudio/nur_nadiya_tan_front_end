@@ -31,7 +31,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState("en");
   const { setSelectedLang: setContextLang } = useLanguage();
-  const phoneNumber = "+6587427269";
+  const phoneNumber = "+88972767";
   const message = "Hello! I'm interested in viewing available maid profiles.";
   // Load language from localStorage on component mount
   useEffect(() => {

@@ -6,7 +6,7 @@ import { IoSend } from 'react-icons/io5';
 
 function WhatsAppButton() {
   const [isOpen, setIsOpen] = useState(false);
-  const phoneNumber = "+6587427269";
+  const phoneNumber = "+88972767";
   const toggleChat = () => {
     setIsOpen(!isOpen);
   };
