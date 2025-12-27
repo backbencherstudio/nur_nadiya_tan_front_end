@@ -9,14 +9,12 @@ const quickLinks = [
   { name: "Employers", slug: "/employers" },
   { name: "Maids", slug: "/maids" },
   { name: "Contact", slug: "/contact" },
-
 ];
 const InfoLinks = [
   { name: "Terms & Conditions", slug: "/terms-and-condition" },
   { name: "Privacy Policy", slug: "/privacy-policy" },
   { name: "Terms of Use", slug: "/terms-of-use" },
   { name: "Help", slug: "/contact" },
-
 ];
 export default function Footer() {
   return (
@@ -27,10 +25,18 @@ export default function Footer() {
           <div className=" md:col-span-6 lg:col-span-4">
             <div className=" md:w-[328px]">
               <div className=" mb-8">
-                <Image src={logo} alt="logo" width={100} height={100} className="w-12 md:w-[80px]" />
+                <Image
+                  src={logo}
+                  alt="logo"
+                  width={100}
+                  height={100}
+                  className="w-12 md:w-[80px]"
+                />
               </div>
               <p className="text-base leading-[150%] mb-6">
-                Explore profiles of reliable transfer maids in Singapore, experienced in childcare, elderly care and infant care, cooking, and household chores,
+                Explore profiles of reliable transfer maids in Singapore,
+                experienced in childcare, elderly care and infant care, cooking,
+                and household chores,
               </p>
             </div>
           </div>
@@ -65,17 +71,20 @@ export default function Footer() {
           {/* Column 4: Social Icons */}
           <div className="md:col-span-6 lg:col-span-4 flex-col lg:flex items-end ">
             <div>
-
               <h3 className="text-lg font-semibold mb-4">Contact</h3>
               <ul className="space-y-4 text-base leading-[150%]">
                 <li className=" flex gap-3 items-center">
                   <IoCallOutline />
-                  <Link href="tel:602-774-4735" className="hover:text-primaryColor">
-                    +65 87427269
+                  <Link
+                    href="tel:602-774-4735"
+                    className="hover:text-primaryColor"
+                  >
+                    +88972767
                   </Link>
                 </li>
                 <li className=" flex gap-3 items-start ">
-                  <GrLocation className="mt-1" /> 810 Geylang Rd #03-145D Singapore 409286
+                  <GrLocation className="mt-1" /> 810 Geylang Rd #03-145D
+                  Singapore 409286
                 </li>
                 <li className=" flex gap-3 items-center">
                   <IoMailOutline className="text-white" />
@@ -86,7 +95,6 @@ export default function Footer() {
                     admin@transfermaidsingapore.com
                   </Link>
                 </li>
-
               </ul>
             </div>
           </div>
